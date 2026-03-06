@@ -26,4 +26,19 @@
     <Folder Include="Images\IconsNut\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Images\AnhSanVanDong\cantho.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\AnhSanVanDong\mydinh.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\AnhSanVanDong\thongnhat.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\AnhTheNhanVien\anh1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
