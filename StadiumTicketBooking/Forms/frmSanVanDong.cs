@@ -13,6 +13,8 @@ namespace StadiumTicketBooking.Forms
         StadiumDbContext context = new StadiumDbContext();
         bool xuLyThem = false;
         int currentId;
+
+        string projectRootFolder;
         string imagesFolder;
         string stadiumImagesFolder;
 
@@ -20,7 +22,8 @@ namespace StadiumTicketBooking.Forms
         {
             InitializeComponent();
 
-            imagesFolder = GetImagesFolder();
+            projectRootFolder = GetProjectRootFolder();
+            imagesFolder = Path.Combine(projectRootFolder, "Images");
             stadiumImagesFolder = Path.Combine(imagesFolder, "AnhSanVanDong");
 
             if (!Directory.Exists(imagesFolder))
@@ -33,24 +36,27 @@ namespace StadiumTicketBooking.Forms
             dgvSanVanDong.CellFormatting += dgvSanVanDong_CellFormatting;
         }
 
-        private string GetImagesFolder()
+        private string GetProjectRootFolder()
         {
             string baseDir = Application.StartupPath;
-            string candidate = Path.Combine(baseDir, "Images");
-            if (Directory.Exists(candidate))
-                return candidate;
-
             DirectoryInfo dir = new DirectoryInfo(baseDir);
+
             while (dir != null)
             {
-                candidate = Path.Combine(dir.FullName, "Images");
-                if (Directory.Exists(candidate))
-                    return candidate;
+                try
+                {
+                    bool hasCsproj = dir.GetFiles("*.csproj").Length > 0;
+                    if (hasCsproj)
+                        return dir.FullName;
+                }
+                catch
+                {
+                }
 
                 dir = dir.Parent;
             }
 
-            return Path.Combine(baseDir, "Images");
+            return AppDomain.CurrentDomain.BaseDirectory;
         }
 
         private string FindImagePath(string fileName)
@@ -58,17 +64,17 @@ namespace StadiumTicketBooking.Forms
             if (string.IsNullOrWhiteSpace(fileName))
                 return null;
 
-            string directPath = Path.Combine(imagesFolder, fileName);
-            if (File.Exists(directPath))
-                return directPath;
-
             string stadiumPath = Path.Combine(stadiumImagesFolder, fileName);
             if (File.Exists(stadiumPath))
                 return stadiumPath;
 
+            string directPath = Path.Combine(imagesFolder, fileName);
+            if (File.Exists(directPath))
+                return directPath;
+
             try
             {
-                var files = Directory.GetFiles(imagesFolder, fileName, SearchOption.AllDirectories);
+                string[] files = Directory.GetFiles(imagesFolder, fileName, SearchOption.AllDirectories);
                 if (files.Length > 0)
                     return files[0];
             }
@@ -77,6 +83,49 @@ namespace StadiumTicketBooking.Forms
             }
 
             return null;
+        }
+
+        private void ClearPictureBox()
+        {
+            try
+            {
+                picHinhAnh.ImageLocation = null;
+
+                if (picHinhAnh.Image != null)
+                {
+                    Image oldImage = picHinhAnh.Image;
+                    picHinhAnh.Image = null;
+                    oldImage.Dispose();
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        private void ShowImageToPictureBox(string imagePath)
+        {
+            ClearPictureBox();
+
+            if (string.IsNullOrWhiteSpace(imagePath) || !File.Exists(imagePath))
+                return;
+
+            try
+            {
+                byte[] bytes = File.ReadAllBytes(imagePath);
+                using (MemoryStream ms = new MemoryStream(bytes))
+                using (Image img = Image.FromStream(ms))
+                {
+                    picHinhAnh.Image = new Bitmap(img);
+                }
+
+                // Chỉ lưu path để lấy tên file lúc nhấn Lưu
+                picHinhAnh.ImageLocation = imagePath;
+            }
+            catch
+            {
+                ClearPictureBox();
+            }
         }
 
         private void BatTatChucNang(bool dangSua)
@@ -162,22 +211,36 @@ namespace StadiumTicketBooking.Forms
             txtDiaChi.DataBindings.Add("Text", bs, "DiaChi", true, DataSourceUpdateMode.Never);
 
             picHinhAnh.DataBindings.Clear();
-            Binding bImg = new Binding("ImageLocation", bs, "HinhAnh", true);
+            Binding bImg = new Binding("Tag", bs, "HinhAnh", true);
             bImg.Format += (s, ev) =>
             {
                 if (ev.Value != null && !string.IsNullOrWhiteSpace(ev.Value.ToString()))
-                {
-                    string fullPath = FindImagePath(ev.Value.ToString());
-                    ev.Value = !string.IsNullOrEmpty(fullPath) && File.Exists(fullPath) ? fullPath : null;
-                }
+                    ev.Value = FindImagePath(ev.Value.ToString());
                 else
-                {
                     ev.Value = null;
-                }
             };
             picHinhAnh.DataBindings.Add(bImg);
 
             dgvSanVanDong.DataSource = bs;
+
+            string filePath = picHinhAnh.Tag?.ToString();
+            ShowImageToPictureBox(filePath);
+        }
+
+        private void dgvSanVanDong_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvSanVanDong.CurrentRow == null) return;
+
+            object value = dgvSanVanDong.CurrentRow.Cells["colHinhAnh"].Value;
+            if (value == null)
+            {
+                ClearPictureBox();
+                return;
+            }
+
+            string fileName = value.ToString();
+            string imagePath = FindImagePath(fileName);
+            ShowImageToPictureBox(imagePath);
         }
 
         private void btnDoiAnh_Click(object sender, EventArgs e)
@@ -185,13 +248,32 @@ namespace StadiumTicketBooking.Forms
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
                 ofd.Filter = "Images|*.jpg;*.png;*.jpeg";
+
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    string fileName = Path.GetFileName(ofd.FileName);
+                    string sourcePath = ofd.FileName;
+                    string fileName = Path.GetFileName(sourcePath);
                     string destPath = Path.Combine(stadiumImagesFolder, fileName);
 
-                    File.Copy(ofd.FileName, destPath, true);
-                    picHinhAnh.ImageLocation = destPath;
+                    try
+                    {
+                        ClearPictureBox();
+
+                        // Nếu file nguồn và file đích là 1 thì không copy nữa
+                        if (!string.Equals(
+                            Path.GetFullPath(sourcePath),
+                            Path.GetFullPath(destPath),
+                            StringComparison.OrdinalIgnoreCase))
+                        {
+                            File.Copy(sourcePath, destPath, true);
+                        }
+
+                        ShowImageToPictureBox(destPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Không thể đổi ảnh: " + ex.Message);
+                    }
                 }
             }
         }
@@ -252,8 +334,7 @@ namespace StadiumTicketBooking.Forms
             txtID.Text = "";
             txtTenSan.Clear();
             txtDiaChi.Clear();
-            picHinhAnh.ImageLocation = null;
-            picHinhAnh.Image = null;
+            ClearPictureBox();
 
             txtTenSan.Focus();
         }
@@ -283,18 +364,21 @@ namespace StadiumTicketBooking.Forms
                     context.SanVanDong.Remove(svd);
                     context.SaveChanges();
                     LoadDataGrid();
+                    ClearPictureBox();
                 }
             }
         }
 
         private void btnHuy_Click(object sender, EventArgs e)
         {
+            ClearPictureBox();
             LoadDataGrid();
             BatTatChucNang(false);
         }
 
         private void btnThoat_Click(object sender, EventArgs e)
         {
+            ClearPictureBox();
             this.Close();
         }
     }
