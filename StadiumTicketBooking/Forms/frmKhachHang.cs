@@ -121,6 +121,31 @@ namespace StadiumTicketBooking.Forms
             dgvKhachHang.DataSource = bindingSource;
         }
 
+        private void TaiDuLieu(object dataSource)
+        {
+            dgvKhachHang.AutoGenerateColumns = false;
+
+            BindingSource bindingSource = new BindingSource
+            {
+                DataSource = dataSource
+            };
+
+            txtID.DataBindings.Clear();
+            txtID.DataBindings.Add("Text", bindingSource, "ID", false, DataSourceUpdateMode.Never);
+
+            txtHoVaTen.DataBindings.Clear();
+            txtHoVaTen.DataBindings.Add("Text", bindingSource, "HoVaTen", false, DataSourceUpdateMode.Never);
+
+            txtDienThoai.DataBindings.Clear();
+            txtDienThoai.DataBindings.Add("Text", bindingSource, "DienThoai", false, DataSourceUpdateMode.Never);
+
+            txtDiaChi.DataBindings.Clear();
+            txtDiaChi.DataBindings.Add("Text", bindingSource, "DiaChi", false, DataSourceUpdateMode.Never);
+
+            dgvKhachHang.DataSource = null;
+            dgvKhachHang.DataSource = bindingSource;
+        }
+
         private void frmKhachHang_Load(object sender, EventArgs e)
         {
             CaiDatIconNut();
@@ -341,6 +366,45 @@ namespace StadiumTicketBooking.Forms
         {
             context.Dispose();
             base.OnFormClosed(e);
+        }
+
+        private void btnTimKiem_Click(object sender, EventArgs e)
+        {
+            string searchTerm = Microsoft.VisualBasic.Interaction.InputBox(
+                "Nhập từ khóa tìm kiếm (họ tên, điện thoại, địa chỉ):",
+                "Tìm kiếm khách hàng",
+                "");
+
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                TaiDuLieu();
+                BatTatChucNang(false);
+                ApDungPhanQuyen();
+                return;
+            }
+
+            string lower = searchTerm.Trim().ToLower();
+
+            var ketQua = context.KhachHang
+                .Where(x =>
+                    (x.HoVaTen ?? "").ToLower().Contains(lower) ||
+                    (x.DienThoai ?? "").ToLower().Contains(lower) ||
+                    (x.DiaChi ?? "").ToLower().Contains(lower))
+                .ToList();
+
+            if (ketQua.Count == 0)
+            {
+                MessageBox.Show("Không tìm thấy kết quả phù hợp.", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                TaiDuLieu();
+            }
+            else
+            {
+                TaiDuLieu(ketQua);
+            }
+
+            BatTatChucNang(false);
+            ApDungPhanQuyen();
         }
     }
 }

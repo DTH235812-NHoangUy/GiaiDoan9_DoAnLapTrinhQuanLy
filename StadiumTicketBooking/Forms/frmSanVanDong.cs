@@ -215,7 +215,6 @@ namespace StadiumTicketBooking.Forms
         {
             CaiDatIconNut();
 
-            // Fix nút Đổi ảnh luôn nằm ngay dưới ảnh
             btnDoiAnh.Left = picHinhAnh.Left;
             btnDoiAnh.Top = picHinhAnh.Bottom + 8;
             btnDoiAnh.Width = picHinhAnh.Width;
@@ -230,6 +229,38 @@ namespace StadiumTicketBooking.Forms
             var listSVD = context.SanVanDong.ToList();
             BindingSource bs = new BindingSource();
             bs.DataSource = listSVD;
+
+            txtID.DataBindings.Clear();
+            txtID.DataBindings.Add("Text", bs, "ID", true, DataSourceUpdateMode.Never);
+
+            txtTenSan.DataBindings.Clear();
+            txtTenSan.DataBindings.Add("Text", bs, "TenSan", true, DataSourceUpdateMode.Never);
+
+            txtDiaChi.DataBindings.Clear();
+            txtDiaChi.DataBindings.Add("Text", bs, "DiaChi", true, DataSourceUpdateMode.Never);
+
+            picHinhAnh.DataBindings.Clear();
+            Binding bImg = new Binding("Tag", bs, "HinhAnh", true);
+            bImg.Format += (s, ev) =>
+            {
+                if (ev.Value != null && !string.IsNullOrWhiteSpace(ev.Value.ToString()))
+                    ev.Value = FindImagePath(ev.Value.ToString());
+                else
+                    ev.Value = null;
+            };
+            picHinhAnh.DataBindings.Add(bImg);
+
+            dgvSanVanDong.DataSource = null;
+            dgvSanVanDong.DataSource = bs;
+
+            string filePath = picHinhAnh.Tag?.ToString();
+            ShowImageToPictureBox(filePath);
+        }
+
+        private void LoadDataGrid(object dataSource)
+        {
+            BindingSource bs = new BindingSource();
+            bs.DataSource = dataSource;
 
             txtID.DataBindings.Clear();
             txtID.DataBindings.Add("Text", bs, "ID", true, DataSourceUpdateMode.Never);
@@ -416,6 +447,42 @@ namespace StadiumTicketBooking.Forms
         {
             context.Dispose();
             base.OnFormClosed(e);
+        }
+
+        private void btnTimKiem_Click(object sender, EventArgs e)
+        {
+            string searchTerm = Microsoft.VisualBasic.Interaction.InputBox(
+                "Nhập từ khóa tìm kiếm (tên sân, địa chỉ):",
+                "Tìm kiếm sân vận động",
+                "");
+
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                LoadDataGrid();
+                BatTatChucNang(false);
+                return;
+            }
+
+            string lower = searchTerm.Trim().ToLower();
+
+            var results = context.SanVanDong
+                .Where(x =>
+                    (x.TenSan ?? "").ToLower().Contains(lower) ||
+                    (x.DiaChi ?? "").ToLower().Contains(lower))
+                .ToList();
+
+            if (results.Count == 0)
+            {
+                MessageBox.Show("Không tìm thấy kết quả phù hợp.", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadDataGrid();
+            }
+            else
+            {
+                LoadDataGrid(results);
+            }
+
+            BatTatChucNang(false);
         }
     }
 }

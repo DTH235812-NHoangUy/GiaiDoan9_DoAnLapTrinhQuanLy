@@ -281,6 +281,54 @@ namespace StadiumTicketBooking.Forms
             ShowImageToPictureBox(filePath);
         }
 
+        private void TaiDuLieu(object dataSource)
+        {
+            dgvVe.AutoGenerateColumns = false;
+
+            BindingSource bindingSource = new BindingSource
+            {
+                DataSource = dataSource
+            };
+
+            txtID.DataBindings.Clear();
+            txtID.DataBindings.Add("Text", bindingSource, "ID", false, DataSourceUpdateMode.Never);
+
+            txtGiaVe.DataBindings.Clear();
+            txtGiaVe.DataBindings.Add("Text", bindingSource, "GiaVe", false, DataSourceUpdateMode.Never);
+
+            cboSuKien.DataBindings.Clear();
+            cboSuKien.DataBindings.Add("SelectedValue", bindingSource, "SuKienID", false, DataSourceUpdateMode.Never);
+
+            cboGhe.DataBindings.Clear();
+            cboGhe.DataBindings.Add("SelectedValue", bindingSource, "GheID", false, DataSourceUpdateMode.Never);
+
+            cboTrangThai.DataBindings.Clear();
+            cboTrangThai.DataBindings.Add("Text", bindingSource, "TrangThai", false, DataSourceUpdateMode.Never);
+
+            picHinhAnh.DataBindings.Clear();
+            Binding bImg = new Binding("Tag", bindingSource, "HinhAnh", true);
+            bImg.Format += (s, ev) =>
+            {
+                if (ev.Value != null && !string.IsNullOrWhiteSpace(ev.Value.ToString()))
+                    ev.Value = FindImagePath(ev.Value.ToString());
+                else
+                    ev.Value = null;
+            };
+            picHinhAnh.DataBindings.Add(bImg);
+
+            dgvVe.DataSource = null;
+            dgvVe.DataSource = bindingSource;
+
+            if (dgvVe.Columns["colGiaVe"] != null)
+            {
+                dgvVe.Columns["colGiaVe"].DefaultCellStyle.Format = "N0";
+                dgvVe.Columns["colGiaVe"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            }
+
+            string filePath = picHinhAnh.Tag?.ToString();
+            ShowImageToPictureBox(filePath);
+        }
+
         private void frmVe_Load(object sender, EventArgs e)
         {
             CaiDatIconNut();
@@ -597,6 +645,59 @@ namespace StadiumTicketBooking.Forms
         {
             context.Dispose();
             base.OnFormClosed(e);
+        }
+
+        private void btnTimKiem_Click(object sender, EventArgs e)
+        {
+            string searchTerm = Microsoft.VisualBasic.Interaction.InputBox(
+                "Nhập từ khóa tìm kiếm (sự kiện, ghế, khu vực, sân, giá vé, trạng thái):",
+                "Tìm kiếm vé",
+                "");
+
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                TaiDuLieu();
+                BatTatChucNang(false);
+                return;
+            }
+
+            string lower = searchTerm.Trim().ToLower();
+
+            var ketQua = context.Ve
+                .Select(x => new
+                {
+                    x.ID,
+                    x.SuKienID,
+                    x.GheID,
+                    TenSuKien = x.SuKien.TenSuKien,
+                    SoGhe = x.Ghe.SoGhe,
+                    TenKhuVuc = x.Ghe.KhuVuc.TenKhuVuc,
+                    TenSan = x.Ghe.KhuVuc.SanVanDong.TenSan,
+                    x.GiaVe,
+                    x.TrangThai,
+                    x.HinhAnh
+                })
+                .Where(x =>
+                    (x.TenSuKien ?? "").ToLower().Contains(lower) ||
+                    (x.SoGhe ?? "").ToLower().Contains(lower) ||
+                    (x.TenKhuVuc ?? "").ToLower().Contains(lower) ||
+                    (x.TenSan ?? "").ToLower().Contains(lower) ||
+                    x.GiaVe.ToString().ToLower().Contains(lower) ||
+                    (x.TrangThai ?? "").ToLower().Contains(lower))
+                .ToList();
+
+            if (ketQua.Count == 0)
+            {
+                MessageBox.Show("Không tìm thấy kết quả phù hợp.", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                TaiDuLieu();
+            }
+            else
+            {
+                TaiDuLieu(ketQua);
+            }
+
+            BatTatChucNang(false);
         }
     }
 }

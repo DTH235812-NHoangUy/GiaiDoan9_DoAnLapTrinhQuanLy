@@ -114,6 +114,28 @@ namespace StadiumTicketBooking.Forms
             dgvGhe.DataSource = bindingSource;
         }
 
+        private void TaiDuLieu(object dataSource)
+        {
+            dgvGhe.AutoGenerateColumns = false;
+
+            BindingSource bindingSource = new BindingSource
+            {
+                DataSource = dataSource
+            };
+
+            txtID.DataBindings.Clear();
+            txtID.DataBindings.Add("Text", bindingSource, "ID", false, DataSourceUpdateMode.Never);
+
+            txtSoGhe.DataBindings.Clear();
+            txtSoGhe.DataBindings.Add("Text", bindingSource, "SoGhe", false, DataSourceUpdateMode.Never);
+
+            cboKhuVuc.DataBindings.Clear();
+            cboKhuVuc.DataBindings.Add("SelectedValue", bindingSource, "KhuVucID", false, DataSourceUpdateMode.Never);
+
+            dgvGhe.DataSource = null;
+            dgvGhe.DataSource = bindingSource;
+        }
+
         private void frmGhe_Load(object sender, EventArgs e)
         {
             CaiDatIconNut();
@@ -308,6 +330,51 @@ namespace StadiumTicketBooking.Forms
         {
             context.Dispose();
             base.OnFormClosed(e);
+        }
+
+        private void btnTimKiem_Click(object sender, EventArgs e)
+        {
+            string searchTerm = Microsoft.VisualBasic.Interaction.InputBox(
+                "Nhập từ khóa tìm kiếm (số ghế, khu vực, sân vận động):",
+                "Tìm kiếm ghế",
+                "");
+
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                TaiDuLieu();
+                BatTatChucNang(false);
+                return;
+            }
+
+            string lower = searchTerm.Trim().ToLower();
+
+            var ketQua = context.Ghe
+                .Select(x => new
+                {
+                    x.ID,
+                    x.SoGhe,
+                    x.KhuVucID,
+                    TenKhuVuc = x.KhuVuc.TenKhuVuc,
+                    TenSan = x.KhuVuc.SanVanDong.TenSan
+                })
+                .Where(x =>
+                    (x.SoGhe ?? "").ToLower().Contains(lower) ||
+                    (x.TenKhuVuc ?? "").ToLower().Contains(lower) ||
+                    (x.TenSan ?? "").ToLower().Contains(lower))
+                .ToList();
+
+            if (ketQua.Count == 0)
+            {
+                MessageBox.Show("Không tìm thấy kết quả phù hợp.", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                TaiDuLieu();
+            }
+            else
+            {
+                TaiDuLieu(ketQua);
+            }
+
+            BatTatChucNang(false);
         }
     }
 }

@@ -277,6 +277,43 @@ namespace StadiumTicketBooking.Forms
             ShowImageToPictureBox(filePath);
         }
 
+        private void LoadDataGrid(object dataSource)
+        {
+            BindingSource bs = new BindingSource();
+            bs.DataSource = dataSource;
+
+            txtHoTen.DataBindings.Clear();
+            txtHoTen.DataBindings.Add("Text", bs, "HoVaTen", true, DataSourceUpdateMode.Never);
+
+            txtDienThoai.DataBindings.Clear();
+            txtDienThoai.DataBindings.Add("Text", bs, "DienThoai", true, DataSourceUpdateMode.Never);
+
+            txtDangNhap.DataBindings.Clear();
+            txtDangNhap.DataBindings.Add("Text", bs, "TenDangNhap", true, DataSourceUpdateMode.Never);
+
+            txtMatKhau.DataBindings.Clear();
+            txtMatKhau.DataBindings.Add("Text", bs, "MatKhau", true, DataSourceUpdateMode.Never);
+
+            cboVaiTro.DataBindings.Clear();
+            cboVaiTro.DataBindings.Add("SelectedValue", bs, "VaiTroID", true, DataSourceUpdateMode.Never);
+
+            picHinhAnh.DataBindings.Clear();
+            Binding bImg = new Binding("Tag", bs, "HinhAnh", true);
+            bImg.Format += (s, ev) =>
+            {
+                if (ev.Value != null && !string.IsNullOrWhiteSpace(ev.Value.ToString()))
+                    ev.Value = FindImagePath(ev.Value.ToString());
+                else
+                    ev.Value = null;
+            };
+            picHinhAnh.DataBindings.Add(bImg);
+
+            dgvNhanVien.DataSource = bs;
+
+            string filePath = picHinhAnh.Tag?.ToString();
+            ShowImageToPictureBox(filePath);
+        }
+
         private void dgvNhanVien_SelectionChanged(object sender, EventArgs e)
         {
             if (dgvNhanVien.CurrentRow == null) return;
@@ -437,6 +474,55 @@ namespace StadiumTicketBooking.Forms
         {
             ClearPictureBox();
             this.Close();
+        }
+
+        private void btnTimKiem_Click(object sender, EventArgs e)
+        {
+            string searchTerm = Microsoft.VisualBasic.Interaction.InputBox(
+                "Nhập từ khóa tìm kiếm (họ tên, điện thoại, đăng nhập, vai trò):",
+                "Tìm kiếm nhân viên",
+                "");
+
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                LoadDataGrid();
+                BatTatChucNang(false);
+                return;
+            }
+
+            string lower = searchTerm.Trim().ToLower();
+
+            var results = context.NhanVien
+                .Select(x => new
+                {
+                    x.ID,
+                    x.HoVaTen,
+                    x.DienThoai,
+                    x.TenDangNhap,
+                    x.MatKhau,
+                    x.VaiTroID,
+                    TenVaiTro = x.VaiTro.TenVaiTro,
+                    x.HinhAnh
+                })
+                .Where(x =>
+                    (x.HoVaTen ?? "").ToLower().Contains(lower) ||
+                    (x.DienThoai ?? "").ToLower().Contains(lower) ||
+                    (x.TenDangNhap ?? "").ToLower().Contains(lower) ||
+                    (x.TenVaiTro ?? "").ToLower().Contains(lower))
+                .ToList();
+
+            if (results.Count == 0)
+            {
+                MessageBox.Show("Không tìm thấy kết quả phù hợp.", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadDataGrid();
+            }
+            else
+            {
+                LoadDataGrid(results);
+            }
+
+            BatTatChucNang(false);
         }
     }
 }

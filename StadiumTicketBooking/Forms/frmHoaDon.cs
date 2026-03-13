@@ -132,6 +132,12 @@ namespace StadiumTicketBooking.Forms
             }
         }
 
+        private void TaiDanhSachHoaDon(object dataSource)
+        {
+            dgvHoaDon.DataSource = null;
+            dgvHoaDon.DataSource = dataSource;
+        }
+
         private bool LayHoaDonDangChon()
         {
             if (dgvHoaDon.CurrentRow == null)
@@ -186,6 +192,7 @@ namespace StadiumTicketBooking.Forms
             }
 
             TaiDanhSachHoaDon();
+            ApDungPhanQuyen();
         }
 
         private void btnSua_Click(object sender, EventArgs e)
@@ -209,6 +216,7 @@ namespace StadiumTicketBooking.Forms
             }
 
             TaiDanhSachHoaDon();
+            ApDungPhanQuyen();
         }
 
         private void btnXoa_Click(object sender, EventArgs e)
@@ -265,6 +273,7 @@ namespace StadiumTicketBooking.Forms
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 TaiDanhSachHoaDon();
+                ApDungPhanQuyen();
             }
             catch (Exception ex)
             {
@@ -287,8 +296,70 @@ namespace StadiumTicketBooking.Forms
 
         private void btnTimKiem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Bạn gắn chức năng tìm kiếm sau nhé.",
-                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            string searchTerm = Microsoft.VisualBasic.Interaction.InputBox(
+                "Nhập từ khóa tìm kiếm (mã hóa đơn, khách hàng, nhân viên, ngày lập, ghi chú, tổng tiền):",
+                "Tìm kiếm hóa đơn",
+                "");
+
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                TaiDanhSachHoaDon();
+                ApDungPhanQuyen();
+                return;
+            }
+
+            try
+            {
+                string lower = searchTerm.Trim().ToLower();
+
+                var query = context.HoaDon.AsNoTracking();
+
+                if (!LaAdmin())
+                {
+                    query = query.Where(r => r.NhanVienID == nhanVienIDDangNhap);
+                }
+
+                var ketQua = query
+                    .Select(r => new DanhSachHoaDon
+                    {
+                        ID = r.ID,
+                        HoVaTenNhanVien = r.NhanVien.HoVaTen,
+                        HoVaTenKhachHang = r.KhachHang.HoVaTen,
+                        NgayLap = r.NgayLap,
+                        GhiChu = r.GhiChu,
+                        TongTienHoaDon = r.HoaDon_ChiTiet.Sum(ct => (double)ct.DonGiaBan),
+                        XemChiTiet = "Xem chi tiết"
+                    })
+                    .ToList()
+                    .Where(r =>
+                        r.ID.ToString().ToLower().Contains(lower) ||
+                        (r.HoVaTenNhanVien ?? "").ToLower().Contains(lower) ||
+                        (r.HoVaTenKhachHang ?? "").ToLower().Contains(lower) ||
+                        (r.GhiChu ?? "").ToLower().Contains(lower) ||
+                        r.NgayLap.ToString("dd/MM/yyyy").ToLower().Contains(lower) ||
+                        r.TongTienHoaDon.ToString("N0").ToLower().Contains(lower) ||
+                        r.TongTienHoaDon.ToString().ToLower().Contains(lower))
+                    .OrderByDescending(r => r.ID)
+                    .ToList();
+
+                if (ketQua.Count == 0)
+                {
+                    MessageBox.Show("Không tìm thấy kết quả phù hợp.",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    TaiDanhSachHoaDon();
+                }
+                else
+                {
+                    TaiDanhSachHoaDon(ketQua);
+                }
+
+                ApDungPhanQuyen();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Tìm kiếm thất bại.\n\n" + ex.Message,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnXuat_Click(object sender, EventArgs e)
@@ -331,6 +402,7 @@ namespace StadiumTicketBooking.Forms
                 }
 
                 TaiDanhSachHoaDon();
+                ApDungPhanQuyen();
             }
         }
 

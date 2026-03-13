@@ -252,5 +252,54 @@ namespace StadiumTicketBooking.Forms
             context.Dispose();
             base.OnFormClosed(e);
         }
+
+        private void btnTimKiem_Click(object sender, EventArgs e)
+        {
+            string searchTerm = Microsoft.VisualBasic.Interaction.InputBox(
+        "Nhập tên vai trò cần tìm:",
+        "Tìm kiếm vai trò",
+        ""
+    );
+
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                TaiDuLieu();
+                BatTatChucNang(false);
+                return;
+            }
+
+            string lower = searchTerm.Trim().ToLower();
+
+            var ketQua = context.VaiTro
+                .Where(v => (v.TenVaiTro ?? "").ToLower().Contains(lower))
+                .ToList();
+
+            if (ketQua.Count == 0)
+            {
+                MessageBox.Show("Không tìm thấy vai trò phù hợp!", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                TaiDuLieu();
+            }
+            else
+            {
+                dgvVaiTro.AutoGenerateColumns = false;
+
+                BindingSource bindingSource = new BindingSource
+                {
+                    DataSource = ketQua
+                };
+
+                txtID.DataBindings.Clear();
+                txtID.DataBindings.Add("Text", bindingSource, "ID", false, DataSourceUpdateMode.Never);
+
+                txtVaiTro.DataBindings.Clear();
+                txtVaiTro.DataBindings.Add("Text", bindingSource, "TenVaiTro", false, DataSourceUpdateMode.Never);
+
+                dgvVaiTro.DataSource = null;
+                dgvVaiTro.DataSource = bindingSource;
+            }
+
+            BatTatChucNang(false);
+        }
     }
 }

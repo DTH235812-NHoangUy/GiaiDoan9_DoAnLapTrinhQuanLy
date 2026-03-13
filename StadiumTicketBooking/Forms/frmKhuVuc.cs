@@ -111,6 +111,31 @@ namespace StadiumTicketBooking.Forms
             dgvKhuVuc.DataSource = bindingSource;
         }
 
+        private void TaiDuLieu(object dataSource)
+        {
+            dgvKhuVuc.AutoGenerateColumns = false;
+
+            BindingSource bindingSource = new BindingSource
+            {
+                DataSource = dataSource
+            };
+
+            txtID.DataBindings.Clear();
+            txtID.DataBindings.Add("Text", bindingSource, "ID", false, DataSourceUpdateMode.Never);
+
+            txtTenKhuVuc.DataBindings.Clear();
+            txtTenKhuVuc.DataBindings.Add("Text", bindingSource, "TenKhuVuc", false, DataSourceUpdateMode.Never);
+
+            txtHeSoGia.DataBindings.Clear();
+            txtHeSoGia.DataBindings.Add("Text", bindingSource, "HeSoGia", false, DataSourceUpdateMode.Never);
+
+            cboSanVanDong.DataBindings.Clear();
+            cboSanVanDong.DataBindings.Add("SelectedValue", bindingSource, "SanVanDongID", false, DataSourceUpdateMode.Never);
+
+            dgvKhuVuc.DataSource = null;
+            dgvKhuVuc.DataSource = bindingSource;
+        }
+
         private void frmKhuVuc_Load(object sender, EventArgs e)
         {
             CaiDatIconNut();
@@ -315,6 +340,51 @@ namespace StadiumTicketBooking.Forms
         {
             context.Dispose();
             base.OnFormClosed(e);
+        }
+
+        private void btnTimKiem_Click(object sender, EventArgs e)
+        {
+            string searchTerm = Microsoft.VisualBasic.Interaction.InputBox(
+                "Nhập từ khóa tìm kiếm (tên khu vực, hệ số giá, sân vận động):",
+                "Tìm kiếm khu vực",
+                "");
+
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                TaiDuLieu();
+                BatTatChucNang(false);
+                return;
+            }
+
+            string lower = searchTerm.Trim().ToLower();
+
+            var ketQua = context.KhuVuc
+                .Select(x => new
+                {
+                    x.ID,
+                    x.TenKhuVuc,
+                    x.HeSoGia,
+                    x.SanVanDongID,
+                    TenSan = x.SanVanDong.TenSan
+                })
+                .Where(x =>
+                    (x.TenKhuVuc ?? "").ToLower().Contains(lower) ||
+                    x.HeSoGia.ToString().ToLower().Contains(lower) ||
+                    (x.TenSan ?? "").ToLower().Contains(lower))
+                .ToList();
+
+            if (ketQua.Count == 0)
+            {
+                MessageBox.Show("Không tìm thấy kết quả phù hợp.", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                TaiDuLieu();
+            }
+            else
+            {
+                TaiDuLieu(ketQua);
+            }
+
+            BatTatChucNang(false);
         }
     }
 }

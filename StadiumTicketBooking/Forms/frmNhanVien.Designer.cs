@@ -172,6 +172,7 @@ namespace StadiumTicketBooking.Forms
             btnTimKiem.TabIndex = 18;
             btnTimKiem.Values.DropDownArrowColor = Color.Empty;
             btnTimKiem.Values.Text = "Tìm kiếm";
+            btnTimKiem.Click += btnTimKiem_Click;
             // 
             // btnThoat
             // 

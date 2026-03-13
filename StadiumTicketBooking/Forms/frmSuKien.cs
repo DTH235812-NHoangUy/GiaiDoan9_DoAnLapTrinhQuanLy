@@ -117,6 +117,34 @@ namespace StadiumTicketBooking.Forms
             dgvSuKien.DataSource = bindingSource;
         }
 
+        private void TaiDuLieu(object dataSource)
+        {
+            dgvSuKien.AutoGenerateColumns = false;
+
+            BindingSource bindingSource = new BindingSource
+            {
+                DataSource = dataSource
+            };
+
+            txtID.DataBindings.Clear();
+            txtID.DataBindings.Add("Text", bindingSource, "ID", false, DataSourceUpdateMode.Never);
+
+            txtTenSuKien.DataBindings.Clear();
+            txtTenSuKien.DataBindings.Add("Text", bindingSource, "TenSuKien", false, DataSourceUpdateMode.Never);
+
+            cboSanVanDong.DataBindings.Clear();
+            cboSanVanDong.DataBindings.Add("SelectedValue", bindingSource, "SanVanDongID", false, DataSourceUpdateMode.Never);
+
+            dtpThoiGian.DataBindings.Clear();
+            dtpThoiGian.DataBindings.Add("Value", bindingSource, "ThoiGian", true, DataSourceUpdateMode.Never);
+
+            txtGiaCoBan.DataBindings.Clear();
+            txtGiaCoBan.DataBindings.Add("Text", bindingSource, "GiaCoBan", false, DataSourceUpdateMode.Never);
+
+            dgvSuKien.DataSource = null;
+            dgvSuKien.DataSource = bindingSource;
+        }
+
         private void frmSuKien_Load(object sender, EventArgs e)
         {
             CaiDatIconNut();
@@ -326,6 +354,54 @@ namespace StadiumTicketBooking.Forms
         {
             context.Dispose();
             base.OnFormClosed(e);
+        }
+
+        private void btnTimKiem_Click(object sender, EventArgs e)
+        {
+            string searchTerm = Microsoft.VisualBasic.Interaction.InputBox(
+                "Nhập từ khóa tìm kiếm (tên sự kiện, sân vận động, thời gian, giá cơ bản):",
+                "Tìm kiếm sự kiện",
+                "");
+
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                TaiDuLieu();
+                BatTatChucNang(false);
+                return;
+            }
+
+            string lower = searchTerm.Trim().ToLower();
+
+            var ketQua = context.SuKien
+                .Select(x => new
+                {
+                    x.ID,
+                    x.TenSuKien,
+                    TenSan = x.SanVanDong.TenSan,
+                    x.SanVanDongID,
+                    x.ThoiGian,
+                    x.GiaCoBan
+                })
+                .ToList()
+                .Where(x =>
+                    (x.TenSuKien ?? "").ToLower().Contains(lower) ||
+                    (x.TenSan ?? "").ToLower().Contains(lower) ||
+                    x.ThoiGian.ToString("dd/MM/yyyy HH:mm").ToLower().Contains(lower) ||
+                    x.GiaCoBan.ToString().ToLower().Contains(lower))
+                .ToList();
+
+            if (ketQua.Count == 0)
+            {
+                MessageBox.Show("Không tìm thấy kết quả phù hợp.", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                TaiDuLieu();
+            }
+            else
+            {
+                TaiDuLieu(ketQua);
+            }
+
+            BatTatChucNang(false);
         }
     }
 }
