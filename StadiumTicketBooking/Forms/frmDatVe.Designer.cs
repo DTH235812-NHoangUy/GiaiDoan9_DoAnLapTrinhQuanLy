@@ -39,7 +39,6 @@ namespace StadiumTicketBooking.Forms
             lblNgayLap = new Label();
             lblTongTien = new Label();
             lblGhiChu = new Label();
-            btnTaoMoi = new KryptonButton();
             btnThanhToan = new KryptonButton();
             btnHuyDon = new KryptonButton();
             btnThoat = new KryptonButton();
@@ -70,6 +69,7 @@ namespace StadiumTicketBooking.Forms
             grpVeDaChon.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvVeDaChon).BeginInit();
             SuspendLayout();
+
             // 
             // grpThongTinDatVe
             // 
@@ -87,7 +87,6 @@ namespace StadiumTicketBooking.Forms
             grpThongTinDatVe.Controls.Add(lblNgayLap);
             grpThongTinDatVe.Controls.Add(lblTongTien);
             grpThongTinDatVe.Controls.Add(lblGhiChu);
-            grpThongTinDatVe.Controls.Add(btnTaoMoi);
             grpThongTinDatVe.Controls.Add(btnThanhToan);
             grpThongTinDatVe.Controls.Add(btnHuyDon);
             grpThongTinDatVe.Controls.Add(btnThoat);
@@ -99,6 +98,7 @@ namespace StadiumTicketBooking.Forms
             grpThongTinDatVe.TabIndex = 0;
             grpThongTinDatVe.TabStop = false;
             grpThongTinDatVe.Text = "Thông tin đặt vé";
+
             // 
             // cboNhanVien
             // 
@@ -109,6 +109,7 @@ namespace StadiumTicketBooking.Forms
             cboNhanVien.Name = "cboNhanVien";
             cboNhanVien.Size = new Size(300, 31);
             cboNhanVien.TabIndex = 0;
+
             // 
             // cboKhachHang
             // 
@@ -119,6 +120,7 @@ namespace StadiumTicketBooking.Forms
             cboKhachHang.Name = "cboKhachHang";
             cboKhachHang.Size = new Size(300, 31);
             cboKhachHang.TabIndex = 1;
+
             // 
             // cboSuKien
             // 
@@ -130,6 +132,7 @@ namespace StadiumTicketBooking.Forms
             cboSuKien.Size = new Size(300, 31);
             cboSuKien.TabIndex = 2;
             cboSuKien.SelectedIndexChanged += cboSuKien_SelectedIndexChanged;
+
             // 
             // dtpNgayLap
             // 
@@ -140,6 +143,7 @@ namespace StadiumTicketBooking.Forms
             dtpNgayLap.Name = "dtpNgayLap";
             dtpNgayLap.Size = new Size(220, 30);
             dtpNgayLap.TabIndex = 3;
+
             // 
             // txtTongTien
             // 
@@ -155,6 +159,7 @@ namespace StadiumTicketBooking.Forms
             txtTongTien.StateCommon.Content.Color1 = Color.FromArgb(99, 110, 114);
             txtTongTien.StateCommon.Content.Font = new Font("Segoe UI", 10F);
             txtTongTien.TabIndex = 4;
+
             // 
             // txtGhiChu
             // 
@@ -168,71 +173,83 @@ namespace StadiumTicketBooking.Forms
             txtGhiChu.StateCommon.Content.Color1 = Color.FromArgb(45, 52, 54);
             txtGhiChu.StateCommon.Content.Font = new Font("Segoe UI", 10F);
             txtGhiChu.TabIndex = 5;
+
             // 
-            // labels
+            // lblNhanVien
             // 
             lblNhanVien.AutoSize = true;
             lblNhanVien.Font = new Font("Segoe UI", 10F);
             lblNhanVien.ForeColor = Color.FromArgb(45, 52, 54);
             lblNhanVien.Location = new Point(30, 37);
+            lblNhanVien.Name = "lblNhanVien";
+            lblNhanVien.Size = new Size(83, 23);
+            lblNhanVien.TabIndex = 100;
             lblNhanVien.Text = "Nhân viên:";
-            //
+
+            // 
+            // lblKhachHang
+            // 
             lblKhachHang.AutoSize = true;
             lblKhachHang.Font = new Font("Segoe UI", 10F);
             lblKhachHang.ForeColor = Color.FromArgb(45, 52, 54);
             lblKhachHang.Location = new Point(30, 84);
+            lblKhachHang.Name = "lblKhachHang";
+            lblKhachHang.Size = new Size(97, 23);
+            lblKhachHang.TabIndex = 101;
             lblKhachHang.Text = "Khách hàng:";
-            //
+
+            // 
+            // lblSuKien
+            // 
             lblSuKien.AutoSize = true;
             lblSuKien.Font = new Font("Segoe UI", 10F);
             lblSuKien.ForeColor = Color.FromArgb(45, 52, 54);
             lblSuKien.Location = new Point(30, 131);
+            lblSuKien.Name = "lblSuKien";
+            lblSuKien.Size = new Size(66, 23);
+            lblSuKien.TabIndex = 102;
             lblSuKien.Text = "Sự kiện:";
-            //
+
+            // 
+            // lblNgayLap
+            // 
             lblNgayLap.AutoSize = true;
             lblNgayLap.Font = new Font("Segoe UI", 10F);
             lblNgayLap.ForeColor = Color.FromArgb(45, 52, 54);
             lblNgayLap.Location = new Point(530, 37);
+            lblNgayLap.Name = "lblNgayLap";
+            lblNgayLap.Size = new Size(77, 23);
+            lblNgayLap.TabIndex = 103;
             lblNgayLap.Text = "Ngày lập:";
-            //
+
+            // 
+            // lblTongTien
+            // 
             lblTongTien.AutoSize = true;
             lblTongTien.Font = new Font("Segoe UI", 10F);
             lblTongTien.ForeColor = Color.FromArgb(45, 52, 54);
             lblTongTien.Location = new Point(530, 84);
+            lblTongTien.Name = "lblTongTien";
+            lblTongTien.Size = new Size(82, 23);
+            lblTongTien.TabIndex = 104;
             lblTongTien.Text = "Tổng tiền:";
-            //
+
+            // 
+            // lblGhiChu
+            // 
             lblGhiChu.AutoSize = true;
             lblGhiChu.Font = new Font("Segoe UI", 10F);
             lblGhiChu.ForeColor = Color.FromArgb(45, 52, 54);
             lblGhiChu.Location = new Point(530, 131);
+            lblGhiChu.Name = "lblGhiChu";
+            lblGhiChu.Size = new Size(65, 23);
+            lblGhiChu.TabIndex = 105;
             lblGhiChu.Text = "Ghi chú:";
-            // 
-            // btnTaoMoi
-            // 
-            btnTaoMoi.Location = new Point(930, 28);
-            btnTaoMoi.Name = "btnTaoMoi";
-            btnTaoMoi.OverrideDefault.Back.Color1 = Color.FromArgb(39, 174, 96);
-            btnTaoMoi.OverrideDefault.Back.Color2 = Color.FromArgb(39, 174, 96);
-            btnTaoMoi.OverrideDefault.Border.Color1 = Color.FromArgb(39, 174, 96);
-            btnTaoMoi.OverrideDefault.Border.Color2 = Color.FromArgb(39, 174, 96);
-            btnTaoMoi.OverrideDefault.Border.DrawBorders = PaletteDrawBorders.All;
-            btnTaoMoi.OverrideDefault.Border.Rounding = 8F;
-            btnTaoMoi.Size = new Size(130, 40);
-            btnTaoMoi.StateCommon.Back.Color1 = Color.FromArgb(39, 174, 96);
-            btnTaoMoi.StateCommon.Back.Color2 = Color.FromArgb(39, 174, 96);
-            btnTaoMoi.StateCommon.Border.Color1 = Color.FromArgb(39, 174, 96);
-            btnTaoMoi.StateCommon.Border.Color2 = Color.FromArgb(39, 174, 96);
-            btnTaoMoi.StateCommon.Border.DrawBorders = PaletteDrawBorders.All;
-            btnTaoMoi.StateCommon.Border.Rounding = 8F;
-            btnTaoMoi.StateCommon.Content.ShortText.Color1 = Color.White;
-            btnTaoMoi.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnTaoMoi.TabIndex = 6;
-            btnTaoMoi.Values.Text = "Tạo mới";
-            btnTaoMoi.Click += btnTaoMoi_Click;
+
             // 
             // btnThanhToan
             // 
-            btnThanhToan.Location = new Point(1080, 28);
+            btnThanhToan.Location = new Point(930, 28);
             btnThanhToan.Name = "btnThanhToan";
             btnThanhToan.OverrideDefault.Back.Color1 = Color.FromArgb(46, 204, 113);
             btnThanhToan.OverrideDefault.Back.Color2 = Color.FromArgb(46, 204, 113);
@@ -249,13 +266,14 @@ namespace StadiumTicketBooking.Forms
             btnThanhToan.StateCommon.Border.Rounding = 8F;
             btnThanhToan.StateCommon.Content.ShortText.Color1 = Color.White;
             btnThanhToan.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnThanhToan.TabIndex = 7;
+            btnThanhToan.TabIndex = 6;
             btnThanhToan.Values.Text = "Thanh toán";
             btnThanhToan.Click += btnThanhToan_Click;
+
             // 
             // btnHuyDon
             // 
-            btnHuyDon.Location = new Point(930, 82);
+            btnHuyDon.Location = new Point(1080, 28);
             btnHuyDon.Name = "btnHuyDon";
             btnHuyDon.OverrideDefault.Back.Color1 = Color.FromArgb(243, 156, 18);
             btnHuyDon.OverrideDefault.Back.Color2 = Color.FromArgb(243, 156, 18);
@@ -272,13 +290,14 @@ namespace StadiumTicketBooking.Forms
             btnHuyDon.StateCommon.Border.Rounding = 8F;
             btnHuyDon.StateCommon.Content.ShortText.Color1 = Color.White;
             btnHuyDon.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnHuyDon.TabIndex = 8;
+            btnHuyDon.TabIndex = 7;
             btnHuyDon.Values.Text = "Hủy đơn";
             btnHuyDon.Click += btnHuyDon_Click;
+
             // 
             // btnThoat
             // 
-            btnThoat.Location = new Point(1080, 82);
+            btnThoat.Location = new Point(1005, 82);
             btnThoat.Name = "btnThoat";
             btnThoat.OverrideDefault.Back.Color1 = Color.FromArgb(231, 76, 60);
             btnThoat.OverrideDefault.Back.Color2 = Color.FromArgb(231, 76, 60);
@@ -295,9 +314,10 @@ namespace StadiumTicketBooking.Forms
             btnThoat.StateCommon.Border.Rounding = 8F;
             btnThoat.StateCommon.Content.ShortText.Color1 = Color.White;
             btnThoat.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnThoat.TabIndex = 9;
+            btnThoat.TabIndex = 8;
             btnThoat.Values.Text = "Thoát";
             btnThoat.Click += btnThoat_Click;
+
             // 
             // grpVeTrong
             // 
@@ -313,6 +333,7 @@ namespace StadiumTicketBooking.Forms
             grpVeTrong.TabIndex = 1;
             grpVeTrong.TabStop = false;
             grpVeTrong.Text = "Danh sách vé còn trống";
+
             // 
             // dgvVeTrong
             // 
@@ -347,6 +368,7 @@ namespace StadiumTicketBooking.Forms
             cellStyle1.SelectionForeColor = Color.Black;
             dgvVeTrong.DefaultCellStyle = cellStyle1;
             dgvVeTrong.GridColor = Color.FromArgb(230, 230, 230);
+
             // 
             // btnChonVe
             // 
@@ -371,6 +393,7 @@ namespace StadiumTicketBooking.Forms
             btnChonVe.TabIndex = 1;
             btnChonVe.Values.Text = "Chọn vé";
             btnChonVe.Click += btnChonVe_Click;
+
             // 
             // grpVeDaChon
             // 
@@ -386,6 +409,7 @@ namespace StadiumTicketBooking.Forms
             grpVeDaChon.TabIndex = 2;
             grpVeDaChon.TabStop = false;
             grpVeDaChon.Text = "Danh sách vé đã chọn";
+
             // 
             // dgvVeDaChon
             // 
@@ -419,6 +443,7 @@ namespace StadiumTicketBooking.Forms
             cellStyle2.SelectionForeColor = Color.Black;
             dgvVeDaChon.DefaultCellStyle = cellStyle2;
             dgvVeDaChon.GridColor = Color.FromArgb(230, 230, 230);
+
             // 
             // btnBoVe
             // 
@@ -443,6 +468,7 @@ namespace StadiumTicketBooking.Forms
             btnBoVe.TabIndex = 1;
             btnBoVe.Values.Text = "Bỏ vé";
             btnBoVe.Click += btnBoVe_Click;
+
             // 
             // columns dgvVeTrong
             // 
@@ -480,6 +506,7 @@ namespace StadiumTicketBooking.Forms
             colTrangThai.HeaderText = "Trạng Thái";
             colTrangThai.FillWeight = 15F;
             colTrangThai.Name = "colTrangThai";
+
             // 
             // columns dgvVeDaChon
             // 
@@ -507,6 +534,7 @@ namespace StadiumTicketBooking.Forms
             colGiaVeDaChon.HeaderText = "Giá Vé";
             colGiaVeDaChon.FillWeight = 15F;
             colGiaVeDaChon.Name = "colGiaVeDaChon";
+
             // 
             // frmDatVe
             // 
@@ -525,6 +553,7 @@ namespace StadiumTicketBooking.Forms
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Đặt Vé";
             Load += frmDatVe_Load;
+
             grpThongTinDatVe.ResumeLayout(false);
             grpThongTinDatVe.PerformLayout();
             grpVeTrong.ResumeLayout(false);
@@ -549,7 +578,6 @@ namespace StadiumTicketBooking.Forms
         private Label lblNgayLap;
         private Label lblTongTien;
         private Label lblGhiChu;
-        private KryptonButton btnTaoMoi;
         private KryptonButton btnThanhToan;
         private KryptonButton btnHuyDon;
         private KryptonButton btnThoat;

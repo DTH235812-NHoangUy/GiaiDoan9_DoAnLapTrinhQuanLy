@@ -36,7 +36,6 @@ namespace StadiumTicketBooking.Forms
         {
             if (LaAdmin())
             {
-                btnLapHoaDon.Enabled = false;
                 btnSua.Enabled = false;
                 btnXoa.Enabled = false;
             }
@@ -50,7 +49,6 @@ namespace StadiumTicketBooking.Forms
 
         private void CaiDatIconNut()
         {
-            CaiDatNut(btnLapHoaDon, Properties.Resources.add_24, "Lập hóa đơn mới...");
             CaiDatNut(btnInHoaDon, Properties.Resources.save_24, "In hóa đơn...");
             CaiDatNut(btnSua, Properties.Resources.edit_24, "Sửa...");
             CaiDatNut(btnXoa, Properties.Resources.delete_24, "Xóa");
@@ -175,24 +173,6 @@ namespace StadiumTicketBooking.Forms
             }
 
             return true;
-        }
-
-        private void btnLapHoaDon_Click(object sender, EventArgs e)
-        {
-            if (LaAdmin())
-            {
-                MessageBox.Show("Admin chỉ được xem hóa đơn, không được lập hóa đơn.",
-                    "Phân quyền", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            using (frmHoaDon_ChiTiet chiTiet = new frmHoaDon_ChiTiet(0, nhanVienIDDangNhap, vaiTro))
-            {
-                chiTiet.ShowDialog();
-            }
-
-            TaiDanhSachHoaDon();
-            ApDungPhanQuyen();
         }
 
         private void btnSua_Click(object sender, EventArgs e)

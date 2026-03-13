@@ -26,6 +26,13 @@ namespace StadiumTicketBooking.Forms
 
         public bool DaLuuThanhCong { get; private set; } = false;
 
+        // Trả dữ liệu lại cho frmDatVe
+        public List<DanhSachHoaDon_ChiTiet> DanhSachChiTietSauKhiSua { get; private set; }
+            = new List<DanhSachHoaDon_ChiTiet>();
+
+        public int KhachHangIDSauKhiSua { get; private set; } = 0;
+        public string GhiChuSauKhiSua { get; private set; } = "";
+
         public frmHoaDon_ChiTiet() : this(0, 0, "")
         {
         }
@@ -94,12 +101,8 @@ namespace StadiumTicketBooking.Forms
             {
                 cboNhanVien.Enabled = false;
                 cboKhachHang.Enabled = false;
-                cboVe.Enabled = false;
-                numDonGiaBan.Enabled = false;
-                numSoLuongBan.Enabled = false;
                 txtGhiChuHoaDon.Enabled = false;
 
-                btnXacNhanBan.Enabled = false;
                 btnXoa.Enabled = false;
                 btnLuuHoaDon.Enabled = false;
             }
@@ -117,11 +120,10 @@ namespace StadiumTicketBooking.Forms
 
         private void CaiDatIconNut()
         {
-            CaiDatNut(btnXacNhanBan, Properties.Resources.add_24, "Xác nhận bán");
             CaiDatNut(btnXoa, Properties.Resources.delete_24, "Xóa");
             CaiDatNut(btnLuuHoaDon, Properties.Resources.save_24, "Lưu hóa đơn");
             CaiDatNut(btnInHoaDon, Properties.Resources.save_24, "In hóa đơn...");
-            CaiDatNut(btnThoat, Properties.Resources.exit_24, "Thoát");
+            CaiDatNut(btnThoat, Properties.Resources.exit_24, moTuDatVe ? "Quay lại đặt vé" : "Thoát");
         }
 
         private void frmHoaDon_ChiTiet_Load(object sender, EventArgs e)
@@ -143,7 +145,6 @@ namespace StadiumTicketBooking.Forms
                 DoDuLieuTamTuDatVe();
             }
 
-            LayVeVaoComboBox();
             BatTatChucNang();
             ApDungPhanQuyen();
             CapNhatTongTienTamTinh();
@@ -243,36 +244,6 @@ namespace StadiumTicketBooking.Forms
                 cboKhachHang.SelectedIndex = -1;
         }
 
-        private void LayVeVaoComboBox()
-        {
-            var veDaBanCuaHoaDonKhac = context.HoaDon_ChiTiet
-                .AsNoTracking()
-                .Where(x => x.HoaDonID != id)
-                .Select(x => x.VeID)
-                .ToList();
-
-            var veDangCoTrongForm = hoaDonChiTiet.Select(x => x.VeID).ToList();
-
-            var dsVe = context.Ve
-                .AsNoTracking()
-                .Where(v => !veDaBanCuaHoaDonKhac.Contains(v.ID)
-                         && !veDangCoTrongForm.Contains(v.ID))
-                .Select(v => new
-                {
-                    ID = v.ID,
-                    TenVe = v.SuKien.TenSuKien + " | "
-                          + v.Ghe.KhuVuc.SanVanDong.TenSan + " | "
-                          + v.Ghe.KhuVuc.TenKhuVuc + " - Ghế " + v.Ghe.SoGhe
-                })
-                .OrderBy(x => x.TenVe)
-                .ToList();
-
-            cboVe.DataSource = dsVe;
-            cboVe.ValueMember = "ID";
-            cboVe.DisplayMember = "TenVe";
-            cboVe.SelectedIndex = -1;
-        }
-
         private void TaiHoaDonCanSua()
         {
             var hoaDon = context.HoaDon
@@ -332,12 +303,6 @@ namespace StadiumTicketBooking.Forms
             bool coDuLieu = hoaDonChiTiet.Count > 0;
             btnLuuHoaDon.Enabled = coDuLieu;
             btnXoa.Enabled = coDuLieu;
-
-            if (id == 0 && !coDuLieu)
-            {
-                numSoLuongBan.Value = 1;
-                numDonGiaBan.Value = 0;
-            }
         }
 
         private void CapNhatTongTienTamTinh()
@@ -352,91 +317,9 @@ namespace StadiumTicketBooking.Forms
 
         private void LamMoiSauThayDoiChiTiet()
         {
-            LayVeVaoComboBox();
             BatTatChucNang();
             CapNhatTongTienTamTinh();
-        }
-
-        private void btnXacNhanBan_Click(object sender, EventArgs e)
-        {
-            if (LaAdmin())
-            {
-                MessageBox.Show("Admin chỉ được xem chi tiết hóa đơn, không được bán vé.",
-                    "Phân quyền", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            if (cboVe.SelectedIndex < 0 || cboVe.SelectedValue == null)
-            {
-                MessageBox.Show("Vui lòng chọn vé.", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            if (numDonGiaBan.Value <= 0)
-            {
-                MessageBox.Show("Đơn giá bán phải lớn hơn 0.", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            int maVe = Convert.ToInt32(cboVe.SelectedValue);
-
-            bool daBanTrongCSDL = context.HoaDon_ChiTiet
-                .AsNoTracking()
-                .Any(x => x.VeID == maVe && x.HoaDonID != id);
-
-            if (daBanTrongCSDL)
-            {
-                MessageBox.Show("Vé này đã được bán, vui lòng chọn vé khác.",
-                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                LayVeVaoComboBox();
-                return;
-            }
-
-            if (hoaDonChiTiet.Any(x => x.VeID == maVe))
-            {
-                MessageBox.Show("Vé này đã có trong hóa đơn.", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            var ve = context.Ve
-                .AsNoTracking()
-                .Where(v => v.ID == maVe)
-                .Select(v => new
-                {
-                    v.ID,
-                    TenSuKien = v.SuKien.TenSuKien,
-                    TenSan = v.Ghe.KhuVuc.SanVanDong.TenSan,
-                    ViTriGhe = v.Ghe.KhuVuc.TenKhuVuc + " - Ghế " + v.Ghe.SoGhe
-                })
-                .FirstOrDefault();
-
-            if (ve == null)
-            {
-                MessageBox.Show("Không tìm thấy vé.", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            hoaDonChiTiet.Add(new DanhSachHoaDon_ChiTiet
-            {
-                ID = 0,
-                HoaDonID = id,
-                VeID = maVe,
-                TenSuKien = ve.TenSuKien,
-                TenSan = ve.TenSan,
-                ViTriGhe = ve.ViTriGhe,
-                SoLuongBan = 1,
-                DonGiaBan = Convert.ToInt32(numDonGiaBan.Value),
-                ThanhTien = Convert.ToInt32(numDonGiaBan.Value)
-            });
-
-            numSoLuongBan.Value = 1;
-            numDonGiaBan.Value = 0;
-
-            LamMoiSauThayDoiChiTiet();
+            dataGridView.Refresh();
         }
 
         private void btnXoa_Click(object sender, EventArgs e)
@@ -459,6 +342,12 @@ namespace StadiumTicketBooking.Forms
             {
                 MessageBox.Show("Không lấy được mã vé cần xóa.", "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (MessageBox.Show("Bạn có chắc muốn xóa vé này khỏi danh sách?",
+                "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+            {
                 return;
             }
 
@@ -513,9 +402,8 @@ namespace StadiumTicketBooking.Forms
 
                 if (coVeBiTrung)
                 {
-                    MessageBox.Show("Có vé đã được bán bởi hóa đơn khác. Vui lòng tải lại danh sách vé.",
+                    MessageBox.Show("Có vé đã được bán bởi hóa đơn khác. Vui lòng tải lại dữ liệu.",
                         "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    LayVeVaoComboBox();
                     return;
                 }
 
@@ -538,7 +426,9 @@ namespace StadiumTicketBooking.Forms
 
                     hd.NhanVienID = nhanVienLapHoaDon;
                     hd.KhachHangID = Convert.ToInt32(cboKhachHang.SelectedValue);
-                    hd.GhiChu = string.IsNullOrWhiteSpace(txtGhiChuHoaDon.Text) ? null : txtGhiChuHoaDon.Text.Trim();
+                    hd.GhiChu = string.IsNullOrWhiteSpace(txtGhiChuHoaDon.Text)
+                        ? null
+                        : txtGhiChuHoaDon.Text.Trim();
 
                     var dsCu = context.HoaDon_ChiTiet.Where(r => r.HoaDonID == id).ToList();
                     context.HoaDon_ChiTiet.RemoveRange(dsCu);
@@ -562,7 +452,9 @@ namespace StadiumTicketBooking.Forms
                         NhanVienID = nhanVienLapHoaDon,
                         KhachHangID = Convert.ToInt32(cboKhachHang.SelectedValue),
                         NgayLap = DateTime.Now,
-                        GhiChu = string.IsNullOrWhiteSpace(txtGhiChuHoaDon.Text) ? null : txtGhiChuHoaDon.Text.Trim()
+                        GhiChu = string.IsNullOrWhiteSpace(txtGhiChuHoaDon.Text)
+                            ? null
+                            : txtGhiChuHoaDon.Text.Trim()
                     };
 
                     context.HoaDon.Add(hd);
@@ -584,24 +476,22 @@ namespace StadiumTicketBooking.Forms
 
                 DaLuuThanhCong = true;
 
-                MessageBox.Show("Đã lưu thành công!", "Hoàn tất",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                int tongTien = hoaDonChiTiet.Sum(x => x.ThanhTien);
 
-                TaiDanhMucComboBox();
-                LayVeVaoComboBox();
-                BatTatChucNang();
-                CapNhatTongTienTamTinh();
+                MessageBox.Show(
+                    $"Đã lưu hóa đơn thành công!\nMã hóa đơn: {id}\nTổng tiền: {tongTien:N0} VNĐ",
+                    "Hoàn tất",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                this.DialogResult = DialogResult.OK;
+                Close();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Lưu hóa đơn thất bại.\n\n" + ex.Message,
                     "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void cboVe_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            numSoLuongBan.Value = 1;
         }
 
         private void btnInHoaDon_Click(object sender, EventArgs e)
@@ -612,6 +502,19 @@ namespace StadiumTicketBooking.Forms
 
         private void btnThoat_Click(object sender, EventArgs e)
         {
+            if (moTuDatVe)
+            {
+                if (cboKhachHang.SelectedValue != null)
+                    KhachHangIDSauKhiSua = Convert.ToInt32(cboKhachHang.SelectedValue);
+
+                GhiChuSauKhiSua = txtGhiChuHoaDon.Text.Trim();
+                DanhSachChiTietSauKhiSua = hoaDonChiTiet.ToList();
+
+                this.DialogResult = DialogResult.OK;
+                Close();
+                return;
+            }
+
             Close();
         }
 

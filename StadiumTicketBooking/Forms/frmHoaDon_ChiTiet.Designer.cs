@@ -24,7 +24,6 @@ namespace StadiumTicketBooking.Forms
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
 
             grpThongTinHoaDon = new GroupBox();
             lblNhanVien = new Label();
@@ -35,13 +34,6 @@ namespace StadiumTicketBooking.Forms
             txtGhiChuHoaDon = new TextBox();
 
             grpThongTinChiTiet = new GroupBox();
-            lblVe = new Label();
-            cboVe = new ComboBox();
-            lblDonGiaBan = new Label();
-            numDonGiaBan = new NumericUpDown();
-            lblSoLuongBan = new Label();
-            numSoLuongBan = new NumericUpDown();
-            btnXacNhanBan = new KryptonButton();
             btnXoa = new KryptonButton();
             dataGridView = new DataGridView();
             VeID = new DataGridViewTextBoxColumn();
@@ -59,8 +51,6 @@ namespace StadiumTicketBooking.Forms
 
             grpThongTinHoaDon.SuspendLayout();
             grpThongTinChiTiet.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numDonGiaBan).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numSoLuongBan).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             panelBottom.SuspendLayout();
             SuspendLayout();
@@ -135,13 +125,6 @@ namespace StadiumTicketBooking.Forms
 
             // grpThongTinChiTiet
             grpThongTinChiTiet.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            grpThongTinChiTiet.Controls.Add(lblVe);
-            grpThongTinChiTiet.Controls.Add(cboVe);
-            grpThongTinChiTiet.Controls.Add(lblDonGiaBan);
-            grpThongTinChiTiet.Controls.Add(numDonGiaBan);
-            grpThongTinChiTiet.Controls.Add(lblSoLuongBan);
-            grpThongTinChiTiet.Controls.Add(numSoLuongBan);
-            grpThongTinChiTiet.Controls.Add(btnXacNhanBan);
             grpThongTinChiTiet.Controls.Add(btnXoa);
             grpThongTinChiTiet.Controls.Add(dataGridView);
             grpThongTinChiTiet.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point);
@@ -150,83 +133,11 @@ namespace StadiumTicketBooking.Forms
             grpThongTinChiTiet.Size = new Size(1160, 480);
             grpThongTinChiTiet.TabIndex = 1;
             grpThongTinChiTiet.TabStop = false;
-            grpThongTinChiTiet.Text = "Thông tin chi tiết hóa đơn";
-
-            // lblVe
-            lblVe.AutoSize = true;
-            lblVe.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            lblVe.Location = new Point(18, 40);
-            lblVe.Name = "lblVe";
-            lblVe.Size = new Size(34, 23);
-            lblVe.TabIndex = 0;
-            lblVe.Text = "Vé:";
-
-            // cboVe
-            cboVe.DropDownStyle = ComboBoxStyle.DropDownList;
-            cboVe.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            cboVe.FormattingEnabled = true;
-            cboVe.Location = new Point(18, 68);
-            cboVe.Name = "cboVe";
-            cboVe.Size = new Size(470, 31);
-            cboVe.TabIndex = 1;
-            cboVe.SelectionChangeCommitted += cboVe_SelectionChangeCommitted;
-
-            // lblDonGiaBan
-            lblDonGiaBan.AutoSize = true;
-            lblDonGiaBan.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            lblDonGiaBan.Location = new Point(505, 40);
-            lblDonGiaBan.Name = "lblDonGiaBan";
-            lblDonGiaBan.Size = new Size(97, 23);
-            lblDonGiaBan.TabIndex = 2;
-            lblDonGiaBan.Text = "Đơn giá bán:";
-
-            // numDonGiaBan
-            numDonGiaBan.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            numDonGiaBan.Location = new Point(509, 68);
-            numDonGiaBan.Maximum = new decimal(new int[] { 1000000000, 0, 0, 0 });
-            numDonGiaBan.Name = "numDonGiaBan";
-            numDonGiaBan.Size = new Size(170, 30);
-            numDonGiaBan.TabIndex = 3;
-            numDonGiaBan.ThousandsSeparator = true;
-
-            // lblSoLuongBan
-            lblSoLuongBan.AutoSize = true;
-            lblSoLuongBan.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            lblSoLuongBan.Location = new Point(695, 40);
-            lblSoLuongBan.Name = "lblSoLuongBan";
-            lblSoLuongBan.Size = new Size(101, 23);
-            lblSoLuongBan.TabIndex = 4;
-            lblSoLuongBan.Text = "Số lượng bán:";
-
-            // numSoLuongBan
-            numSoLuongBan.Enabled = false;
-            numSoLuongBan.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            numSoLuongBan.Location = new Point(699, 68);
-            numSoLuongBan.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
-            numSoLuongBan.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            numSoLuongBan.Name = "numSoLuongBan";
-            numSoLuongBan.Size = new Size(110, 30);
-            numSoLuongBan.TabIndex = 5;
-            numSoLuongBan.ThousandsSeparator = true;
-            numSoLuongBan.Value = new decimal(new int[] { 1, 0, 0, 0 });
-
-            // btnXacNhanBan
-            btnXacNhanBan.Location = new Point(830, 63);
-            btnXacNhanBan.Name = "btnXacNhanBan";
-            btnXacNhanBan.Size = new Size(150, 38);
-            btnXacNhanBan.StateCommon.Back.Color1 = Color.WhiteSmoke;
-            btnXacNhanBan.StateCommon.Back.Color2 = Color.WhiteSmoke;
-            btnXacNhanBan.StateCommon.Border.Color1 = Color.Silver;
-            btnXacNhanBan.StateCommon.Border.Color2 = Color.Silver;
-            btnXacNhanBan.StateCommon.Border.DrawBorders = PaletteDrawBorders.All;
-            btnXacNhanBan.StateCommon.Border.Rounding = 6F;
-            btnXacNhanBan.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            btnXacNhanBan.TabIndex = 6;
-            btnXacNhanBan.Values.Text = "Xác nhận bán";
-            btnXacNhanBan.Click += btnXacNhanBan_Click;
+            grpThongTinChiTiet.Text = "Danh sách vé trong hóa đơn";
 
             // btnXoa
-            btnXoa.Location = new Point(997, 63);
+            btnXoa.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnXoa.Location = new Point(1045, 32);
             btnXoa.Name = "btnXoa";
             btnXoa.Size = new Size(90, 38);
             btnXoa.StateCommon.Back.Color1 = Color.WhiteSmoke;
@@ -237,27 +148,27 @@ namespace StadiumTicketBooking.Forms
             btnXoa.StateCommon.Border.Rounding = 6F;
             btnXoa.StateCommon.Content.ShortText.Color1 = Color.Red;
             btnXoa.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            btnXoa.TabIndex = 7;
+            btnXoa.TabIndex = 0;
             btnXoa.Values.Text = "Xóa";
             btnXoa.Click += btnXoa_Click;
 
             // dataGridView
             dataGridView.AllowUserToAddRows = false;
             dataGridView.AllowUserToDeleteRows = false;
+            dataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView.BackgroundColor = SystemColors.ControlDark;
             dataGridView.ColumnHeadersHeight = 38;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dataGridView.Columns.AddRange(new DataGridViewColumn[] { VeID, TenSuKien, TenSan, ViTriGhe, DonGiaBan, SoLuongBan, ThanhTien });
-            dataGridView.Dock = DockStyle.Bottom;
-            dataGridView.Location = new Point(3, 118);
+            dataGridView.Location = new Point(18, 84);
             dataGridView.MultiSelect = false;
             dataGridView.Name = "dataGridView";
             dataGridView.RowHeadersVisible = false;
             dataGridView.RowTemplate.Height = 32;
             dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView.Size = new Size(1154, 359);
-            dataGridView.TabIndex = 8;
+            dataGridView.Size = new Size(1117, 375);
+            dataGridView.TabIndex = 1;
             dataGridView.CellContentClick += dataGridView_CellContentClick;
 
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
@@ -326,10 +237,6 @@ namespace StadiumTicketBooking.Forms
 
             // ThanhTien
             ThanhTien.DataPropertyName = "ThanhTien";
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            dataGridViewCellStyle5.ForeColor = Color.Blue;
-            ThanhTien.DefaultCellStyle = dataGridViewCellStyle5;
             ThanhTien.FillWeight = 120F;
             ThanhTien.HeaderText = "Thành tiền";
             ThanhTien.Name = "ThanhTien";
@@ -407,9 +314,6 @@ namespace StadiumTicketBooking.Forms
             grpThongTinHoaDon.ResumeLayout(false);
             grpThongTinHoaDon.PerformLayout();
             grpThongTinChiTiet.ResumeLayout(false);
-            grpThongTinChiTiet.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numDonGiaBan).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numSoLuongBan).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
             panelBottom.ResumeLayout(false);
             ResumeLayout(false);
@@ -426,13 +330,6 @@ namespace StadiumTicketBooking.Forms
         private TextBox txtGhiChuHoaDon;
 
         private GroupBox grpThongTinChiTiet;
-        private Label lblVe;
-        private ComboBox cboVe;
-        private Label lblDonGiaBan;
-        private NumericUpDown numDonGiaBan;
-        private Label lblSoLuongBan;
-        private NumericUpDown numSoLuongBan;
-        private KryptonButton btnXacNhanBan;
         private KryptonButton btnXoa;
         private DataGridView dataGridView;
 

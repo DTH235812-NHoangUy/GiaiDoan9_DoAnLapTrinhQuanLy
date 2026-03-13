@@ -12,8 +12,8 @@ namespace StadiumTicketBooking.Forms
     public partial class frmDatVe : Form
     {
         private readonly StadiumDbContext context = new StadiumDbContext();
-        private int nhanVienIDDangNhap = 0;
-        private string vaiTro = "";
+        private readonly int nhanVienIDDangNhap = 0;
+        private readonly string vaiTro = "";
 
         private class VeChonTam
         {
@@ -35,7 +35,7 @@ namespace StadiumTicketBooking.Forms
         public frmDatVe(int nhanVienID, string vaiTro)
         {
             InitializeComponent();
-            this.nhanVienIDDangNhap = nhanVienID;
+            nhanVienIDDangNhap = nhanVienID;
             this.vaiTro = vaiTro ?? "";
         }
 
@@ -47,7 +47,6 @@ namespace StadiumTicketBooking.Forms
 
         private void CaiDatIconNut()
         {
-            CaiDatNut(btnTaoMoi, Properties.Resources.add_24, "Tạo mới");
             CaiDatNut(btnThanhToan, Properties.Resources.save_24, "Thanh toán");
             CaiDatNut(btnHuyDon, Properties.Resources.cancel_24, "Hủy đơn");
             CaiDatNut(btnThoat, Properties.Resources.exit_24, "Thoát");
@@ -90,7 +89,7 @@ namespace StadiumTicketBooking.Forms
             TaiNhanVien();
             TaiKhachHang();
             TaiSuKien();
-            TaoMoiDon();
+            LamMoiDonDatVe();
         }
 
         private void DinhDangGrid()
@@ -226,7 +225,7 @@ namespace StadiumTicketBooking.Forms
             return id;
         }
 
-        private void TaoMoiDon()
+        private void LamMoiDonDatVe()
         {
             gioVe.Clear();
             dtpNgayLap.Value = DateTime.Now;
@@ -268,7 +267,8 @@ namespace StadiumTicketBooking.Forms
                     SoGhe = x.Ghe.SoGhe,
                     TenKhuVuc = x.Ghe.KhuVuc.TenKhuVuc,
                     TenSan = x.Ghe.KhuVuc.SanVanDong.TenSan,
-                    x.GiaVe
+                    x.GiaVe,
+                    TrangThai = "Còn trống"
                 })
                 .OrderBy(x => x.SoGhe)
                 .ToList();
@@ -375,22 +375,80 @@ namespace StadiumTicketBooking.Forms
             }
         }
 
-        private void btnTaoMoi_Click(object sender, EventArgs e)
-        {
-            TaoMoiDon();
-        }
-
         private void btnHuyDon_Click(object sender, EventArgs e)
         {
+            if (gioVe.Count == 0 && string.IsNullOrWhiteSpace(txtGhiChu.Text))
+            {
+                MessageBox.Show("Hiện không có dữ liệu để hủy.", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             if (MessageBox.Show("Bạn có chắc muốn hủy dữ liệu đang chọn?", "Xác nhận",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                TaoMoiDon();
+                LamMoiDonDatVe();
             }
+        }
+
+        private void DongBoGioVeTuHoaDonChiTiet(frmHoaDon_ChiTiet frm)
+        {
+            gioVe.Clear();
+
+            foreach (var item in frm.DanhSachChiTietSauKhiSua)
+            {
+                string viTriGhe = item.ViTriGhe ?? "";
+                string tenKhuVuc = "";
+                string soGhe = "";
+
+                string[] parts = viTriGhe.Split(new string[] { " - Ghế " }, StringSplitOptions.None);
+                if (parts.Length == 2)
+                {
+                    tenKhuVuc = parts[0].Trim();
+                    soGhe = parts[1].Trim();
+                }
+                else
+                {
+                    tenKhuVuc = viTriGhe;
+                }
+
+                gioVe.Add(new VeChonTam
+                {
+                    VeID = item.VeID,
+                    TenSuKien = item.TenSuKien ?? "",
+                    TenSan = item.TenSan ?? "",
+                    TenKhuVuc = tenKhuVuc,
+                    SoGhe = soGhe,
+                    GiaVe = item.DonGiaBan
+                });
+            }
+
+            if (frm.KhachHangIDSauKhiSua > 0)
+                cboKhachHang.SelectedValue = frm.KhachHangIDSauKhiSua;
+
+            txtGhiChu.Text = frm.GhiChuSauKhiSua ?? "";
+
+            TaiVeTrong();
+            TaiGioVe();
+            CapNhatTongTien();
         }
 
         private void btnThanhToan_Click(object sender, EventArgs e)
         {
+            if (LaAdmin())
+            {
+                MessageBox.Show("Admin không được phép thanh toán.", "Phân quyền",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (LaNhanVien() && nhanVienIDDangNhap <= 0)
+            {
+                MessageBox.Show("Không xác định được nhân viên đang đăng nhập.", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             if (cboKhachHang.SelectedValue == null)
             {
                 MessageBox.Show("Vui lòng chọn khách hàng!", "Lỗi",
@@ -420,18 +478,20 @@ namespace StadiumTicketBooking.Forms
                 return;
             }
 
-            var dsChiTietTam = gioVe.Select(x => new DanhSachHoaDon_ChiTiet
-            {
-                ID = 0,
-                HoaDonID = 0,
-                VeID = x.VeID,
-                TenSuKien = x.TenSuKien,
-                TenSan = x.TenSan,
-                ViTriGhe = x.TenKhuVuc + " - Ghế " + x.SoGhe,
-                SoLuongBan = 1,
-                DonGiaBan = x.GiaVe,
-                ThanhTien = x.GiaVe
-            }).ToList();
+            var dsChiTietTam = gioVe
+                .Select(x => new DanhSachHoaDon_ChiTiet
+                {
+                    ID = 0,
+                    HoaDonID = 0,
+                    VeID = x.VeID,
+                    TenSuKien = x.TenSuKien,
+                    TenSan = x.TenSan,
+                    ViTriGhe = x.TenKhuVuc + " - Ghế " + x.SoGhe,
+                    SoLuongBan = 1,
+                    DonGiaBan = x.GiaVe,
+                    ThanhTien = x.GiaVe
+                })
+                .ToList();
 
             using (frmHoaDon_ChiTiet frm = new frmHoaDon_ChiTiet(
                 nhanVienIDDangNhap,
@@ -440,13 +500,17 @@ namespace StadiumTicketBooking.Forms
                 txtGhiChu.Text.Trim(),
                 dsChiTietTam))
             {
-                frm.ShowDialog();
+                DialogResult ketQua = frm.ShowDialog();
 
                 if (frm.DaLuuThanhCong)
                 {
                     MessageBox.Show("Thanh toán thành công!",
                         "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    TaoMoiDon();
+                    LamMoiDonDatVe();
+                }
+                else if (ketQua == DialogResult.OK)
+                {
+                    DongBoGioVeTuHoaDonChiTiet(frm);
                 }
             }
         }
