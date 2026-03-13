@@ -26,7 +26,6 @@ namespace StadiumTicketBooking.Forms
 
         public bool DaLuuThanhCong { get; private set; } = false;
 
-        // Trả dữ liệu lại cho frmDatVe
         public List<DanhSachHoaDon_ChiTiet> DanhSachChiTietSauKhiSua { get; private set; }
             = new List<DanhSachHoaDon_ChiTiet>();
 
@@ -97,6 +96,19 @@ namespace StadiumTicketBooking.Forms
 
         private void ApDungPhanQuyen()
         {
+            // Mở từ frmHoaDon => chỉ xem
+            if (!moTuDatVe)
+            {
+                cboNhanVien.Enabled = false;
+                cboKhachHang.Enabled = false;
+                txtGhiChuHoaDon.Enabled = false;
+
+                btnXoa.Enabled = false;
+                btnLuuHoaDon.Enabled = false;
+                return;
+            }
+
+            // Mở từ frmDatVe => cho thao tác
             if (LaAdmin())
             {
                 cboNhanVien.Enabled = false;
@@ -293,6 +305,14 @@ namespace StadiumTicketBooking.Forms
 
         private void BatTatChucNang()
         {
+            // Nếu không mở từ frmDatVe thì chỉ xem
+            if (!moTuDatVe)
+            {
+                btnLuuHoaDon.Enabled = false;
+                btnXoa.Enabled = false;
+                return;
+            }
+
             if (LaAdmin())
             {
                 btnLuuHoaDon.Enabled = false;
@@ -324,6 +344,13 @@ namespace StadiumTicketBooking.Forms
 
         private void btnXoa_Click(object sender, EventArgs e)
         {
+            if (!moTuDatVe)
+            {
+                MessageBox.Show("Hóa đơn đã lập chỉ được xem, không được xóa vé tại màn hình này.",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             if (LaAdmin())
             {
                 MessageBox.Show("Admin chỉ được xem chi tiết hóa đơn, không được xóa.",
@@ -363,6 +390,13 @@ namespace StadiumTicketBooking.Forms
 
         private void btnLuuHoaDon_Click(object sender, EventArgs e)
         {
+            if (!moTuDatVe)
+            {
+                MessageBox.Show("Hóa đơn đã lập chỉ được xem, không được lưu chỉnh sửa tại màn hình này.",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             if (LaAdmin())
             {
                 MessageBox.Show("Admin chỉ được xem chi tiết hóa đơn, không được lưu.",

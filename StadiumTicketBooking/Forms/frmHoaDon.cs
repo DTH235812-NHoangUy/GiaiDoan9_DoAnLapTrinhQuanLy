@@ -34,11 +34,6 @@ namespace StadiumTicketBooking.Forms
 
         private void ApDungPhanQuyen()
         {
-            if (LaAdmin())
-            {
-                btnSua.Enabled = false;
-                btnXoa.Enabled = false;
-            }
         }
 
         private void CaiDatNut(KryptonButton btn, Image icon, string text)
@@ -50,8 +45,6 @@ namespace StadiumTicketBooking.Forms
         private void CaiDatIconNut()
         {
             CaiDatNut(btnInHoaDon, Properties.Resources.save_24, "In hóa đơn...");
-            CaiDatNut(btnSua, Properties.Resources.edit_24, "Sửa...");
-            CaiDatNut(btnXoa, Properties.Resources.delete_24, "Xóa");
             CaiDatNut(btnThoat, Properties.Resources.exit_24, "Thoát");
             CaiDatNut(btnTimKiem, Properties.Resources.search_24, "Tìm kiếm...");
             CaiDatNut(btnXuat, Properties.Resources.export_24, "Xuất Excel...");
@@ -173,93 +166,6 @@ namespace StadiumTicketBooking.Forms
             }
 
             return true;
-        }
-
-        private void btnSua_Click(object sender, EventArgs e)
-        {
-            if (LaAdmin())
-            {
-                MessageBox.Show("Admin chỉ được xem hóa đơn, không được sửa hóa đơn.",
-                    "Phân quyền", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            if (!LayHoaDonDangChon())
-                return;
-
-            if (!KiemTraHoaDonThuocNhanVienDangNhap())
-                return;
-
-            using (frmHoaDon_ChiTiet chiTiet = new frmHoaDon_ChiTiet(id, nhanVienIDDangNhap, vaiTro))
-            {
-                chiTiet.ShowDialog();
-            }
-
-            TaiDanhSachHoaDon();
-            ApDungPhanQuyen();
-        }
-
-        private void btnXoa_Click(object sender, EventArgs e)
-        {
-            if (LaAdmin())
-            {
-                MessageBox.Show("Admin chỉ được xem hóa đơn, không được xóa hóa đơn.",
-                    "Phân quyền", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            if (!LayHoaDonDangChon())
-                return;
-
-            if (!KiemTraHoaDonThuocNhanVienDangNhap())
-                return;
-
-            DialogResult result = MessageBox.Show(
-                "Bạn có chắc chắn muốn xóa hóa đơn này không?\nKhi xóa hóa đơn thì cũng xóa luôn chi tiết hóa đơn.",
-                "Xác nhận xóa",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
-
-            if (result != DialogResult.Yes)
-                return;
-
-            try
-            {
-                var hoaDon = context.HoaDon
-                    .Include(x => x.HoaDon_ChiTiet)
-                    .FirstOrDefault(x => x.ID == id);
-
-                if (hoaDon == null)
-                {
-                    MessageBox.Show("Không tìm thấy hóa đơn cần xóa.", "Lỗi",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                if (!LaAdmin() && hoaDon.NhanVienID != nhanVienIDDangNhap)
-                {
-                    MessageBox.Show("Bạn không có quyền xóa hóa đơn này.",
-                        "Phân quyền", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                if (hoaDon.HoaDon_ChiTiet.Any())
-                    context.HoaDon_ChiTiet.RemoveRange(hoaDon.HoaDon_ChiTiet);
-
-                context.HoaDon.Remove(hoaDon);
-                context.SaveChanges();
-
-                MessageBox.Show("Xóa hóa đơn thành công.", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                TaiDanhSachHoaDon();
-                ApDungPhanQuyen();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Xóa hóa đơn thất bại.\n\n" + ex.Message,
-                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         private void btnInHoaDon_Click(object sender, EventArgs e)

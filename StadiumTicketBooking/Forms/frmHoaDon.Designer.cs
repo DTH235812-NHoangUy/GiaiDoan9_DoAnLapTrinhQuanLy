@@ -36,8 +36,6 @@ namespace StadiumTicketBooking.Forms
 
             panelBottom = new Panel();
             btnInHoaDon = new KryptonButton();
-            btnSua = new KryptonButton();
-            btnXoa = new KryptonButton();
             btnThoat = new KryptonButton();
             btnTimKiem = new KryptonButton();
             btnXuat = new KryptonButton();
@@ -160,8 +158,6 @@ namespace StadiumTicketBooking.Forms
             panelBottom.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panelBottom.BorderStyle = BorderStyle.FixedSingle;
             panelBottom.Controls.Add(btnInHoaDon);
-            panelBottom.Controls.Add(btnSua);
-            panelBottom.Controls.Add(btnXoa);
             panelBottom.Controls.Add(btnThoat);
             panelBottom.Controls.Add(btnTimKiem);
             panelBottom.Controls.Add(btnXuat);
@@ -188,45 +184,8 @@ namespace StadiumTicketBooking.Forms
             btnInHoaDon.Values.Text = "In hóa đơn...";
             btnInHoaDon.Click += btnInHoaDon_Click;
 
-            // btnSua
-            btnSua.Location = new Point(168, 15);
-            btnSua.Name = "btnSua";
-            btnSua.Size = new Size(110, 40);
-            btnSua.StateCommon.Back.Color1 = Color.WhiteSmoke;
-            btnSua.StateCommon.Back.Color2 = Color.WhiteSmoke;
-            btnSua.StateCommon.Border.Color1 = Color.Silver;
-            btnSua.StateCommon.Border.Color2 = Color.Silver;
-            btnSua.StateCommon.Border.DrawBorders =
-                PaletteDrawBorders.Top | PaletteDrawBorders.Bottom |
-                PaletteDrawBorders.Left | PaletteDrawBorders.Right;
-            btnSua.StateCommon.Border.Rounding = 6F;
-            btnSua.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F);
-            btnSua.TabIndex = 1;
-            btnSua.Values.DropDownArrowColor = Color.Empty;
-            btnSua.Values.Text = "Sửa...";
-            btnSua.Click += btnSua_Click;
-
-            // btnXoa
-            btnXoa.Location = new Point(293, 15);
-            btnXoa.Name = "btnXoa";
-            btnXoa.Size = new Size(95, 40);
-            btnXoa.StateCommon.Back.Color1 = Color.WhiteSmoke;
-            btnXoa.StateCommon.Back.Color2 = Color.WhiteSmoke;
-            btnXoa.StateCommon.Border.Color1 = Color.Silver;
-            btnXoa.StateCommon.Border.Color2 = Color.Silver;
-            btnXoa.StateCommon.Border.DrawBorders =
-                PaletteDrawBorders.Top | PaletteDrawBorders.Bottom |
-                PaletteDrawBorders.Left | PaletteDrawBorders.Right;
-            btnXoa.StateCommon.Border.Rounding = 6F;
-            btnXoa.StateCommon.Content.ShortText.Color1 = Color.Red;
-            btnXoa.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F);
-            btnXoa.TabIndex = 2;
-            btnXoa.Values.DropDownArrowColor = Color.Empty;
-            btnXoa.Values.Text = "Xóa";
-            btnXoa.Click += btnXoa_Click;
-
             // btnThoat
-            btnThoat.Location = new Point(403, 15);
+            btnThoat.Location = new Point(168, 15);
             btnThoat.Name = "btnThoat";
             btnThoat.Size = new Size(95, 40);
             btnThoat.StateCommon.Back.Color1 = Color.WhiteSmoke;
@@ -238,13 +197,13 @@ namespace StadiumTicketBooking.Forms
                 PaletteDrawBorders.Left | PaletteDrawBorders.Right;
             btnThoat.StateCommon.Border.Rounding = 6F;
             btnThoat.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F);
-            btnThoat.TabIndex = 3;
+            btnThoat.TabIndex = 1;
             btnThoat.Values.DropDownArrowColor = Color.Empty;
             btnThoat.Values.Text = "Thoát";
             btnThoat.Click += btnThoat_Click;
 
             // btnTimKiem
-            btnTimKiem.Location = new Point(518, 15);
+            btnTimKiem.Location = new Point(283, 15);
             btnTimKiem.Name = "btnTimKiem";
             btnTimKiem.Size = new Size(125, 40);
             btnTimKiem.StateCommon.Back.Color1 = Color.WhiteSmoke;
@@ -256,13 +215,13 @@ namespace StadiumTicketBooking.Forms
                 PaletteDrawBorders.Left | PaletteDrawBorders.Right;
             btnTimKiem.StateCommon.Border.Rounding = 6F;
             btnTimKiem.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F);
-            btnTimKiem.TabIndex = 4;
+            btnTimKiem.TabIndex = 2;
             btnTimKiem.Values.DropDownArrowColor = Color.Empty;
             btnTimKiem.Values.Text = "Tìm kiếm...";
             btnTimKiem.Click += btnTimKiem_Click;
 
             // btnXuat
-            btnXuat.Location = new Point(658, 15);
+            btnXuat.Location = new Point(423, 15);
             btnXuat.Name = "btnXuat";
             btnXuat.Size = new Size(130, 40);
             btnXuat.StateCommon.Back.Color1 = Color.WhiteSmoke;
@@ -274,7 +233,7 @@ namespace StadiumTicketBooking.Forms
                 PaletteDrawBorders.Left | PaletteDrawBorders.Right;
             btnXuat.StateCommon.Border.Rounding = 6F;
             btnXuat.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F);
-            btnXuat.TabIndex = 5;
+            btnXuat.TabIndex = 3;
             btnXuat.Values.DropDownArrowColor = Color.Empty;
             btnXuat.Values.Text = "Xuất Excel...";
             btnXuat.Click += btnXuat_Click;
@@ -302,8 +261,6 @@ namespace StadiumTicketBooking.Forms
         private DataGridView dgvHoaDon;
         private Panel panelBottom;
         private KryptonButton btnInHoaDon;
-        private KryptonButton btnSua;
-        private KryptonButton btnXoa;
         private KryptonButton btnThoat;
         private KryptonButton btnTimKiem;
         private KryptonButton btnXuat;
