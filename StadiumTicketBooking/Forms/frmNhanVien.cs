@@ -1,5 +1,4 @@
-﻿using Krypton.Toolkit;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using StadiumTicketBooking.Data.Entity;
 using System;
 using System.Drawing;
@@ -38,10 +37,13 @@ namespace StadiumTicketBooking.Forms
             dgvNhanVien.SelectionChanged += dgvNhanVien_SelectionChanged;
         }
 
-        private void CaiDatNut(KryptonButton btn, Image icon, string text)
+        private void CaiDatNut(Button btn, Image icon, string text)
         {
-            btn.Values.Image = icon;
-            btn.Values.Text = text;
+            btn.Image = icon;
+            btn.Text = text;
+            btn.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btn.ImageAlign = ContentAlignment.MiddleLeft;
+            btn.TextAlign = ContentAlignment.MiddleCenter;
         }
 
         private void CaiDatIconNut()
@@ -473,7 +475,7 @@ namespace StadiumTicketBooking.Forms
         private void btnThoat_Click(object sender, EventArgs e)
         {
             ClearPictureBox();
-            this.Close();
+            Close();
         }
 
         private void btnTimKiem_Click(object sender, EventArgs e)

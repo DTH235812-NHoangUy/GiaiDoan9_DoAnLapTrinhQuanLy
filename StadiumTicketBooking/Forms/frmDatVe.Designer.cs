@@ -1,5 +1,4 @@
-﻿using Krypton.Toolkit;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace StadiumTicketBooking.Forms
@@ -31,17 +30,17 @@ namespace StadiumTicketBooking.Forms
             cboKhachHang = new ComboBox();
             cboSuKien = new ComboBox();
             dtpNgayLap = new DateTimePicker();
-            txtTongTien = new KryptonTextBox();
-            txtGhiChu = new KryptonTextBox();
+            txtTongTien = new TextBox();
+            txtGhiChu = new TextBox();
             lblNhanVien = new Label();
             lblKhachHang = new Label();
             lblSuKien = new Label();
             lblNgayLap = new Label();
             lblTongTien = new Label();
             lblGhiChu = new Label();
-            btnThanhToan = new KryptonButton();
-            btnHuyDon = new KryptonButton();
-            btnThoat = new KryptonButton();
+            btnThanhToan = new Button();
+            btnHuyDon = new Button();
+            btnThoat = new Button();
 
             grpVeTrong = new GroupBox();
             dgvVeTrong = new DataGridView();
@@ -52,7 +51,7 @@ namespace StadiumTicketBooking.Forms
             colTenSan = new DataGridViewTextBoxColumn();
             colGiaVe = new DataGridViewTextBoxColumn();
             colTrangThai = new DataGridViewTextBoxColumn();
-            btnChonVe = new KryptonButton();
+            btnChonVe = new Button();
 
             grpVeDaChon = new GroupBox();
             dgvVeDaChon = new DataGridView();
@@ -61,7 +60,7 @@ namespace StadiumTicketBooking.Forms
             colSoGheDaChon = new DataGridViewTextBoxColumn();
             colTenKhuVucDaChon = new DataGridViewTextBoxColumn();
             colGiaVeDaChon = new DataGridViewTextBoxColumn();
-            btnBoVe = new KryptonButton();
+            btnBoVe = new Button();
 
             grpThongTinDatVe.SuspendLayout();
             grpVeTrong.SuspendLayout();
@@ -74,7 +73,6 @@ namespace StadiumTicketBooking.Forms
             // grpThongTinDatVe
             // 
             grpThongTinDatVe.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            grpThongTinDatVe.BackColor = Color.White;
             grpThongTinDatVe.Controls.Add(cboNhanVien);
             grpThongTinDatVe.Controls.Add(cboKhachHang);
             grpThongTinDatVe.Controls.Add(cboSuKien);
@@ -90,8 +88,6 @@ namespace StadiumTicketBooking.Forms
             grpThongTinDatVe.Controls.Add(btnThanhToan);
             grpThongTinDatVe.Controls.Add(btnHuyDon);
             grpThongTinDatVe.Controls.Add(btnThoat);
-            grpThongTinDatVe.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            grpThongTinDatVe.ForeColor = Color.FromArgb(45, 62, 80);
             grpThongTinDatVe.Location = new Point(20, 15);
             grpThongTinDatVe.Name = "grpThongTinDatVe";
             grpThongTinDatVe.Size = new Size(1240, 220);
@@ -103,33 +99,30 @@ namespace StadiumTicketBooking.Forms
             // cboNhanVien
             // 
             cboNhanVien.DropDownStyle = ComboBoxStyle.DropDownList;
-            cboNhanVien.Font = new Font("Segoe UI", 10F);
             cboNhanVien.FormattingEnabled = true;
             cboNhanVien.Location = new Point(170, 31);
             cboNhanVien.Name = "cboNhanVien";
-            cboNhanVien.Size = new Size(300, 31);
+            cboNhanVien.Size = new Size(300, 28);
             cboNhanVien.TabIndex = 0;
 
             // 
             // cboKhachHang
             // 
             cboKhachHang.DropDownStyle = ComboBoxStyle.DropDownList;
-            cboKhachHang.Font = new Font("Segoe UI", 10F);
             cboKhachHang.FormattingEnabled = true;
             cboKhachHang.Location = new Point(170, 78);
             cboKhachHang.Name = "cboKhachHang";
-            cboKhachHang.Size = new Size(300, 31);
+            cboKhachHang.Size = new Size(300, 28);
             cboKhachHang.TabIndex = 1;
 
             // 
             // cboSuKien
             // 
             cboSuKien.DropDownStyle = ComboBoxStyle.DropDownList;
-            cboSuKien.Font = new Font("Segoe UI", 10F);
             cboSuKien.FormattingEnabled = true;
             cboSuKien.Location = new Point(170, 125);
             cboSuKien.Name = "cboSuKien";
-            cboSuKien.Size = new Size(300, 31);
+            cboSuKien.Size = new Size(300, 28);
             cboSuKien.TabIndex = 2;
             cboSuKien.SelectedIndexChanged += cboSuKien_SelectedIndexChanged;
 
@@ -137,11 +130,10 @@ namespace StadiumTicketBooking.Forms
             // dtpNgayLap
             // 
             dtpNgayLap.CustomFormat = "dd/MM/yyyy HH:mm";
-            dtpNgayLap.Font = new Font("Segoe UI", 10F);
             dtpNgayLap.Format = DateTimePickerFormat.Custom;
             dtpNgayLap.Location = new Point(650, 31);
             dtpNgayLap.Name = "dtpNgayLap";
-            dtpNgayLap.Size = new Size(220, 30);
+            dtpNgayLap.Size = new Size(220, 27);
             dtpNgayLap.TabIndex = 3;
 
             // 
@@ -150,14 +142,7 @@ namespace StadiumTicketBooking.Forms
             txtTongTien.Location = new Point(650, 78);
             txtTongTien.Name = "txtTongTien";
             txtTongTien.ReadOnly = true;
-            txtTongTien.Size = new Size(220, 34);
-            txtTongTien.StateCommon.Back.Color1 = Color.FromArgb(245, 246, 250);
-            txtTongTien.StateCommon.Border.Color1 = Color.FromArgb(210, 218, 226);
-            txtTongTien.StateCommon.Border.Color2 = Color.FromArgb(210, 218, 226);
-            txtTongTien.StateCommon.Border.DrawBorders = PaletteDrawBorders.All;
-            txtTongTien.StateCommon.Border.Rounding = 6F;
-            txtTongTien.StateCommon.Content.Color1 = Color.FromArgb(99, 110, 114);
-            txtTongTien.StateCommon.Content.Font = new Font("Segoe UI", 10F);
+            txtTongTien.Size = new Size(220, 27);
             txtTongTien.TabIndex = 4;
 
             // 
@@ -165,24 +150,16 @@ namespace StadiumTicketBooking.Forms
             // 
             txtGhiChu.Location = new Point(650, 125);
             txtGhiChu.Name = "txtGhiChu";
-            txtGhiChu.Size = new Size(220, 34);
-            txtGhiChu.StateCommon.Border.Color1 = Color.FromArgb(210, 218, 226);
-            txtGhiChu.StateCommon.Border.Color2 = Color.FromArgb(210, 218, 226);
-            txtGhiChu.StateCommon.Border.DrawBorders = PaletteDrawBorders.All;
-            txtGhiChu.StateCommon.Border.Rounding = 6F;
-            txtGhiChu.StateCommon.Content.Color1 = Color.FromArgb(45, 52, 54);
-            txtGhiChu.StateCommon.Content.Font = new Font("Segoe UI", 10F);
+            txtGhiChu.Size = new Size(220, 27);
             txtGhiChu.TabIndex = 5;
 
             // 
             // lblNhanVien
             // 
             lblNhanVien.AutoSize = true;
-            lblNhanVien.Font = new Font("Segoe UI", 10F);
-            lblNhanVien.ForeColor = Color.FromArgb(45, 52, 54);
-            lblNhanVien.Location = new Point(30, 37);
+            lblNhanVien.Location = new Point(30, 34);
             lblNhanVien.Name = "lblNhanVien";
-            lblNhanVien.Size = new Size(83, 23);
+            lblNhanVien.Size = new Size(74, 20);
             lblNhanVien.TabIndex = 100;
             lblNhanVien.Text = "Nhân viên:";
 
@@ -190,11 +167,9 @@ namespace StadiumTicketBooking.Forms
             // lblKhachHang
             // 
             lblKhachHang.AutoSize = true;
-            lblKhachHang.Font = new Font("Segoe UI", 10F);
-            lblKhachHang.ForeColor = Color.FromArgb(45, 52, 54);
-            lblKhachHang.Location = new Point(30, 84);
+            lblKhachHang.Location = new Point(30, 81);
             lblKhachHang.Name = "lblKhachHang";
-            lblKhachHang.Size = new Size(97, 23);
+            lblKhachHang.Size = new Size(88, 20);
             lblKhachHang.TabIndex = 101;
             lblKhachHang.Text = "Khách hàng:";
 
@@ -202,11 +177,9 @@ namespace StadiumTicketBooking.Forms
             // lblSuKien
             // 
             lblSuKien.AutoSize = true;
-            lblSuKien.Font = new Font("Segoe UI", 10F);
-            lblSuKien.ForeColor = Color.FromArgb(45, 52, 54);
-            lblSuKien.Location = new Point(30, 131);
+            lblSuKien.Location = new Point(30, 128);
             lblSuKien.Name = "lblSuKien";
-            lblSuKien.Size = new Size(66, 23);
+            lblSuKien.Size = new Size(60, 20);
             lblSuKien.TabIndex = 102;
             lblSuKien.Text = "Sự kiện:";
 
@@ -214,11 +187,9 @@ namespace StadiumTicketBooking.Forms
             // lblNgayLap
             // 
             lblNgayLap.AutoSize = true;
-            lblNgayLap.Font = new Font("Segoe UI", 10F);
-            lblNgayLap.ForeColor = Color.FromArgb(45, 52, 54);
-            lblNgayLap.Location = new Point(530, 37);
+            lblNgayLap.Location = new Point(530, 34);
             lblNgayLap.Name = "lblNgayLap";
-            lblNgayLap.Size = new Size(77, 23);
+            lblNgayLap.Size = new Size(70, 20);
             lblNgayLap.TabIndex = 103;
             lblNgayLap.Text = "Ngày lập:";
 
@@ -226,11 +197,9 @@ namespace StadiumTicketBooking.Forms
             // lblTongTien
             // 
             lblTongTien.AutoSize = true;
-            lblTongTien.Font = new Font("Segoe UI", 10F);
-            lblTongTien.ForeColor = Color.FromArgb(45, 52, 54);
-            lblTongTien.Location = new Point(530, 84);
+            lblTongTien.Location = new Point(530, 81);
             lblTongTien.Name = "lblTongTien";
-            lblTongTien.Size = new Size(82, 23);
+            lblTongTien.Size = new Size(76, 20);
             lblTongTien.TabIndex = 104;
             lblTongTien.Text = "Tổng tiền:";
 
@@ -238,11 +207,9 @@ namespace StadiumTicketBooking.Forms
             // lblGhiChu
             // 
             lblGhiChu.AutoSize = true;
-            lblGhiChu.Font = new Font("Segoe UI", 10F);
-            lblGhiChu.ForeColor = Color.FromArgb(45, 52, 54);
-            lblGhiChu.Location = new Point(530, 131);
+            lblGhiChu.Location = new Point(530, 128);
             lblGhiChu.Name = "lblGhiChu";
-            lblGhiChu.Size = new Size(65, 23);
+            lblGhiChu.Size = new Size(60, 20);
             lblGhiChu.TabIndex = 105;
             lblGhiChu.Text = "Ghi chú:";
 
@@ -251,23 +218,10 @@ namespace StadiumTicketBooking.Forms
             // 
             btnThanhToan.Location = new Point(930, 28);
             btnThanhToan.Name = "btnThanhToan";
-            btnThanhToan.OverrideDefault.Back.Color1 = Color.FromArgb(46, 204, 113);
-            btnThanhToan.OverrideDefault.Back.Color2 = Color.FromArgb(46, 204, 113);
-            btnThanhToan.OverrideDefault.Border.Color1 = Color.FromArgb(46, 204, 113);
-            btnThanhToan.OverrideDefault.Border.Color2 = Color.FromArgb(46, 204, 113);
-            btnThanhToan.OverrideDefault.Border.DrawBorders = PaletteDrawBorders.All;
-            btnThanhToan.OverrideDefault.Border.Rounding = 8F;
             btnThanhToan.Size = new Size(130, 40);
-            btnThanhToan.StateCommon.Back.Color1 = Color.FromArgb(46, 204, 113);
-            btnThanhToan.StateCommon.Back.Color2 = Color.FromArgb(46, 204, 113);
-            btnThanhToan.StateCommon.Border.Color1 = Color.FromArgb(46, 204, 113);
-            btnThanhToan.StateCommon.Border.Color2 = Color.FromArgb(46, 204, 113);
-            btnThanhToan.StateCommon.Border.DrawBorders = PaletteDrawBorders.All;
-            btnThanhToan.StateCommon.Border.Rounding = 8F;
-            btnThanhToan.StateCommon.Content.ShortText.Color1 = Color.White;
-            btnThanhToan.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnThanhToan.TabIndex = 6;
-            btnThanhToan.Values.Text = "Thanh toán";
+            btnThanhToan.Text = "Thanh toán";
+            btnThanhToan.UseVisualStyleBackColor = true;
             btnThanhToan.Click += btnThanhToan_Click;
 
             // 
@@ -275,23 +229,10 @@ namespace StadiumTicketBooking.Forms
             // 
             btnHuyDon.Location = new Point(1080, 28);
             btnHuyDon.Name = "btnHuyDon";
-            btnHuyDon.OverrideDefault.Back.Color1 = Color.FromArgb(243, 156, 18);
-            btnHuyDon.OverrideDefault.Back.Color2 = Color.FromArgb(243, 156, 18);
-            btnHuyDon.OverrideDefault.Border.Color1 = Color.FromArgb(243, 156, 18);
-            btnHuyDon.OverrideDefault.Border.Color2 = Color.FromArgb(243, 156, 18);
-            btnHuyDon.OverrideDefault.Border.DrawBorders = PaletteDrawBorders.All;
-            btnHuyDon.OverrideDefault.Border.Rounding = 8F;
             btnHuyDon.Size = new Size(130, 40);
-            btnHuyDon.StateCommon.Back.Color1 = Color.FromArgb(243, 156, 18);
-            btnHuyDon.StateCommon.Back.Color2 = Color.FromArgb(243, 156, 18);
-            btnHuyDon.StateCommon.Border.Color1 = Color.FromArgb(243, 156, 18);
-            btnHuyDon.StateCommon.Border.Color2 = Color.FromArgb(243, 156, 18);
-            btnHuyDon.StateCommon.Border.DrawBorders = PaletteDrawBorders.All;
-            btnHuyDon.StateCommon.Border.Rounding = 8F;
-            btnHuyDon.StateCommon.Content.ShortText.Color1 = Color.White;
-            btnHuyDon.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnHuyDon.TabIndex = 7;
-            btnHuyDon.Values.Text = "Hủy đơn";
+            btnHuyDon.Text = "Hủy đơn";
+            btnHuyDon.UseVisualStyleBackColor = true;
             btnHuyDon.Click += btnHuyDon_Click;
 
             // 
@@ -299,34 +240,18 @@ namespace StadiumTicketBooking.Forms
             // 
             btnThoat.Location = new Point(1005, 82);
             btnThoat.Name = "btnThoat";
-            btnThoat.OverrideDefault.Back.Color1 = Color.FromArgb(231, 76, 60);
-            btnThoat.OverrideDefault.Back.Color2 = Color.FromArgb(231, 76, 60);
-            btnThoat.OverrideDefault.Border.Color1 = Color.FromArgb(231, 76, 60);
-            btnThoat.OverrideDefault.Border.Color2 = Color.FromArgb(231, 76, 60);
-            btnThoat.OverrideDefault.Border.DrawBorders = PaletteDrawBorders.All;
-            btnThoat.OverrideDefault.Border.Rounding = 8F;
             btnThoat.Size = new Size(130, 40);
-            btnThoat.StateCommon.Back.Color1 = Color.FromArgb(231, 76, 60);
-            btnThoat.StateCommon.Back.Color2 = Color.FromArgb(231, 76, 60);
-            btnThoat.StateCommon.Border.Color1 = Color.FromArgb(231, 76, 60);
-            btnThoat.StateCommon.Border.Color2 = Color.FromArgb(231, 76, 60);
-            btnThoat.StateCommon.Border.DrawBorders = PaletteDrawBorders.All;
-            btnThoat.StateCommon.Border.Rounding = 8F;
-            btnThoat.StateCommon.Content.ShortText.Color1 = Color.White;
-            btnThoat.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnThoat.TabIndex = 8;
-            btnThoat.Values.Text = "Thoát";
+            btnThoat.Text = "Thoát";
+            btnThoat.UseVisualStyleBackColor = true;
             btnThoat.Click += btnThoat_Click;
 
             // 
             // grpVeTrong
             // 
             grpVeTrong.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            grpVeTrong.BackColor = Color.White;
             grpVeTrong.Controls.Add(dgvVeTrong);
             grpVeTrong.Controls.Add(btnChonVe);
-            grpVeTrong.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            grpVeTrong.ForeColor = Color.FromArgb(45, 62, 80);
             grpVeTrong.Location = new Point(20, 250);
             grpVeTrong.Name = "grpVeTrong";
             grpVeTrong.Size = new Size(610, 440);
@@ -339,35 +264,27 @@ namespace StadiumTicketBooking.Forms
             // 
             dgvVeTrong.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvVeTrong.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvVeTrong.BackgroundColor = Color.White;
-            dgvVeTrong.BorderStyle = BorderStyle.None;
-            dgvVeTrong.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvVeTrong.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgvVeTrong.ColumnHeadersHeight = 40;
+            dgvVeTrong.ColumnHeadersHeight = 35;
             dgvVeTrong.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvVeTrong.Columns.AddRange(new DataGridViewColumn[] { colVeID, colTenSuKien, colSoGhe, colTenKhuVuc, colTenSan, colGiaVe, colTrangThai });
-            dgvVeTrong.EnableHeadersVisualStyles = false;
+            dgvVeTrong.Columns.AddRange(new DataGridViewColumn[] {
+                colVeID, colTenSuKien, colSoGhe, colTenKhuVuc, colTenSan, colGiaVe, colTrangThai
+            });
             dgvVeTrong.Location = new Point(10, 30);
             dgvVeTrong.MultiSelect = false;
             dgvVeTrong.Name = "dgvVeTrong";
             dgvVeTrong.RowHeadersVisible = false;
-            dgvVeTrong.RowTemplate.Height = 35;
+            dgvVeTrong.RowTemplate.Height = 29;
             dgvVeTrong.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvVeTrong.Size = new Size(590, 350);
             dgvVeTrong.TabIndex = 0;
             dgvVeTrong.DoubleClick += btnChonVe_Click;
-            headerStyle1.BackColor = Color.FromArgb(108, 92, 231);
-            headerStyle1.ForeColor = Color.White;
-            headerStyle1.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+
             headerStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            headerStyle1.SelectionBackColor = Color.FromArgb(108, 92, 231);
-            headerStyle1.SelectionForeColor = Color.White;
+            headerStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             dgvVeTrong.ColumnHeadersDefaultCellStyle = headerStyle1;
-            cellStyle1.Font = new Font("Segoe UI", 10F);
-            cellStyle1.SelectionBackColor = Color.FromArgb(223, 230, 233);
-            cellStyle1.SelectionForeColor = Color.Black;
+
+            cellStyle1.Font = new Font("Segoe UI", 9F);
             dgvVeTrong.DefaultCellStyle = cellStyle1;
-            dgvVeTrong.GridColor = Color.FromArgb(230, 230, 230);
 
             // 
             // btnChonVe
@@ -375,34 +292,18 @@ namespace StadiumTicketBooking.Forms
             btnChonVe.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnChonVe.Location = new Point(450, 390);
             btnChonVe.Name = "btnChonVe";
-            btnChonVe.OverrideDefault.Back.Color1 = Color.FromArgb(39, 174, 96);
-            btnChonVe.OverrideDefault.Back.Color2 = Color.FromArgb(39, 174, 96);
-            btnChonVe.OverrideDefault.Border.Color1 = Color.FromArgb(39, 174, 96);
-            btnChonVe.OverrideDefault.Border.Color2 = Color.FromArgb(39, 174, 96);
-            btnChonVe.OverrideDefault.Border.DrawBorders = PaletteDrawBorders.All;
-            btnChonVe.OverrideDefault.Border.Rounding = 8F;
             btnChonVe.Size = new Size(150, 40);
-            btnChonVe.StateCommon.Back.Color1 = Color.FromArgb(39, 174, 96);
-            btnChonVe.StateCommon.Back.Color2 = Color.FromArgb(39, 174, 96);
-            btnChonVe.StateCommon.Border.Color1 = Color.FromArgb(39, 174, 96);
-            btnChonVe.StateCommon.Border.Color2 = Color.FromArgb(39, 174, 96);
-            btnChonVe.StateCommon.Border.DrawBorders = PaletteDrawBorders.All;
-            btnChonVe.StateCommon.Border.Rounding = 8F;
-            btnChonVe.StateCommon.Content.ShortText.Color1 = Color.White;
-            btnChonVe.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnChonVe.TabIndex = 1;
-            btnChonVe.Values.Text = "Chọn vé";
+            btnChonVe.Text = "Chọn vé";
+            btnChonVe.UseVisualStyleBackColor = true;
             btnChonVe.Click += btnChonVe_Click;
 
             // 
             // grpVeDaChon
             // 
             grpVeDaChon.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            grpVeDaChon.BackColor = Color.White;
             grpVeDaChon.Controls.Add(dgvVeDaChon);
             grpVeDaChon.Controls.Add(btnBoVe);
-            grpVeDaChon.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            grpVeDaChon.ForeColor = Color.FromArgb(45, 62, 80);
             grpVeDaChon.Location = new Point(650, 250);
             grpVeDaChon.Name = "grpVeDaChon";
             grpVeDaChon.Size = new Size(610, 440);
@@ -415,34 +316,26 @@ namespace StadiumTicketBooking.Forms
             // 
             dgvVeDaChon.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvVeDaChon.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvVeDaChon.BackgroundColor = Color.White;
-            dgvVeDaChon.BorderStyle = BorderStyle.None;
-            dgvVeDaChon.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvVeDaChon.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgvVeDaChon.ColumnHeadersHeight = 40;
+            dgvVeDaChon.ColumnHeadersHeight = 35;
             dgvVeDaChon.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvVeDaChon.Columns.AddRange(new DataGridViewColumn[] { colVeIDDaChon, colTenSuKienDaChon, colSoGheDaChon, colTenKhuVucDaChon, colGiaVeDaChon });
-            dgvVeDaChon.EnableHeadersVisualStyles = false;
+            dgvVeDaChon.Columns.AddRange(new DataGridViewColumn[] {
+                colVeIDDaChon, colTenSuKienDaChon, colSoGheDaChon, colTenKhuVucDaChon, colGiaVeDaChon
+            });
             dgvVeDaChon.Location = new Point(10, 30);
             dgvVeDaChon.MultiSelect = false;
             dgvVeDaChon.Name = "dgvVeDaChon";
             dgvVeDaChon.RowHeadersVisible = false;
-            dgvVeDaChon.RowTemplate.Height = 35;
+            dgvVeDaChon.RowTemplate.Height = 29;
             dgvVeDaChon.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvVeDaChon.Size = new Size(590, 350);
             dgvVeDaChon.TabIndex = 0;
-            headerStyle2.BackColor = Color.FromArgb(108, 92, 231);
-            headerStyle2.ForeColor = Color.White;
-            headerStyle2.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+
             headerStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            headerStyle2.SelectionBackColor = Color.FromArgb(108, 92, 231);
-            headerStyle2.SelectionForeColor = Color.White;
+            headerStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             dgvVeDaChon.ColumnHeadersDefaultCellStyle = headerStyle2;
-            cellStyle2.Font = new Font("Segoe UI", 10F);
-            cellStyle2.SelectionBackColor = Color.FromArgb(223, 230, 233);
-            cellStyle2.SelectionForeColor = Color.Black;
+
+            cellStyle2.Font = new Font("Segoe UI", 9F);
             dgvVeDaChon.DefaultCellStyle = cellStyle2;
-            dgvVeDaChon.GridColor = Color.FromArgb(230, 230, 230);
 
             // 
             // btnBoVe
@@ -450,23 +343,10 @@ namespace StadiumTicketBooking.Forms
             btnBoVe.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnBoVe.Location = new Point(450, 390);
             btnBoVe.Name = "btnBoVe";
-            btnBoVe.OverrideDefault.Back.Color1 = Color.FromArgb(231, 76, 60);
-            btnBoVe.OverrideDefault.Back.Color2 = Color.FromArgb(231, 76, 60);
-            btnBoVe.OverrideDefault.Border.Color1 = Color.FromArgb(231, 76, 60);
-            btnBoVe.OverrideDefault.Border.Color2 = Color.FromArgb(231, 76, 60);
-            btnBoVe.OverrideDefault.Border.DrawBorders = PaletteDrawBorders.All;
-            btnBoVe.OverrideDefault.Border.Rounding = 8F;
             btnBoVe.Size = new Size(150, 40);
-            btnBoVe.StateCommon.Back.Color1 = Color.FromArgb(231, 76, 60);
-            btnBoVe.StateCommon.Back.Color2 = Color.FromArgb(231, 76, 60);
-            btnBoVe.StateCommon.Border.Color1 = Color.FromArgb(231, 76, 60);
-            btnBoVe.StateCommon.Border.Color2 = Color.FromArgb(231, 76, 60);
-            btnBoVe.StateCommon.Border.DrawBorders = PaletteDrawBorders.All;
-            btnBoVe.StateCommon.Border.Rounding = 8F;
-            btnBoVe.StateCommon.Content.ShortText.Color1 = Color.White;
-            btnBoVe.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnBoVe.TabIndex = 1;
-            btnBoVe.Values.Text = "Bỏ vé";
+            btnBoVe.Text = "Bỏ vé";
+            btnBoVe.UseVisualStyleBackColor = true;
             btnBoVe.Click += btnBoVe_Click;
 
             // 
@@ -540,15 +420,11 @@ namespace StadiumTicketBooking.Forms
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(245, 247, 250);
             ClientSize = new Size(1280, 720);
             Controls.Add(grpVeDaChon);
             Controls.Add(grpVeTrong);
             Controls.Add(grpThongTinDatVe);
             Font = new Font("Segoe UI", 9F);
-            FormBorderStyle = FormBorderStyle.Sizable;
-            MaximizeBox = true;
-            MinimizeBox = true;
             Name = "frmDatVe";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Đặt Vé";
@@ -570,25 +446,25 @@ namespace StadiumTicketBooking.Forms
         private ComboBox cboKhachHang;
         private ComboBox cboSuKien;
         private DateTimePicker dtpNgayLap;
-        private KryptonTextBox txtTongTien;
-        private KryptonTextBox txtGhiChu;
+        private TextBox txtTongTien;
+        private TextBox txtGhiChu;
         private Label lblNhanVien;
         private Label lblKhachHang;
         private Label lblSuKien;
         private Label lblNgayLap;
         private Label lblTongTien;
         private Label lblGhiChu;
-        private KryptonButton btnThanhToan;
-        private KryptonButton btnHuyDon;
-        private KryptonButton btnThoat;
+        private Button btnThanhToan;
+        private Button btnHuyDon;
+        private Button btnThoat;
 
         private GroupBox grpVeTrong;
         private DataGridView dgvVeTrong;
-        private KryptonButton btnChonVe;
+        private Button btnChonVe;
 
         private GroupBox grpVeDaChon;
         private DataGridView dgvVeDaChon;
-        private KryptonButton btnBoVe;
+        private Button btnBoVe;
 
         private DataGridViewTextBoxColumn colVeID;
         private DataGridViewTextBoxColumn colTenSuKien;

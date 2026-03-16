@@ -1,5 +1,4 @@
-﻿using Krypton.Toolkit;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace StadiumTicketBooking.Forms
@@ -35,18 +34,20 @@ namespace StadiumTicketBooking.Forms
             XemChiTiet = new DataGridViewLinkColumn();
 
             panelBottom = new Panel();
-            btnInHoaDon = new KryptonButton();
-            btnThoat = new KryptonButton();
-            btnTimKiem = new KryptonButton();
-            btnXuat = new KryptonButton();
-            btnXoa = new KryptonButton();
+            btnInHoaDon = new Button();
+            btnThoat = new Button();
+            btnTimKiem = new Button();
+            btnXuat = new Button();
+            btnXoa = new Button();
 
             grpDanhSach.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvHoaDon).BeginInit();
             panelBottom.SuspendLayout();
             SuspendLayout();
 
+            // 
             // grpDanhSach
+            // 
             grpDanhSach.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grpDanhSach.Controls.Add(dgvHoaDon);
             grpDanhSach.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
@@ -57,7 +58,9 @@ namespace StadiumTicketBooking.Forms
             grpDanhSach.TabStop = false;
             grpDanhSach.Text = "Danh sách hóa đơn";
 
+            // 
             // dgvHoaDon
+            // 
             dgvHoaDon.AllowUserToAddRows = false;
             dgvHoaDon.AllowUserToDeleteRows = false;
             dgvHoaDon.AllowUserToResizeRows = false;
@@ -98,7 +101,9 @@ namespace StadiumTicketBooking.Forms
             dgvHoaDon.TabIndex = 0;
             dgvHoaDon.CellContentClick += dgvHoaDon_CellContentClick;
 
+            // 
             // ID
+            // 
             ID.DataPropertyName = "ID";
             ID.FillWeight = 45F;
             ID.HeaderText = "ID";
@@ -106,7 +111,9 @@ namespace StadiumTicketBooking.Forms
             ID.Name = "ID";
             ID.ReadOnly = true;
 
+            // 
             // HoVaTenNhanVien
+            // 
             HoVaTenNhanVien.DataPropertyName = "HoVaTenNhanVien";
             HoVaTenNhanVien.FillWeight = 130F;
             HoVaTenNhanVien.HeaderText = "Nhân viên";
@@ -114,7 +121,9 @@ namespace StadiumTicketBooking.Forms
             HoVaTenNhanVien.Name = "HoVaTenNhanVien";
             HoVaTenNhanVien.ReadOnly = true;
 
+            // 
             // HoVaTenKhachHang
+            // 
             HoVaTenKhachHang.DataPropertyName = "HoVaTenKhachHang";
             HoVaTenKhachHang.FillWeight = 140F;
             HoVaTenKhachHang.HeaderText = "Khách hàng";
@@ -122,7 +131,9 @@ namespace StadiumTicketBooking.Forms
             HoVaTenKhachHang.Name = "HoVaTenKhachHang";
             HoVaTenKhachHang.ReadOnly = true;
 
+            // 
             // NgayLap
+            // 
             NgayLap.DataPropertyName = "NgayLap";
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
             NgayLap.DefaultCellStyle = dataGridViewCellStyle3;
@@ -132,7 +143,9 @@ namespace StadiumTicketBooking.Forms
             NgayLap.Name = "NgayLap";
             NgayLap.ReadOnly = true;
 
+            // 
             // TongTienHoaDon
+            // 
             TongTienHoaDon.DataPropertyName = "TongTienHoaDon";
             dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleRight;
             dataGridViewCellStyle4.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
@@ -144,7 +157,9 @@ namespace StadiumTicketBooking.Forms
             TongTienHoaDon.Name = "TongTienHoaDon";
             TongTienHoaDon.ReadOnly = true;
 
+            // 
             // XemChiTiet
+            // 
             XemChiTiet.DataPropertyName = "XemChiTiet";
             XemChiTiet.HeaderText = "Chi tiết";
             XemChiTiet.LinkBehavior = LinkBehavior.HoverUnderline;
@@ -155,7 +170,9 @@ namespace StadiumTicketBooking.Forms
             XemChiTiet.SortMode = DataGridViewColumnSortMode.Automatic;
             XemChiTiet.TrackVisitedState = false;
 
+            // 
             // panelBottom
+            // 
             panelBottom.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panelBottom.BorderStyle = BorderStyle.FixedSingle;
             panelBottom.Controls.Add(btnInHoaDon);
@@ -168,97 +185,64 @@ namespace StadiumTicketBooking.Forms
             panelBottom.Size = new Size(1060, 72);
             panelBottom.TabIndex = 1;
 
+            // 
             // btnInHoaDon
+            // 
             btnInHoaDon.Location = new Point(18, 15);
             btnInHoaDon.Name = "btnInHoaDon";
             btnInHoaDon.Size = new Size(135, 40);
-            btnInHoaDon.StateCommon.Back.Color1 = Color.WhiteSmoke;
-            btnInHoaDon.StateCommon.Back.Color2 = Color.WhiteSmoke;
-            btnInHoaDon.StateCommon.Border.Color1 = Color.Silver;
-            btnInHoaDon.StateCommon.Border.Color2 = Color.Silver;
-            btnInHoaDon.StateCommon.Border.DrawBorders =
-                PaletteDrawBorders.Top | PaletteDrawBorders.Bottom |
-                PaletteDrawBorders.Left | PaletteDrawBorders.Right;
-            btnInHoaDon.StateCommon.Border.Rounding = 6F;
-            btnInHoaDon.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F);
             btnInHoaDon.TabIndex = 0;
-            btnInHoaDon.Values.DropDownArrowColor = Color.Empty;
-            btnInHoaDon.Values.Text = "In hóa đơn...";
+            btnInHoaDon.Text = "In hóa đơn...";
+            btnInHoaDon.UseVisualStyleBackColor = true;
             btnInHoaDon.Click += btnInHoaDon_Click;
 
+            // 
             // btnThoat
+            // 
             btnThoat.Location = new Point(168, 15);
             btnThoat.Name = "btnThoat";
             btnThoat.Size = new Size(95, 40);
-            btnThoat.StateCommon.Back.Color1 = Color.WhiteSmoke;
-            btnThoat.StateCommon.Back.Color2 = Color.WhiteSmoke;
-            btnThoat.StateCommon.Border.Color1 = Color.Silver;
-            btnThoat.StateCommon.Border.Color2 = Color.Silver;
-            btnThoat.StateCommon.Border.DrawBorders =
-                PaletteDrawBorders.Top | PaletteDrawBorders.Bottom |
-                PaletteDrawBorders.Left | PaletteDrawBorders.Right;
-            btnThoat.StateCommon.Border.Rounding = 6F;
-            btnThoat.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F);
             btnThoat.TabIndex = 1;
-            btnThoat.Values.DropDownArrowColor = Color.Empty;
-            btnThoat.Values.Text = "Thoát";
+            btnThoat.Text = "Thoát";
+            btnThoat.UseVisualStyleBackColor = true;
             btnThoat.Click += btnThoat_Click;
 
+            // 
             // btnTimKiem
+            // 
             btnTimKiem.Location = new Point(283, 15);
             btnTimKiem.Name = "btnTimKiem";
             btnTimKiem.Size = new Size(125, 40);
-            btnTimKiem.StateCommon.Back.Color1 = Color.WhiteSmoke;
-            btnTimKiem.StateCommon.Back.Color2 = Color.WhiteSmoke;
-            btnTimKiem.StateCommon.Border.Color1 = Color.Silver;
-            btnTimKiem.StateCommon.Border.Color2 = Color.Silver;
-            btnTimKiem.StateCommon.Border.DrawBorders =
-                PaletteDrawBorders.Top | PaletteDrawBorders.Bottom |
-                PaletteDrawBorders.Left | PaletteDrawBorders.Right;
-            btnTimKiem.StateCommon.Border.Rounding = 6F;
-            btnTimKiem.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F);
             btnTimKiem.TabIndex = 2;
-            btnTimKiem.Values.DropDownArrowColor = Color.Empty;
-            btnTimKiem.Values.Text = "Tìm kiếm...";
+            btnTimKiem.Text = "Tìm kiếm...";
+            btnTimKiem.UseVisualStyleBackColor = true;
             btnTimKiem.Click += btnTimKiem_Click;
 
+            // 
             // btnXuat
+            // 
             btnXuat.Location = new Point(423, 15);
             btnXuat.Name = "btnXuat";
             btnXuat.Size = new Size(130, 40);
-            btnXuat.StateCommon.Back.Color1 = Color.WhiteSmoke;
-            btnXuat.StateCommon.Back.Color2 = Color.WhiteSmoke;
-            btnXuat.StateCommon.Border.Color1 = Color.Silver;
-            btnXuat.StateCommon.Border.Color2 = Color.Silver;
-            btnXuat.StateCommon.Border.DrawBorders =
-                PaletteDrawBorders.Top | PaletteDrawBorders.Bottom |
-                PaletteDrawBorders.Left | PaletteDrawBorders.Right;
-            btnXuat.StateCommon.Border.Rounding = 6F;
-            btnXuat.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F);
             btnXuat.TabIndex = 3;
-            btnXuat.Values.DropDownArrowColor = Color.Empty;
-            btnXuat.Values.Text = "Xuất Excel...";
+            btnXuat.Text = "Xuất Excel...";
+            btnXuat.UseVisualStyleBackColor = true;
             btnXuat.Click += btnXuat_Click;
 
+            // 
             // btnXoa
+            // 
             btnXoa.Location = new Point(568, 15);
             btnXoa.Name = "btnXoa";
             btnXoa.Size = new Size(100, 40);
-            btnXoa.StateCommon.Back.Color1 = Color.WhiteSmoke;
-            btnXoa.StateCommon.Back.Color2 = Color.WhiteSmoke;
-            btnXoa.StateCommon.Border.Color1 = Color.Silver;
-            btnXoa.StateCommon.Border.Color2 = Color.Silver;
-            btnXoa.StateCommon.Border.DrawBorders =
-                PaletteDrawBorders.Top | PaletteDrawBorders.Bottom |
-                PaletteDrawBorders.Left | PaletteDrawBorders.Right;
-            btnXoa.StateCommon.Border.Rounding = 6F;
-            btnXoa.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 9F);
             btnXoa.TabIndex = 4;
-            btnXoa.Values.DropDownArrowColor = Color.Empty;
-            btnXoa.Values.Text = "Xóa";
+            btnXoa.Text = "Xóa";
+            btnXoa.UseVisualStyleBackColor = true;
             btnXoa.Click += btnXoa_Click;
 
+            // 
             // frmHoaDon
+            // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1084, 627);
@@ -280,11 +264,11 @@ namespace StadiumTicketBooking.Forms
         private GroupBox grpDanhSach;
         private DataGridView dgvHoaDon;
         private Panel panelBottom;
-        private KryptonButton btnInHoaDon;
-        private KryptonButton btnThoat;
-        private KryptonButton btnTimKiem;
-        private KryptonButton btnXuat;
-        private KryptonButton btnXoa;
+        private Button btnInHoaDon;
+        private Button btnThoat;
+        private Button btnTimKiem;
+        private Button btnXuat;
+        private Button btnXoa;
 
         private DataGridViewTextBoxColumn ID;
         private DataGridViewTextBoxColumn HoVaTenNhanVien;

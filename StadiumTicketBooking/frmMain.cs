@@ -1,16 +1,15 @@
-﻿using Krypton.Toolkit;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
 
 namespace StadiumTicketBooking.Forms
 {
-    public partial class frmMain : KryptonForm
+    public partial class frmMain : Form
     {
         private int nhanVienID = 0;
         private string tenDangNhap = "";
         private string vaiTro = "";
-        private Form? formHienTai = null;
+        private Form formHienTai = null;
 
         public int NhanVienIDHienTai => nhanVienID;
         public string TenDangNhapHienTai => tenDangNhap;
@@ -55,38 +54,35 @@ namespace StadiumTicketBooking.Forms
             CaiDatButtonMenu(btnDangXuat);
         }
 
-        private void CaiDatButtonMenu(KryptonButton btn)
+        private void CaiDatButtonMenu(Button btn)
         {
-            btn.OverrideDefault.Back.Color1 = Color.FromArgb(30, 41, 59);
-            btn.OverrideDefault.Back.Color2 = Color.FromArgb(30, 41, 59);
-            btn.OverrideDefault.Border.Color1 = Color.FromArgb(30, 41, 59);
-            btn.OverrideDefault.Border.Color2 = Color.FromArgb(30, 41, 59);
-            btn.OverrideDefault.Border.DrawBorders = PaletteDrawBorders.All;
-
-            btn.StateCommon.Back.Color1 = Color.FromArgb(30, 41, 59);
-            btn.StateCommon.Back.Color2 = Color.FromArgb(30, 41, 59);
-            btn.StateCommon.Border.Color1 = Color.FromArgb(30, 41, 59);
-            btn.StateCommon.Border.Color2 = Color.FromArgb(30, 41, 59);
-            btn.StateCommon.Border.DrawBorders = PaletteDrawBorders.All;
-            btn.StateCommon.Border.Rounding = 0;
-            btn.StateCommon.Content.ShortText.Color1 = Color.White;
-            btn.StateCommon.Content.ShortText.Color2 = Color.White;
-            btn.StateCommon.Content.ShortText.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point);
-
-            btn.StateTracking.Back.Color1 = Color.FromArgb(51, 65, 85);
-            btn.StateTracking.Back.Color2 = Color.FromArgb(51, 65, 85);
-            btn.StateTracking.Border.Color1 = Color.FromArgb(51, 65, 85);
-            btn.StateTracking.Border.Color2 = Color.FromArgb(51, 65, 85);
-            btn.StateTracking.Border.DrawBorders = PaletteDrawBorders.All;
-
-            btn.StatePressed.Back.Color1 = Color.FromArgb(59, 130, 246);
-            btn.StatePressed.Back.Color2 = Color.FromArgb(59, 130, 246);
-            btn.StatePressed.Border.Color1 = Color.FromArgb(59, 130, 246);
-            btn.StatePressed.Border.Color2 = Color.FromArgb(59, 130, 246);
-            btn.StatePressed.Border.DrawBorders = PaletteDrawBorders.All;
-
-            btn.ButtonStyle = ButtonStyle.Custom1;
+            btn.BackColor = Color.FromArgb(30, 41, 59);
+            btn.ForeColor = Color.White;
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point);
             btn.Cursor = Cursors.Hand;
+            btn.TextAlign = ContentAlignment.MiddleLeft;
+            btn.Padding = new Padding(20, 0, 0, 0);
+
+            btn.MouseEnter -= BtnMenu_MouseEnter;
+            btn.MouseLeave -= BtnMenu_MouseLeave;
+            btn.MouseEnter += BtnMenu_MouseEnter;
+            btn.MouseLeave += BtnMenu_MouseLeave;
+        }
+
+        private void BtnMenu_MouseEnter(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn != null)
+                btn.BackColor = Color.FromArgb(51, 65, 85);
+        }
+
+        private void BtnMenu_MouseLeave(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn != null)
+                btn.BackColor = Color.FromArgb(30, 41, 59);
         }
 
         private void HienThiThongTinDangNhap()
@@ -97,8 +93,8 @@ namespace StadiumTicketBooking.Forms
             if (string.IsNullOrWhiteSpace(vaiTro))
                 vaiTro = "Admin";
 
-            lblNguoiDung.Values.Text = "Người dùng: " + tenDangNhap;
-            lblVaiTro.Values.Text = "Vai trò: " + vaiTro;
+            lblNguoiDung.Text = "Người dùng: " + tenDangNhap;
+            lblVaiTro.Text = "Vai trò: " + vaiTro;
         }
 
         private void PhanQuyenTheoVaiTro()
@@ -121,7 +117,7 @@ namespace StadiumTicketBooking.Forms
                 btnVaiTro.Visible = true;
                 btnDangXuat.Visible = true;
             }
-            else if (role == "nhanvien")
+            else if (role == "nhanvien" || role == "nhân viên")
             {
                 btnTrangChu.Visible = true;
                 btnDatVe.Visible = true;
@@ -175,6 +171,12 @@ namespace StadiumTicketBooking.Forms
 
         private void HienThiTrangChu()
         {
+            if (formHienTai != null)
+            {
+                formHienTai.Close();
+                formHienTai = null;
+            }
+
             panelBody.Controls.Clear();
 
             Label lbl = new Label();
@@ -257,10 +259,10 @@ namespace StadiumTicketBooking.Forms
 
             if (result == DialogResult.Yes)
             {
-                this.Hide();
+                Hide();
                 frmDangNhap frm = new frmDangNhap();
                 frm.ShowDialog();
-                this.Close();
+                Close();
             }
         }
     }

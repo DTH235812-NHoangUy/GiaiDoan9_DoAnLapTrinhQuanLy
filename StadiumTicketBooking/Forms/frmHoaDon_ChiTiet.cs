@@ -1,5 +1,4 @@
-﻿using Krypton.Toolkit;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using StadiumTicketBooking.Data.Entity;
 using System;
 using System.Collections.Generic;
@@ -123,10 +122,13 @@ namespace StadiumTicketBooking.Forms
             }
         }
 
-        private void CaiDatNut(KryptonButton btn, Image icon, string text)
+        private void CaiDatNut(Button btn, Image icon, string text)
         {
-            btn.Values.Image = icon;
-            btn.Values.Text = text;
+            btn.Image = icon;
+            btn.Text = text;
+            btn.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btn.ImageAlign = ContentAlignment.MiddleLeft;
+            btn.TextAlign = ContentAlignment.MiddleCenter;
         }
 
         private void CaiDatIconNut()

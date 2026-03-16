@@ -1,5 +1,6 @@
 ﻿using StadiumTicketBooking.Data.Entity;
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -16,10 +17,13 @@ namespace StadiumTicketBooking.Forms
             InitializeComponent();
         }
 
-        private void CaiDatNut(Krypton.Toolkit.KryptonButton btn, System.Drawing.Image icon, string text)
+        private void CaiDatNut(Button btn, Image icon, string text)
         {
-            btn.Values.Image = icon;
-            btn.Values.Text = text;
+            btn.Image = icon;
+            btn.Text = text;
+            btn.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btn.ImageAlign = ContentAlignment.MiddleLeft;
+            btn.TextAlign = ContentAlignment.MiddleCenter;
         }
 
         private void CaiDatIconNut()
@@ -256,10 +260,9 @@ namespace StadiumTicketBooking.Forms
         private void btnTimKiem_Click(object sender, EventArgs e)
         {
             string searchTerm = Microsoft.VisualBasic.Interaction.InputBox(
-        "Nhập tên vai trò cần tìm:",
-        "Tìm kiếm vai trò",
-        ""
-    );
+                "Nhập tên vai trò cần tìm:",
+                "Tìm kiếm vai trò",
+                "");
 
             if (string.IsNullOrWhiteSpace(searchTerm))
             {

@@ -120,12 +120,14 @@ namespace StadiumTicketBooking.Forms
             }
         }
 
-        private void CaiDatNut(KryptonButton btn, Image icon, string text)
+        private void CaiDatNut(Button btn, Image icon, string text)
         {
-            btn.Values.Image = icon;
-            btn.Values.Text = text;
+            btn.Image = icon;
+            btn.Text = text;
+            btn.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btn.ImageAlign = ContentAlignment.MiddleLeft;
+            btn.TextAlign = ContentAlignment.MiddleCenter;
         }
-
         private void CaiDatIconNut()
         {
             CaiDatNut(btnThem, Properties.Resources.add_24, "Thêm");
@@ -137,8 +139,8 @@ namespace StadiumTicketBooking.Forms
             CaiDatNut(btnTimKiem, Properties.Resources.search_24, "Tìm kiếm");
             CaiDatNut(btnNhap, Properties.Resources.import_24, "Nhập");
             CaiDatNut(btnXuat, Properties.Resources.export_24, "Xuất");
-            CaiDatNut(btnDoiAnh, Properties.Resources.camera_24, "Đổi ảnh");
         }
+
 
         private void BatTatChucNang(bool giaTri)
         {
