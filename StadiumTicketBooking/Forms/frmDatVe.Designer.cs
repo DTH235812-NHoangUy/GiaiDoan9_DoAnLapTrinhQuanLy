@@ -20,11 +20,10 @@ namespace StadiumTicketBooking.Forms
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle headerStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle cellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle headerStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle cellStyle2 = new DataGridViewCellStyle();
-
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
             grpThongTinDatVe = new GroupBox();
             cboNhanVien = new ComboBox();
             cboKhachHang = new ComboBox();
@@ -41,7 +40,6 @@ namespace StadiumTicketBooking.Forms
             btnThanhToan = new Button();
             btnHuyDon = new Button();
             btnThoat = new Button();
-
             grpVeTrong = new GroupBox();
             dgvVeTrong = new DataGridView();
             colVeID = new DataGridViewTextBoxColumn();
@@ -52,7 +50,6 @@ namespace StadiumTicketBooking.Forms
             colGiaVe = new DataGridViewTextBoxColumn();
             colTrangThai = new DataGridViewTextBoxColumn();
             btnChonVe = new Button();
-
             grpVeDaChon = new GroupBox();
             dgvVeDaChon = new DataGridView();
             colVeIDDaChon = new DataGridViewTextBoxColumn();
@@ -61,14 +58,12 @@ namespace StadiumTicketBooking.Forms
             colTenKhuVucDaChon = new DataGridViewTextBoxColumn();
             colGiaVeDaChon = new DataGridViewTextBoxColumn();
             btnBoVe = new Button();
-
             grpThongTinDatVe.SuspendLayout();
             grpVeTrong.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvVeTrong).BeginInit();
             grpVeDaChon.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvVeDaChon).BeginInit();
             SuspendLayout();
-
             // 
             // grpThongTinDatVe
             // 
@@ -94,7 +89,6 @@ namespace StadiumTicketBooking.Forms
             grpThongTinDatVe.TabIndex = 0;
             grpThongTinDatVe.TabStop = false;
             grpThongTinDatVe.Text = "Thông tin đặt vé";
-
             // 
             // cboNhanVien
             // 
@@ -104,7 +98,6 @@ namespace StadiumTicketBooking.Forms
             cboNhanVien.Name = "cboNhanVien";
             cboNhanVien.Size = new Size(300, 28);
             cboNhanVien.TabIndex = 0;
-
             // 
             // cboKhachHang
             // 
@@ -114,7 +107,6 @@ namespace StadiumTicketBooking.Forms
             cboKhachHang.Name = "cboKhachHang";
             cboKhachHang.Size = new Size(300, 28);
             cboKhachHang.TabIndex = 1;
-
             // 
             // cboSuKien
             // 
@@ -125,7 +117,6 @@ namespace StadiumTicketBooking.Forms
             cboSuKien.Size = new Size(300, 28);
             cboSuKien.TabIndex = 2;
             cboSuKien.SelectedIndexChanged += cboSuKien_SelectedIndexChanged;
-
             // 
             // dtpNgayLap
             // 
@@ -135,7 +126,6 @@ namespace StadiumTicketBooking.Forms
             dtpNgayLap.Name = "dtpNgayLap";
             dtpNgayLap.Size = new Size(220, 27);
             dtpNgayLap.TabIndex = 3;
-
             // 
             // txtTongTien
             // 
@@ -144,7 +134,6 @@ namespace StadiumTicketBooking.Forms
             txtTongTien.ReadOnly = true;
             txtTongTien.Size = new Size(220, 27);
             txtTongTien.TabIndex = 4;
-
             // 
             // txtGhiChu
             // 
@@ -152,27 +141,24 @@ namespace StadiumTicketBooking.Forms
             txtGhiChu.Name = "txtGhiChu";
             txtGhiChu.Size = new Size(220, 27);
             txtGhiChu.TabIndex = 5;
-
             // 
             // lblNhanVien
             // 
             lblNhanVien.AutoSize = true;
             lblNhanVien.Location = new Point(30, 34);
             lblNhanVien.Name = "lblNhanVien";
-            lblNhanVien.Size = new Size(74, 20);
+            lblNhanVien.Size = new Size(78, 20);
             lblNhanVien.TabIndex = 100;
             lblNhanVien.Text = "Nhân viên:";
-
             // 
             // lblKhachHang
             // 
             lblKhachHang.AutoSize = true;
             lblKhachHang.Location = new Point(30, 81);
             lblKhachHang.Name = "lblKhachHang";
-            lblKhachHang.Size = new Size(88, 20);
+            lblKhachHang.Size = new Size(89, 20);
             lblKhachHang.TabIndex = 101;
             lblKhachHang.Text = "Khách hàng:";
-
             // 
             // lblSuKien
             // 
@@ -182,37 +168,33 @@ namespace StadiumTicketBooking.Forms
             lblSuKien.Size = new Size(60, 20);
             lblSuKien.TabIndex = 102;
             lblSuKien.Text = "Sự kiện:";
-
             // 
             // lblNgayLap
             // 
             lblNgayLap.AutoSize = true;
             lblNgayLap.Location = new Point(530, 34);
             lblNgayLap.Name = "lblNgayLap";
-            lblNgayLap.Size = new Size(70, 20);
+            lblNgayLap.Size = new Size(72, 20);
             lblNgayLap.TabIndex = 103;
             lblNgayLap.Text = "Ngày lập:";
-
             // 
             // lblTongTien
             // 
             lblTongTien.AutoSize = true;
             lblTongTien.Location = new Point(530, 81);
             lblTongTien.Name = "lblTongTien";
-            lblTongTien.Size = new Size(76, 20);
+            lblTongTien.Size = new Size(75, 20);
             lblTongTien.TabIndex = 104;
             lblTongTien.Text = "Tổng tiền:";
-
             // 
             // lblGhiChu
             // 
             lblGhiChu.AutoSize = true;
             lblGhiChu.Location = new Point(530, 128);
             lblGhiChu.Name = "lblGhiChu";
-            lblGhiChu.Size = new Size(60, 20);
+            lblGhiChu.Size = new Size(61, 20);
             lblGhiChu.TabIndex = 105;
             lblGhiChu.Text = "Ghi chú:";
-
             // 
             // btnThanhToan
             // 
@@ -223,7 +205,6 @@ namespace StadiumTicketBooking.Forms
             btnThanhToan.Text = "Thanh toán";
             btnThanhToan.UseVisualStyleBackColor = true;
             btnThanhToan.Click += btnThanhToan_Click;
-
             // 
             // btnHuyDon
             // 
@@ -234,7 +215,6 @@ namespace StadiumTicketBooking.Forms
             btnHuyDon.Text = "Hủy đơn";
             btnHuyDon.UseVisualStyleBackColor = true;
             btnHuyDon.Click += btnHuyDon_Click;
-
             // 
             // btnThoat
             // 
@@ -245,59 +225,113 @@ namespace StadiumTicketBooking.Forms
             btnThoat.Text = "Thoát";
             btnThoat.UseVisualStyleBackColor = true;
             btnThoat.Click += btnThoat_Click;
-
             // 
             // grpVeTrong
             // 
             grpVeTrong.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             grpVeTrong.Controls.Add(dgvVeTrong);
             grpVeTrong.Controls.Add(btnChonVe);
-            grpVeTrong.Location = new Point(20, 250);
+            grpVeTrong.Location = new Point(5, 250);
             grpVeTrong.Name = "grpVeTrong";
-            grpVeTrong.Size = new Size(610, 440);
+            grpVeTrong.Size = new Size(639, 440);
             grpVeTrong.TabIndex = 1;
             grpVeTrong.TabStop = false;
             grpVeTrong.Text = "Danh sách vé còn trống";
-
             // 
             // dgvVeTrong
             // 
             dgvVeTrong.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvVeTrong.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dgvVeTrong.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             dgvVeTrong.ColumnHeadersHeight = 35;
             dgvVeTrong.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvVeTrong.Columns.AddRange(new DataGridViewColumn[] {
-                colVeID, colTenSuKien, colSoGhe, colTenKhuVuc, colTenSan, colGiaVe, colTrangThai
-            });
-            dgvVeTrong.Location = new Point(10, 30);
+            dgvVeTrong.Columns.AddRange(new DataGridViewColumn[] { colVeID, colTenSuKien, colSoGhe, colTenKhuVuc, colTenSan, colGiaVe, colTrangThai });
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = SystemColors.Window;
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle6.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
+            dgvVeTrong.DefaultCellStyle = dataGridViewCellStyle6;
+            dgvVeTrong.Location = new Point(20, 30);
             dgvVeTrong.MultiSelect = false;
             dgvVeTrong.Name = "dgvVeTrong";
             dgvVeTrong.RowHeadersVisible = false;
-            dgvVeTrong.RowTemplate.Height = 29;
+            dgvVeTrong.RowHeadersWidth = 51;
             dgvVeTrong.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvVeTrong.Size = new Size(590, 350);
+            dgvVeTrong.Size = new Size(609, 354);
             dgvVeTrong.TabIndex = 0;
             dgvVeTrong.DoubleClick += btnChonVe_Click;
-
-            headerStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            headerStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            dgvVeTrong.ColumnHeadersDefaultCellStyle = headerStyle1;
-
-            cellStyle1.Font = new Font("Segoe UI", 9F);
-            dgvVeTrong.DefaultCellStyle = cellStyle1;
-
+            // 
+            // colVeID
+            // 
+            colVeID.DataPropertyName = "ID";
+            colVeID.FillWeight = 8F;
+            colVeID.HeaderText = "ID";
+            colVeID.MinimumWidth = 6;
+            colVeID.Name = "colVeID";
+            // 
+            // colTenSuKien
+            // 
+            colTenSuKien.DataPropertyName = "TenSuKien";
+            colTenSuKien.FillWeight = 25F;
+            colTenSuKien.HeaderText = "Sự Kiện";
+            colTenSuKien.MinimumWidth = 6;
+            colTenSuKien.Name = "colTenSuKien";
+            // 
+            // colSoGhe
+            // 
+            colSoGhe.DataPropertyName = "SoGhe";
+            colSoGhe.FillWeight = 12F;
+            colSoGhe.HeaderText = "Ghế";
+            colSoGhe.MinimumWidth = 6;
+            colSoGhe.Name = "colSoGhe";
+            // 
+            // colTenKhuVuc
+            // 
+            colTenKhuVuc.DataPropertyName = "TenKhuVuc";
+            colTenKhuVuc.FillWeight = 18F;
+            colTenKhuVuc.HeaderText = "Khu Vực";
+            colTenKhuVuc.MinimumWidth = 6;
+            colTenKhuVuc.Name = "colTenKhuVuc";
+            // 
+            // colTenSan
+            // 
+            colTenSan.DataPropertyName = "TenSan";
+            colTenSan.FillWeight = 18F;
+            colTenSan.HeaderText = "Sân";
+            colTenSan.MinimumWidth = 6;
+            colTenSan.Name = "colTenSan";
+            // 
+            // colGiaVe
+            // 
+            colGiaVe.DataPropertyName = "GiaVe";
+            colGiaVe.FillWeight = 12F;
+            colGiaVe.HeaderText = "Giá Vé";
+            colGiaVe.MinimumWidth = 6;
+            colGiaVe.Name = "colGiaVe";
+            // 
+            // colTrangThai
+            // 
+            colTrangThai.DataPropertyName = "TrangThai";
+            colTrangThai.FillWeight = 15F;
+            colTrangThai.HeaderText = "Trạng Thái";
+            colTrangThai.MinimumWidth = 6;
+            colTrangThai.Name = "colTrangThai";
             // 
             // btnChonVe
             // 
             btnChonVe.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnChonVe.Location = new Point(450, 390);
+            btnChonVe.Location = new Point(479, 390);
             btnChonVe.Name = "btnChonVe";
             btnChonVe.Size = new Size(150, 40);
             btnChonVe.TabIndex = 1;
             btnChonVe.Text = "Chọn vé";
             btnChonVe.UseVisualStyleBackColor = true;
             btnChonVe.Click += btnChonVe_Click;
-
             // 
             // grpVeDaChon
             // 
@@ -310,33 +344,73 @@ namespace StadiumTicketBooking.Forms
             grpVeDaChon.TabIndex = 2;
             grpVeDaChon.TabStop = false;
             grpVeDaChon.Text = "Danh sách vé đã chọn";
-
             // 
             // dgvVeDaChon
             // 
             dgvVeDaChon.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvVeDaChon.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dgvVeDaChon.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             dgvVeDaChon.ColumnHeadersHeight = 35;
             dgvVeDaChon.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvVeDaChon.Columns.AddRange(new DataGridViewColumn[] {
-                colVeIDDaChon, colTenSuKienDaChon, colSoGheDaChon, colTenKhuVucDaChon, colGiaVeDaChon
-            });
+            dgvVeDaChon.Columns.AddRange(new DataGridViewColumn[] { colVeIDDaChon, colTenSuKienDaChon, colSoGheDaChon, colTenKhuVucDaChon, colGiaVeDaChon });
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = SystemColors.Window;
+            dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle8.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.False;
+            dgvVeDaChon.DefaultCellStyle = dataGridViewCellStyle8;
             dgvVeDaChon.Location = new Point(10, 30);
             dgvVeDaChon.MultiSelect = false;
             dgvVeDaChon.Name = "dgvVeDaChon";
             dgvVeDaChon.RowHeadersVisible = false;
-            dgvVeDaChon.RowTemplate.Height = 29;
+            dgvVeDaChon.RowHeadersWidth = 51;
             dgvVeDaChon.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvVeDaChon.Size = new Size(590, 350);
             dgvVeDaChon.TabIndex = 0;
-
-            headerStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            headerStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            dgvVeDaChon.ColumnHeadersDefaultCellStyle = headerStyle2;
-
-            cellStyle2.Font = new Font("Segoe UI", 9F);
-            dgvVeDaChon.DefaultCellStyle = cellStyle2;
-
+            // 
+            // colVeIDDaChon
+            // 
+            colVeIDDaChon.DataPropertyName = "VeID";
+            colVeIDDaChon.FillWeight = 10F;
+            colVeIDDaChon.HeaderText = "ID";
+            colVeIDDaChon.MinimumWidth = 6;
+            colVeIDDaChon.Name = "colVeIDDaChon";
+            // 
+            // colTenSuKienDaChon
+            // 
+            colTenSuKienDaChon.DataPropertyName = "TenSuKien";
+            colTenSuKienDaChon.FillWeight = 30F;
+            colTenSuKienDaChon.HeaderText = "Sự Kiện";
+            colTenSuKienDaChon.MinimumWidth = 6;
+            colTenSuKienDaChon.Name = "colTenSuKienDaChon";
+            // 
+            // colSoGheDaChon
+            // 
+            colSoGheDaChon.DataPropertyName = "SoGhe";
+            colSoGheDaChon.FillWeight = 15F;
+            colSoGheDaChon.HeaderText = "Ghế";
+            colSoGheDaChon.MinimumWidth = 6;
+            colSoGheDaChon.Name = "colSoGheDaChon";
+            // 
+            // colTenKhuVucDaChon
+            // 
+            colTenKhuVucDaChon.DataPropertyName = "TenKhuVuc";
+            colTenKhuVucDaChon.FillWeight = 20F;
+            colTenKhuVucDaChon.HeaderText = "Khu Vực";
+            colTenKhuVucDaChon.MinimumWidth = 6;
+            colTenKhuVucDaChon.Name = "colTenKhuVucDaChon";
+            // 
+            // colGiaVeDaChon
+            // 
+            colGiaVeDaChon.DataPropertyName = "GiaVe";
+            colGiaVeDaChon.FillWeight = 15F;
+            colGiaVeDaChon.HeaderText = "Giá Vé";
+            colGiaVeDaChon.MinimumWidth = 6;
+            colGiaVeDaChon.Name = "colGiaVeDaChon";
             // 
             // btnBoVe
             // 
@@ -348,73 +422,6 @@ namespace StadiumTicketBooking.Forms
             btnBoVe.Text = "Bỏ vé";
             btnBoVe.UseVisualStyleBackColor = true;
             btnBoVe.Click += btnBoVe_Click;
-
-            // 
-            // columns dgvVeTrong
-            // 
-            colVeID.DataPropertyName = "ID";
-            colVeID.HeaderText = "ID";
-            colVeID.FillWeight = 8F;
-            colVeID.Name = "colVeID";
-
-            colTenSuKien.DataPropertyName = "TenSuKien";
-            colTenSuKien.HeaderText = "Sự Kiện";
-            colTenSuKien.FillWeight = 25F;
-            colTenSuKien.Name = "colTenSuKien";
-
-            colSoGhe.DataPropertyName = "SoGhe";
-            colSoGhe.HeaderText = "Ghế";
-            colSoGhe.FillWeight = 12F;
-            colSoGhe.Name = "colSoGhe";
-
-            colTenKhuVuc.DataPropertyName = "TenKhuVuc";
-            colTenKhuVuc.HeaderText = "Khu Vực";
-            colTenKhuVuc.FillWeight = 18F;
-            colTenKhuVuc.Name = "colTenKhuVuc";
-
-            colTenSan.DataPropertyName = "TenSan";
-            colTenSan.HeaderText = "Sân";
-            colTenSan.FillWeight = 18F;
-            colTenSan.Name = "colTenSan";
-
-            colGiaVe.DataPropertyName = "GiaVe";
-            colGiaVe.HeaderText = "Giá Vé";
-            colGiaVe.FillWeight = 12F;
-            colGiaVe.Name = "colGiaVe";
-
-            colTrangThai.DataPropertyName = "TrangThai";
-            colTrangThai.HeaderText = "Trạng Thái";
-            colTrangThai.FillWeight = 15F;
-            colTrangThai.Name = "colTrangThai";
-
-            // 
-            // columns dgvVeDaChon
-            // 
-            colVeIDDaChon.DataPropertyName = "VeID";
-            colVeIDDaChon.HeaderText = "ID";
-            colVeIDDaChon.FillWeight = 10F;
-            colVeIDDaChon.Name = "colVeIDDaChon";
-
-            colTenSuKienDaChon.DataPropertyName = "TenSuKien";
-            colTenSuKienDaChon.HeaderText = "Sự Kiện";
-            colTenSuKienDaChon.FillWeight = 30F;
-            colTenSuKienDaChon.Name = "colTenSuKienDaChon";
-
-            colSoGheDaChon.DataPropertyName = "SoGhe";
-            colSoGheDaChon.HeaderText = "Ghế";
-            colSoGheDaChon.FillWeight = 15F;
-            colSoGheDaChon.Name = "colSoGheDaChon";
-
-            colTenKhuVucDaChon.DataPropertyName = "TenKhuVuc";
-            colTenKhuVucDaChon.HeaderText = "Khu Vực";
-            colTenKhuVucDaChon.FillWeight = 20F;
-            colTenKhuVucDaChon.Name = "colTenKhuVucDaChon";
-
-            colGiaVeDaChon.DataPropertyName = "GiaVe";
-            colGiaVeDaChon.HeaderText = "Giá Vé";
-            colGiaVeDaChon.FillWeight = 15F;
-            colGiaVeDaChon.Name = "colGiaVeDaChon";
-
             // 
             // frmDatVe
             // 
@@ -429,7 +436,6 @@ namespace StadiumTicketBooking.Forms
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Đặt Vé";
             Load += frmDatVe_Load;
-
             grpThongTinDatVe.ResumeLayout(false);
             grpThongTinDatVe.PerformLayout();
             grpVeTrong.ResumeLayout(false);

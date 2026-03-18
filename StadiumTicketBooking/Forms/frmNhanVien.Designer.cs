@@ -20,9 +20,9 @@ namespace StadiumTicketBooking.Forms
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
             grpTTNV = new GroupBox();
             cboVaiTro = new ComboBox();
             btnXuat = new Button();
@@ -94,7 +94,7 @@ namespace StadiumTicketBooking.Forms
             // 
             cboVaiTro.DropDownStyle = ComboBoxStyle.DropDownList;
             cboVaiTro.FormattingEnabled = true;
-            cboVaiTro.Location = new Point(160, 182);
+            cboVaiTro.Location = new Point(160, 210);
             cboVaiTro.Name = "cboVaiTro";
             cboVaiTro.Size = new Size(230, 28);
             cboVaiTro.TabIndex = 21;
@@ -190,25 +190,25 @@ namespace StadiumTicketBooking.Forms
             // lblVaiTro
             // 
             lblVaiTro.AutoSize = true;
-            lblVaiTro.Location = new Point(30, 185);
+            lblVaiTro.Location = new Point(32, 210);
             lblVaiTro.Name = "lblVaiTro";
-            lblVaiTro.Size = new Size(56, 20);
+            lblVaiTro.Size = new Size(55, 20);
             lblVaiTro.TabIndex = 10;
             lblVaiTro.Text = "Vai trò:";
             // 
             // lblMatKhau
             // 
             lblMatKhau.AutoSize = true;
-            lblMatKhau.Location = new Point(30, 135);
+            lblMatKhau.Location = new Point(32, 160);
             lblMatKhau.Name = "lblMatKhau";
-            lblMatKhau.Size = new Size(74, 20);
+            lblMatKhau.Size = new Size(73, 20);
             lblMatKhau.TabIndex = 9;
             lblMatKhau.Text = "Mật khẩu:";
             // 
             // lblTenDN
             // 
             lblTenDN.AutoSize = true;
-            lblTenDN.Location = new Point(30, 85);
+            lblTenDN.Location = new Point(30, 79);
             lblTenDN.Name = "lblTenDN";
             lblTenDN.Size = new Size(110, 20);
             lblTenDN.TabIndex = 8;
@@ -216,7 +216,7 @@ namespace StadiumTicketBooking.Forms
             // 
             // txtMatKhau
             // 
-            txtMatKhau.Location = new Point(160, 132);
+            txtMatKhau.Location = new Point(160, 157);
             txtMatKhau.Name = "txtMatKhau";
             txtMatKhau.PasswordChar = '●';
             txtMatKhau.Size = new Size(230, 27);
@@ -225,7 +225,7 @@ namespace StadiumTicketBooking.Forms
             // 
             // txtDangNhap
             // 
-            txtDangNhap.Location = new Point(160, 82);
+            txtDangNhap.Location = new Point(160, 72);
             txtDangNhap.Name = "txtDangNhap";
             txtDangNhap.Size = new Size(230, 27);
             txtDangNhap.TabIndex = 6;
@@ -254,7 +254,7 @@ namespace StadiumTicketBooking.Forms
             // 
             // txtDienThoai
             // 
-            txtDienThoai.Location = new Point(160, 32);
+            txtDienThoai.Location = new Point(160, 115);
             txtDienThoai.Name = "txtDienThoai";
             txtDienThoai.Size = new Size(230, 27);
             txtDienThoai.TabIndex = 3;
@@ -262,24 +262,24 @@ namespace StadiumTicketBooking.Forms
             // lblDienThoai
             // 
             lblDienThoai.AutoSize = true;
-            lblDienThoai.Location = new Point(30, 35);
+            lblDienThoai.Location = new Point(30, 118);
             lblDienThoai.Name = "lblDienThoai";
-            lblDienThoai.Size = new Size(79, 20);
+            lblDienThoai.Size = new Size(81, 20);
             lblDienThoai.TabIndex = 2;
             lblDienThoai.Text = "Điện thoại:";
             // 
             // lblHoTen
             // 
             lblHoTen.AutoSize = true;
-            lblHoTen.Location = new Point(30, 236);
+            lblHoTen.Location = new Point(30, 36);
             lblHoTen.Name = "lblHoTen";
-            lblHoTen.Size = new Size(56, 20);
+            lblHoTen.Size = new Size(57, 20);
             lblHoTen.TabIndex = 1;
             lblHoTen.Text = "Họ tên:";
             // 
             // txtHoTen
             // 
-            txtHoTen.Location = new Point(160, 226);
+            txtHoTen.Location = new Point(160, 33);
             txtHoTen.Name = "txtHoTen";
             txtHoTen.Size = new Size(230, 27);
             txtHoTen.TabIndex = 0;
@@ -300,20 +300,20 @@ namespace StadiumTicketBooking.Forms
             dgvNhanVien.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvNhanVien.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvNhanVien.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            dgvNhanVien.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dgvNhanVien.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             dgvNhanVien.ColumnHeadersHeight = 40;
             dgvNhanVien.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvNhanVien.Columns.AddRange(new DataGridViewColumn[] { colID, colHoVaTen, colDienThoai, colTenDangNhap, colVaiTro, colHinhAnh });
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Window;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle3.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
-            dgvNhanVien.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = SystemColors.Window;
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle6.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
+            dgvNhanVien.DefaultCellStyle = dataGridViewCellStyle6;
             dgvNhanVien.Location = new Point(10, 30);
             dgvNhanVien.MultiSelect = false;
             dgvNhanVien.Name = "dgvNhanVien";
@@ -367,8 +367,8 @@ namespace StadiumTicketBooking.Forms
             // colHinhAnh
             // 
             colHinhAnh.DataPropertyName = "HinhAnh";
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            colHinhAnh.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            colHinhAnh.DefaultCellStyle = dataGridViewCellStyle5;
             colHinhAnh.FillWeight = 15F;
             colHinhAnh.HeaderText = "Hình Ảnh";
             colHinhAnh.ImageLayout = DataGridViewImageCellLayout.Zoom;
