@@ -20,10 +20,10 @@ namespace StadiumTicketBooking.Forms
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             grpThongTinDatVe = new GroupBox();
             cboNhanVien = new ComboBox();
             cboKhachHang = new ComboBox();
@@ -198,9 +198,10 @@ namespace StadiumTicketBooking.Forms
             // 
             // btnThanhToan
             // 
+            btnThanhToan.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnThanhToan.Location = new Point(930, 28);
             btnThanhToan.Name = "btnThanhToan";
-            btnThanhToan.Size = new Size(130, 40);
+            btnThanhToan.Size = new Size(134, 40);
             btnThanhToan.TabIndex = 6;
             btnThanhToan.Text = "Thanh toán";
             btnThanhToan.UseVisualStyleBackColor = true;
@@ -208,9 +209,10 @@ namespace StadiumTicketBooking.Forms
             // 
             // btnHuyDon
             // 
-            btnHuyDon.Location = new Point(1080, 28);
+            btnHuyDon.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnHuyDon.Location = new Point(1070, 28);
             btnHuyDon.Name = "btnHuyDon";
-            btnHuyDon.Size = new Size(130, 40);
+            btnHuyDon.Size = new Size(111, 40);
             btnHuyDon.TabIndex = 7;
             btnHuyDon.Text = "Hủy đơn";
             btnHuyDon.UseVisualStyleBackColor = true;
@@ -218,9 +220,10 @@ namespace StadiumTicketBooking.Forms
             // 
             // btnThoat
             // 
-            btnThoat.Location = new Point(1005, 82);
+            btnThoat.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnThoat.Location = new Point(978, 74);
             btnThoat.Name = "btnThoat";
-            btnThoat.Size = new Size(130, 40);
+            btnThoat.Size = new Size(102, 40);
             btnThoat.TabIndex = 8;
             btnThoat.Text = "Thoát";
             btnThoat.UseVisualStyleBackColor = true;
@@ -231,9 +234,9 @@ namespace StadiumTicketBooking.Forms
             grpVeTrong.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             grpVeTrong.Controls.Add(dgvVeTrong);
             grpVeTrong.Controls.Add(btnChonVe);
-            grpVeTrong.Location = new Point(5, 250);
+            grpVeTrong.Location = new Point(5, 241);
             grpVeTrong.Name = "grpVeTrong";
-            grpVeTrong.Size = new Size(639, 440);
+            grpVeTrong.Size = new Size(639, 449);
             grpVeTrong.TabIndex = 1;
             grpVeTrong.TabStop = false;
             grpVeTrong.Text = "Danh sách vé còn trống";
@@ -242,27 +245,27 @@ namespace StadiumTicketBooking.Forms
             // 
             dgvVeTrong.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvVeTrong.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            dgvVeTrong.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dgvVeTrong.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvVeTrong.ColumnHeadersHeight = 35;
             dgvVeTrong.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvVeTrong.Columns.AddRange(new DataGridViewColumn[] { colVeID, colTenSuKien, colSoGhe, colTenKhuVuc, colTenSan, colGiaVe, colTrangThai });
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = SystemColors.Window;
-            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle6.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
-            dgvVeTrong.DefaultCellStyle = dataGridViewCellStyle6;
-            dgvVeTrong.Location = new Point(20, 30);
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvVeTrong.DefaultCellStyle = dataGridViewCellStyle2;
+            dgvVeTrong.Location = new Point(6, 30);
             dgvVeTrong.MultiSelect = false;
             dgvVeTrong.Name = "dgvVeTrong";
             dgvVeTrong.RowHeadersVisible = false;
             dgvVeTrong.RowHeadersWidth = 51;
             dgvVeTrong.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvVeTrong.Size = new Size(609, 354);
+            dgvVeTrong.Size = new Size(627, 363);
             dgvVeTrong.TabIndex = 0;
             dgvVeTrong.DoubleClick += btnChonVe_Click;
             // 
@@ -325,9 +328,9 @@ namespace StadiumTicketBooking.Forms
             // btnChonVe
             // 
             btnChonVe.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnChonVe.Location = new Point(479, 390);
+            btnChonVe.Location = new Point(249, 399);
             btnChonVe.Name = "btnChonVe";
-            btnChonVe.Size = new Size(150, 40);
+            btnChonVe.Size = new Size(109, 40);
             btnChonVe.TabIndex = 1;
             btnChonVe.Text = "Chọn vé";
             btnChonVe.UseVisualStyleBackColor = true;
@@ -338,7 +341,7 @@ namespace StadiumTicketBooking.Forms
             grpVeDaChon.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grpVeDaChon.Controls.Add(dgvVeDaChon);
             grpVeDaChon.Controls.Add(btnBoVe);
-            grpVeDaChon.Location = new Point(650, 250);
+            grpVeDaChon.Location = new Point(670, 250);
             grpVeDaChon.Name = "grpVeDaChon";
             grpVeDaChon.Size = new Size(610, 440);
             grpVeDaChon.TabIndex = 2;
@@ -349,20 +352,20 @@ namespace StadiumTicketBooking.Forms
             // 
             dgvVeDaChon.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvVeDaChon.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle7.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            dgvVeDaChon.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dgvVeDaChon.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dgvVeDaChon.ColumnHeadersHeight = 35;
             dgvVeDaChon.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvVeDaChon.Columns.AddRange(new DataGridViewColumn[] { colVeIDDaChon, colTenSuKienDaChon, colSoGheDaChon, colTenKhuVucDaChon, colGiaVeDaChon });
-            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = SystemColors.Window;
-            dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle8.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.False;
-            dgvVeDaChon.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = SystemColors.Window;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
+            dgvVeDaChon.DefaultCellStyle = dataGridViewCellStyle4;
             dgvVeDaChon.Location = new Point(10, 30);
             dgvVeDaChon.MultiSelect = false;
             dgvVeDaChon.Name = "dgvVeDaChon";
@@ -415,9 +418,10 @@ namespace StadiumTicketBooking.Forms
             // btnBoVe
             // 
             btnBoVe.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnBoVe.Location = new Point(450, 390);
+            btnBoVe.ImageAlign = ContentAlignment.MiddleLeft;
+            btnBoVe.Location = new Point(264, 386);
             btnBoVe.Name = "btnBoVe";
-            btnBoVe.Size = new Size(150, 40);
+            btnBoVe.Size = new Size(101, 40);
             btnBoVe.TabIndex = 1;
             btnBoVe.Text = "Bỏ vé";
             btnBoVe.UseVisualStyleBackColor = true;

@@ -12,15 +12,15 @@ using StadiumTicketBooking.Data.Entity;
 namespace StadiumTicketBooking.Migrations
 {
     [DbContext(typeof(StadiumDbContext))]
-    [Migration("20260302050510_CSDLDoAn")]
-    partial class CSDLDoAn
+    [Migration("20260319102322_KhoiTaoCSDL")]
+    partial class KhoiTaoCSDL
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.3")
+                .HasAnnotation("ProductVersion", "10.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);

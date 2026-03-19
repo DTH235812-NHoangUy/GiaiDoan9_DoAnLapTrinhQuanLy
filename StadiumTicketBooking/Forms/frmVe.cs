@@ -4,6 +4,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace StadiumTicketBooking.Forms
@@ -12,11 +13,11 @@ namespace StadiumTicketBooking.Forms
     {
         private readonly StadiumDbContext context = new StadiumDbContext();
         private bool xuLyThem = false;
-        private int currentId = 0;
+        private bool dangNapDuLieuNoiBo = false;
 
-        private string projectRootFolder;
-        private string imagesFolder;
-        private string ticketImagesFolder;
+        private string projectRootFolder = string.Empty;
+        private string imagesFolder = string.Empty;
+        private string ticketImagesFolder = string.Empty;
 
         public frmVe()
         {
@@ -32,15 +33,30 @@ namespace StadiumTicketBooking.Forms
             if (!Directory.Exists(ticketImagesFolder))
                 Directory.CreateDirectory(ticketImagesFolder);
 
-            dgvVe.DataError += (s, e) => { e.ThrowException = false; };
+            dgvVe.DataError += dgvVe_DataError;
             dgvVe.CellFormatting += dgvVe_CellFormatting;
             dgvVe.SelectionChanged += dgvVe_SelectionChanged;
+            cboSuKien.SelectedIndexChanged += cboSuKien_SelectedIndexChanged;
+        }
+
+        private void frmVe_Load(object sender, EventArgs e)
+        {
+            dangNapDuLieuNoiBo = true;
+
+            CaiDatIconNut();
+            TaiDanhSachSuKien();
+            TaiDanhSachTrangThai();
+            TaiDanhSachGheTheoSuKien();
+            BatTatChucNang(false);
+            TaiDuLieu();
+
+            dangNapDuLieuNoiBo = false;
         }
 
         private string GetProjectRootFolder()
         {
             string baseDir = Application.StartupPath;
-            DirectoryInfo dir = new DirectoryInfo(baseDir);
+            DirectoryInfo? dir = new DirectoryInfo(baseDir);
 
             while (dir != null)
             {
@@ -49,7 +65,9 @@ namespace StadiumTicketBooking.Forms
                     if (dir.GetFiles("*.csproj").Length > 0)
                         return dir.FullName;
                 }
-                catch { }
+                catch
+                {
+                }
 
                 dir = dir.Parent;
             }
@@ -57,18 +75,18 @@ namespace StadiumTicketBooking.Forms
             return AppDomain.CurrentDomain.BaseDirectory;
         }
 
-        private string FindImagePath(string fileName)
+        private string? FindImagePath(string? fileName)
         {
             if (string.IsNullOrWhiteSpace(fileName))
                 return null;
 
-            string ticketPath = Path.Combine(ticketImagesFolder, fileName);
-            if (File.Exists(ticketPath))
-                return ticketPath;
+            string path1 = Path.Combine(ticketImagesFolder, fileName);
+            if (File.Exists(path1))
+                return path1;
 
-            string directPath = Path.Combine(imagesFolder, fileName);
-            if (File.Exists(directPath))
-                return directPath;
+            string path2 = Path.Combine(imagesFolder, fileName);
+            if (File.Exists(path2))
+                return path2;
 
             try
             {
@@ -76,7 +94,9 @@ namespace StadiumTicketBooking.Forms
                 if (files.Length > 0)
                     return files[0];
             }
-            catch { }
+            catch
+            {
+            }
 
             return null;
         }
@@ -86,6 +106,7 @@ namespace StadiumTicketBooking.Forms
             try
             {
                 picHinhAnh.ImageLocation = null;
+
                 if (picHinhAnh.Image != null)
                 {
                     Image oldImage = picHinhAnh.Image;
@@ -93,10 +114,12 @@ namespace StadiumTicketBooking.Forms
                     oldImage.Dispose();
                 }
             }
-            catch { }
+            catch
+            {
+            }
         }
 
-        private void ShowImageToPictureBox(string imagePath)
+        private void ShowImageToPictureBox(string? imagePath)
         {
             ClearPictureBox();
 
@@ -128,6 +151,7 @@ namespace StadiumTicketBooking.Forms
             btn.ImageAlign = ContentAlignment.MiddleLeft;
             btn.TextAlign = ContentAlignment.MiddleCenter;
         }
+
         private void CaiDatIconNut()
         {
             CaiDatNut(btnThem, Properties.Resources.add_24, "Thêm");
@@ -141,46 +165,52 @@ namespace StadiumTicketBooking.Forms
             CaiDatNut(btnXuat, Properties.Resources.export_24, "Xuất");
         }
 
-
-        private void BatTatChucNang(bool giaTri)
+        private void BatTatChucNang(bool dangXuLy)
         {
-            btnLuu.Enabled = giaTri;
-            btnHuy.Enabled = giaTri;
+            btnLuu.Enabled = dangXuLy;
+            btnHuy.Enabled = dangXuLy;
 
-            cboSuKien.Enabled = giaTri;
-            cboGhe.Enabled = giaTri;
-            txtGiaVe.Enabled = giaTri;
+            cboSuKien.Enabled = dangXuLy;
+            cboGhe.Enabled = dangXuLy;
+            txtGiaVe.Enabled = dangXuLy;
             cboTrangThai.Enabled = false;
-            btnDoiAnh.Enabled = giaTri;
+            btnDoiAnh.Enabled = dangXuLy;
 
-            btnThem.Enabled = !giaTri;
-            btnSua.Enabled = !giaTri;
-            btnXoa.Enabled = !giaTri;
-            btnThoat.Enabled = !giaTri;
-            btnNhap.Enabled = !giaTri;
-            btnXuat.Enabled = !giaTri;
-            btnTimKiem.Enabled = !giaTri;
-            dgvVe.Enabled = !giaTri;
+            btnThem.Enabled = !dangXuLy;
+            btnSua.Enabled = !dangXuLy;
+            btnXoa.Enabled = !dangXuLy;
+            btnThoat.Enabled = !dangXuLy;
+            btnNhap.Enabled = !dangXuLy;
+            btnXuat.Enabled = !dangXuLy;
+            btnTimKiem.Enabled = !dangXuLy;
+            dgvVe.Enabled = !dangXuLy;
 
             txtID.ReadOnly = true;
         }
 
         private void XoaDuLieuNhap()
         {
-            txtID.Text = string.Empty;
-            txtGiaVe.Text = string.Empty;
+            txtID.Clear();
+            txtGiaVe.Clear();
+
+            dangNapDuLieuNoiBo = true;
 
             if (cboSuKien.Items.Count > 0)
                 cboSuKien.SelectedIndex = 0;
+
+            TaiDanhSachGheTheoSuKien();
 
             if (cboGhe.Items.Count > 0)
                 cboGhe.SelectedIndex = 0;
 
             cboTrangThai.Text = "Trống";
+
+            dangNapDuLieuNoiBo = false;
+
             ClearPictureBox();
         }
 
-        private void TaiDanhSachSuKien()
+        private void TaiDanhSachSuKien(int? selectedSuKienId = null)
         {
             var dsSuKien = context.SuKien
                 .Select(x => new
@@ -188,29 +218,59 @@ namespace StadiumTicketBooking.Forms
                     x.ID,
                     TenHienThi = x.TenSuKien + " - " + x.SanVanDong.TenSan
                 })
+                .OrderBy(x => x.TenHienThi)
                 .ToList();
 
             cboSuKien.DataSource = dsSuKien;
             cboSuKien.DisplayMember = "TenHienThi";
             cboSuKien.ValueMember = "ID";
+
+            if (selectedSuKienId.HasValue && dsSuKien.Any(x => x.ID == selectedSuKienId.Value))
+                cboSuKien.SelectedValue = selectedSuKienId.Value;
         }
 
-        private void TaiDanhSachGhe()
+        private void TaiDanhSachGheTheoSuKien(int? gheDangChon = null)
         {
-            var dsGhe = context.Ghe
+            int? suKienId = GetSelectedIntValue(cboSuKien.SelectedValue);
+            int? sanVanDongId = null;
+
+            if (suKienId.HasValue)
+            {
+                sanVanDongId = context.SuKien
+                    .Where(x => x.ID == suKienId.Value)
+                    .Select(x => (int?)x.SanVanDongID)
+                    .FirstOrDefault();
+            }
+
+            var query = context.Ghe.AsQueryable();
+
+            if (sanVanDongId.HasValue)
+            {
+                query = query.Where(x => x.KhuVuc.SanVanDongID == sanVanDongId.Value);
+            }
+
+            var dsGhe = query
                 .Select(x => new
                 {
                     x.ID,
                     TenHienThi = x.SoGhe + " - " + x.KhuVuc.TenKhuVuc + " - " + x.KhuVuc.SanVanDong.TenSan
                 })
+                .OrderBy(x => x.TenHienThi)
                 .ToList();
 
             cboGhe.DataSource = dsGhe;
             cboGhe.DisplayMember = "TenHienThi";
             cboGhe.ValueMember = "ID";
+
+            if (gheDangChon.HasValue && dsGhe.Any(x => x.ID == gheDangChon.Value))
+                cboGhe.SelectedValue = gheDangChon.Value;
+            else if (dsGhe.Count > 0)
+                cboGhe.SelectedIndex = 0;
+            else
+                cboGhe.SelectedIndex = -1;
         }
 
-        private void TaiTrangThai()
+        private void TaiDanhSachTrangThai()
         {
             cboTrangThai.Items.Clear();
             cboTrangThai.Items.Add("Trống");
@@ -221,19 +281,53 @@ namespace StadiumTicketBooking.Forms
 
         private string LayTrangThaiThucTe(int veId)
         {
-            bool daBan = context.HoaDon_ChiTiet.Any(ct => ct.VeID == veId);
+            bool daBan = context.HoaDon_ChiTiet.Any(x => x.VeID == veId);
             return daBan ? "Đã bán" : "Trống";
+        }
+
+        private int? GetSelectedIntValue(object? value)
+        {
+            try
+            {
+                if (value == null)
+                    return null;
+
+                return Convert.ToInt32(value);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private object? LayGiaTriThuocTinh(object? obj, string propertyName)
+        {
+            if (obj == null)
+                return null;
+
+            PropertyInfo? prop = obj.GetType().GetProperty(propertyName);
+            return prop?.GetValue(obj, null);
+        }
+
+        private string? LayTenFileAnhDongDangChon()
+        {
+            if (dgvVe.CurrentRow?.DataBoundItem == null)
+                return null;
+
+            object? value = LayGiaTriThuocTinh(dgvVe.CurrentRow.DataBoundItem, "HinhAnh");
+            return value?.ToString();
         }
 
         private void TaiDuLieu()
         {
             dgvVe.AutoGenerateColumns = false;
 
-            var veDaBan = context.HoaDon_ChiTiet
-                .Select(ct => ct.VeID)
+            var dsVeDaBan = context.HoaDon_ChiTiet
+                .Select(x => x.VeID)
                 .ToList();
 
             var listVe = context.Ve
+                .OrderBy(x => x.ID)
                 .Select(x => new
                 {
                     x.ID,
@@ -242,60 +336,25 @@ namespace StadiumTicketBooking.Forms
                     TenSuKien = x.SuKien.TenSuKien,
                     SoGhe = x.Ghe.SoGhe,
                     TenKhuVuc = x.Ghe.KhuVuc.TenKhuVuc,
-                    TenSan = x.Ghe.KhuVuc.SanVanDong.TenSan,
+                    TenSan = x.SuKien.SanVanDong.TenSan,
                     x.GiaVe,
-                    TrangThai = veDaBan.Contains(x.ID) ? "Đã bán" : "Trống",
+                    TrangThai = dsVeDaBan.Contains(x.ID) ? "Đã bán" : "Trống",
                     x.HinhAnh
                 })
                 .ToList();
 
-            BindingSource bindingSource = new BindingSource
-            {
-                DataSource = listVe
-            };
-
-            txtID.DataBindings.Clear();
-            txtID.DataBindings.Add("Text", bindingSource, "ID", false, DataSourceUpdateMode.Never);
-
-            txtGiaVe.DataBindings.Clear();
-            txtGiaVe.DataBindings.Add("Text", bindingSource, "GiaVe", false, DataSourceUpdateMode.Never);
-
-            cboSuKien.DataBindings.Clear();
-            cboSuKien.DataBindings.Add("SelectedValue", bindingSource, "SuKienID", false, DataSourceUpdateMode.Never);
-
-            cboGhe.DataBindings.Clear();
-            cboGhe.DataBindings.Add("SelectedValue", bindingSource, "GheID", false, DataSourceUpdateMode.Never);
-
-            cboTrangThai.DataBindings.Clear();
-            cboTrangThai.DataBindings.Add("Text", bindingSource, "TrangThai", false, DataSourceUpdateMode.Never);
-
-            picHinhAnh.DataBindings.Clear();
-            Binding bImg = new Binding("Tag", bindingSource, "HinhAnh", true);
-            bImg.Format += (s, ev) =>
-            {
-                if (ev.Value != null && !string.IsNullOrWhiteSpace(ev.Value.ToString()))
-                    ev.Value = FindImagePath(ev.Value.ToString());
-                else
-                    ev.Value = null;
-            };
-            picHinhAnh.DataBindings.Add(bImg);
-
-            dgvVe.DataSource = null;
-            dgvVe.DataSource = bindingSource;
-
-            if (dgvVe.Columns["colGiaVe"] != null)
-            {
-                dgvVe.Columns["colGiaVe"].DefaultCellStyle.Format = "N0";
-                dgvVe.Columns["colGiaVe"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            }
-
-            string filePath = picHinhAnh.Tag?.ToString();
-            ShowImageToPictureBox(filePath);
+            GanBinding(listVe);
         }
 
         private void TaiDuLieu(object dataSource)
         {
             dgvVe.AutoGenerateColumns = false;
+            GanBinding(dataSource);
+        }
+
+        private void GanBinding(object dataSource)
+        {
+            dangNapDuLieuNoiBo = true;
 
             BindingSource bindingSource = new BindingSource
             {
@@ -306,7 +365,7 @@ namespace StadiumTicketBooking.Forms
             txtID.DataBindings.Add("Text", bindingSource, "ID", false, DataSourceUpdateMode.Never);
 
             txtGiaVe.DataBindings.Clear();
-            txtGiaVe.DataBindings.Add("Text", bindingSource, "GiaVe", false, DataSourceUpdateMode.Never);
+            txtGiaVe.DataBindings.Add("Text", bindingSource, "GiaVe", true, DataSourceUpdateMode.Never, "", "N0");
 
             cboSuKien.DataBindings.Clear();
             cboSuKien.DataBindings.Add("SelectedValue", bindingSource, "SuKienID", false, DataSourceUpdateMode.Never);
@@ -319,12 +378,12 @@ namespace StadiumTicketBooking.Forms
 
             picHinhAnh.DataBindings.Clear();
             Binding bImg = new Binding("Tag", bindingSource, "HinhAnh", true);
-            bImg.Format += (s, ev) =>
+            bImg.Format += (s, e) =>
             {
-                if (ev.Value != null && !string.IsNullOrWhiteSpace(ev.Value.ToString()))
-                    ev.Value = FindImagePath(ev.Value.ToString());
+                if (e.Value != null && !string.IsNullOrWhiteSpace(e.Value.ToString()))
+                    e.Value = FindImagePath(e.Value.ToString());
                 else
-                    ev.Value = null;
+                    e.Value = null;
             };
             picHinhAnh.DataBindings.Add(bImg);
 
@@ -337,36 +396,45 @@ namespace StadiumTicketBooking.Forms
                 dgvVe.Columns["colGiaVe"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             }
 
-            string filePath = picHinhAnh.Tag?.ToString();
+            if (dgvVe.Columns["colHinhAnh"] is DataGridViewImageColumn imgCol)
+            {
+                imgCol.ImageLayout = DataGridViewImageCellLayout.Zoom;
+            }
+
+            int? suKienId = GetSelectedIntValue(cboSuKien.SelectedValue);
+            int? gheId = GetSelectedIntValue(cboGhe.SelectedValue);
+
+            if (suKienId.HasValue)
+                TaiDanhSachGheTheoSuKien(gheId);
+
+            string? filePath = picHinhAnh.Tag?.ToString();
             ShowImageToPictureBox(filePath);
+
+            dangNapDuLieuNoiBo = false;
         }
 
-        private void frmVe_Load(object sender, EventArgs e)
+        private void dgvVe_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
-            CaiDatIconNut();
-            TaiDanhSachSuKien();
-            TaiDanhSachGhe();
-            TaiTrangThai();
-            BatTatChucNang(false);
-            TaiDuLieu();
+            e.ThrowException = false;
         }
 
         private void dgvVe_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
 
             if (dgvVe.Columns[e.ColumnIndex].Name == "colHinhAnh")
             {
                 if (e.Value != null && !string.IsNullOrWhiteSpace(e.Value.ToString()))
                 {
-                    string fileName = e.Value.ToString();
-                    string path = FindImagePath(fileName);
+                    string fileName = e.Value.ToString()!;
+                    string? imagePath = FindImagePath(fileName);
 
-                    if (!string.IsNullOrEmpty(path) && File.Exists(path))
+                    if (!string.IsNullOrEmpty(imagePath) && File.Exists(imagePath))
                     {
                         try
                         {
-                            byte[] bytes = File.ReadAllBytes(path);
+                            byte[] bytes = File.ReadAllBytes(imagePath);
                             using (MemoryStream ms = new MemoryStream(bytes))
                             using (Image img = Image.FromStream(ms))
                             {
@@ -396,25 +464,31 @@ namespace StadiumTicketBooking.Forms
 
         private void dgvVe_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvVe.CurrentRow == null) return;
-
-            object value = dgvVe.CurrentRow.Cells["colHinhAnh"].Value;
-            if (value == null)
-            {
-                ClearPictureBox();
+            if (dgvVe.CurrentRow == null)
                 return;
-            }
 
-            string fileName = value.ToString();
-            string imagePath = FindImagePath(fileName);
+            string? fileName = LayTenFileAnhDongDangChon();
+            string? imagePath = FindImagePath(fileName);
             ShowImageToPictureBox(imagePath);
+        }
+
+        private void cboSuKien_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            if (dangNapDuLieuNoiBo)
+                return;
+
+            if (!cboSuKien.Enabled)
+                return;
+
+            int? gheDangChon = GetSelectedIntValue(cboGhe.SelectedValue);
+            TaiDanhSachGheTheoSuKien(gheDangChon);
         }
 
         private void btnDoiAnh_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
-                ofd.Filter = "Images|*.jpg;*.png;*.jpeg";
+                ofd.Filter = "Images|*.jpg;*.jpeg;*.png";
 
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
@@ -438,7 +512,8 @@ namespace StadiumTicketBooking.Forms
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Không thể đổi ảnh: " + ex.Message);
+                        MessageBox.Show("Không thể đổi ảnh: " + ex.Message,
+                            "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -447,7 +522,6 @@ namespace StadiumTicketBooking.Forms
         private void btnThem_Click(object sender, EventArgs e)
         {
             xuLyThem = true;
-            currentId = 0;
             BatTatChucNang(true);
             XoaDuLieuNhap();
             cboSuKien.Focus();
@@ -457,50 +531,55 @@ namespace StadiumTicketBooking.Forms
         {
             if (dgvVe.CurrentRow == null)
             {
-                MessageBox.Show("Vui lòng chọn vé cần sửa!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn vé cần sửa!",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (int.TryParse(dgvVe.CurrentRow.Cells["colID"].Value?.ToString(), out currentId))
-            {
-                xuLyThem = false;
-                BatTatChucNang(true);
-                cboSuKien.Focus();
-            }
-            else
-            {
-                MessageBox.Show("Không xác định được vé cần sửa!", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            xuLyThem = false;
+            BatTatChucNang(true);
+
+            int? gheDangChon = GetSelectedIntValue(cboGhe.SelectedValue);
+            TaiDanhSachGheTheoSuKien(gheDangChon);
+
+            cboSuKien.Focus();
         }
 
         private void btnXoa_Click(object sender, EventArgs e)
         {
             if (dgvVe.CurrentRow == null)
             {
-                MessageBox.Show("Vui lòng chọn vé cần xóa!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn vé cần xóa!",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (!int.TryParse(dgvVe.CurrentRow.Cells["colID"].Value?.ToString(), out int idXoa))
             {
-                MessageBox.Show("Không xác định được vé cần xóa!", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Không xác định được vé cần xóa!",
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            string tenVe = dgvVe.CurrentRow.Cells["colTenSuKien"].Value?.ToString() + " - " +
-                           dgvVe.CurrentRow.Cells["colSoGhe"].Value?.ToString();
+            bool dangDuocBan = context.HoaDon_ChiTiet.Any(x => x.VeID == idXoa);
+            if (dangDuocBan)
+            {
+                MessageBox.Show("Không thể xóa vé này vì vé đang nằm trong hóa đơn!",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            DialogResult ketQua = MessageBox.Show(
-                $"Xác nhận xóa vé: {tenVe}?",
+            string tenVe = (dgvVe.CurrentRow.Cells["colTenSuKien"].Value?.ToString() ?? "") +
+                           " - " +
+                           (dgvVe.CurrentRow.Cells["colSoGhe"].Value?.ToString() ?? "");
+
+            DialogResult dr = MessageBox.Show(
+                "Xác nhận xóa vé: " + tenVe + "?",
                 "Xác nhận",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
-            if (ketQua != DialogResult.Yes)
+            if (dr != DialogResult.Yes)
                 return;
 
             try
@@ -508,28 +587,20 @@ namespace StadiumTicketBooking.Forms
                 var ve = context.Ve.Find(idXoa);
                 if (ve != null)
                 {
-                    bool dangDuocBan = context.HoaDon_ChiTiet.Any(ct => ct.VeID == idXoa);
-                    if (dangDuocBan)
-                    {
-                        MessageBox.Show("Không thể xóa vé này vì vé đang nằm trong hóa đơn!", "Thông báo",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
                     context.Ve.Remove(ve);
                     context.SaveChanges();
 
-                    MessageBox.Show("Xóa thành công!", "Thông báo",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Xóa thành công!",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     TaiDuLieu();
                     BatTatChucNang(false);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("Không thể xóa vé này vì đang có dữ liệu liên quan!", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Không thể xóa vé. " + ex.Message,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -537,24 +608,25 @@ namespace StadiumTicketBooking.Forms
         {
             if (cboSuKien.SelectedValue == null)
             {
-                MessageBox.Show("Vui lòng chọn sự kiện!", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Vui lòng chọn sự kiện!",
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 cboSuKien.Focus();
                 return;
             }
 
             if (cboGhe.SelectedValue == null)
             {
-                MessageBox.Show("Vui lòng chọn ghế!", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Vui lòng chọn ghế!",
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 cboGhe.Focus();
                 return;
             }
 
-            if (!int.TryParse(txtGiaVe.Text.Trim(), out int giaVe) || giaVe < 0)
+            string giaVeText = txtGiaVe.Text.Trim().Replace(",", "").Replace(".", "");
+            if (!int.TryParse(giaVeText, out int giaVe) || giaVe < 0)
             {
-                MessageBox.Show("Giá vé không hợp lệ!", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Giá vé không hợp lệ!",
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtGiaVe.Focus();
                 return;
             }
@@ -562,9 +634,28 @@ namespace StadiumTicketBooking.Forms
             int suKienId = Convert.ToInt32(cboSuKien.SelectedValue);
             int gheId = Convert.ToInt32(cboGhe.SelectedValue);
 
+            var suKien = context.SuKien.Find(suKienId);
+            var ghe = context.Ghe.Find(gheId);
+
+            if (suKien == null || ghe == null)
+            {
+                MessageBox.Show("Dữ liệu sự kiện hoặc ghế không tồn tại!",
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var khuVuc = context.KhuVuc.Find(ghe.KhuVucID);
+            if (khuVuc == null || khuVuc.SanVanDongID != suKien.SanVanDongID)
+            {
+                MessageBox.Show("Ghế không thuộc sân vận động của sự kiện này!",
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                cboGhe.Focus();
+                return;
+            }
+
             try
             {
-                string fileNameOnly = string.IsNullOrEmpty(picHinhAnh.ImageLocation)
+                string fileNameOnly = string.IsNullOrWhiteSpace(picHinhAnh.ImageLocation)
                     ? ""
                     : Path.GetFileName(picHinhAnh.ImageLocation);
 
@@ -576,8 +667,8 @@ namespace StadiumTicketBooking.Forms
 
                     if (daTonTai)
                     {
-                        MessageBox.Show("Vé của ghế này trong sự kiện đã tồn tại!", "Thông báo",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Vé của ghế này trong sự kiện đã tồn tại!",
+                            "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         cboGhe.Focus();
                         return;
                     }
@@ -597,8 +688,8 @@ namespace StadiumTicketBooking.Forms
                 {
                     if (!int.TryParse(txtID.Text, out int idSua))
                     {
-                        MessageBox.Show("Không xác định được vé cần sửa!", "Lỗi",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Không xác định được vé cần sửa!",
+                            "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
@@ -609,8 +700,8 @@ namespace StadiumTicketBooking.Forms
 
                     if (trungDuLieu)
                     {
-                        MessageBox.Show("Vé của ghế này trong sự kiện đã tồn tại!", "Thông báo",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Vé của ghế này trong sự kiện đã tồn tại!",
+                            "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         cboGhe.Focus();
                         return;
                     }
@@ -623,7 +714,7 @@ namespace StadiumTicketBooking.Forms
                         ve.GiaVe = giaVe;
                         ve.TrangThai = LayTrangThaiThucTe(ve.ID);
 
-                        if (!string.IsNullOrEmpty(fileNameOnly))
+                        if (!string.IsNullOrWhiteSpace(fileNameOnly))
                             ve.HinhAnh = fileNameOnly;
 
                         context.Ve.Update(ve);
@@ -631,16 +722,17 @@ namespace StadiumTicketBooking.Forms
                 }
 
                 context.SaveChanges();
-                MessageBox.Show("Lưu thành công!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                MessageBox.Show("Lưu thành công!",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 TaiDuLieu();
                 BatTatChucNang(false);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi: " + ex.Message, "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Lỗi: " + ex.Message,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -657,30 +749,24 @@ namespace StadiumTicketBooking.Forms
             Close();
         }
 
-        protected override void OnFormClosed(FormClosedEventArgs e)
-        {
-            context.Dispose();
-            base.OnFormClosed(e);
-        }
-
         private void btnTimKiem_Click(object sender, EventArgs e)
         {
-            string searchTerm = Microsoft.VisualBasic.Interaction.InputBox(
+            string tuKhoa = Microsoft.VisualBasic.Interaction.InputBox(
                 "Nhập từ khóa tìm kiếm (sự kiện, ghế, khu vực, sân, giá vé, trạng thái):",
                 "Tìm kiếm vé",
                 "");
 
-            if (string.IsNullOrWhiteSpace(searchTerm))
+            if (string.IsNullOrWhiteSpace(tuKhoa))
             {
                 TaiDuLieu();
                 BatTatChucNang(false);
                 return;
             }
 
-            string lower = searchTerm.Trim().ToLower();
+            string lower = tuKhoa.Trim().ToLower();
 
-            var veDaBan = context.HoaDon_ChiTiet
-                .Select(ct => ct.VeID)
+            var dsVeDaBan = context.HoaDon_ChiTiet
+                .Select(x => x.VeID)
                 .ToList();
 
             var ketQua = context.Ve
@@ -692,9 +778,9 @@ namespace StadiumTicketBooking.Forms
                     TenSuKien = x.SuKien.TenSuKien,
                     SoGhe = x.Ghe.SoGhe,
                     TenKhuVuc = x.Ghe.KhuVuc.TenKhuVuc,
-                    TenSan = x.Ghe.KhuVuc.SanVanDong.TenSan,
+                    TenSan = x.SuKien.SanVanDong.TenSan,
                     x.GiaVe,
-                    TrangThai = veDaBan.Contains(x.ID) ? "Đã bán" : "Trống",
+                    TrangThai = dsVeDaBan.Contains(x.ID) ? "Đã bán" : "Trống",
                     x.HinhAnh
                 })
                 .Where(x =>
@@ -702,14 +788,15 @@ namespace StadiumTicketBooking.Forms
                     (x.SoGhe ?? "").ToLower().Contains(lower) ||
                     (x.TenKhuVuc ?? "").ToLower().Contains(lower) ||
                     (x.TenSan ?? "").ToLower().Contains(lower) ||
-                    x.GiaVe.ToString().ToLower().Contains(lower) ||
+                    x.GiaVe.ToString().Contains(lower) ||
                     (x.TrangThai ?? "").ToLower().Contains(lower))
+                .OrderBy(x => x.ID)
                 .ToList();
 
             if (ketQua.Count == 0)
             {
-                MessageBox.Show("Không tìm thấy kết quả phù hợp.", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Không tìm thấy kết quả phù hợp.",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 TaiDuLieu();
             }
             else
@@ -718,6 +805,12 @@ namespace StadiumTicketBooking.Forms
             }
 
             BatTatChucNang(false);
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            context.Dispose();
+            base.OnFormClosed(e);
         }
     }
 }

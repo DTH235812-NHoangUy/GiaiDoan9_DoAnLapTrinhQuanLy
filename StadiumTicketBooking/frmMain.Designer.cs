@@ -81,7 +81,7 @@ namespace StadiumTicketBooking.Forms
             // btnVaiTro
             // 
             btnVaiTro.Dock = DockStyle.Top;
-            btnVaiTro.Location = new Point(0, 831);
+            btnVaiTro.Location = new Point(0, 841);
             btnVaiTro.Name = "btnVaiTro";
             btnVaiTro.Size = new Size(274, 64);
             btnVaiTro.TabIndex = 11;
@@ -92,7 +92,7 @@ namespace StadiumTicketBooking.Forms
             // btnNhanVien
             // 
             btnNhanVien.Dock = DockStyle.Top;
-            btnNhanVien.Location = new Point(0, 767);
+            btnNhanVien.Location = new Point(0, 777);
             btnNhanVien.Name = "btnNhanVien";
             btnNhanVien.Size = new Size(274, 64);
             btnNhanVien.TabIndex = 10;
@@ -103,7 +103,7 @@ namespace StadiumTicketBooking.Forms
             // btnSanVanDong
             // 
             btnSanVanDong.Dock = DockStyle.Top;
-            btnSanVanDong.Location = new Point(0, 703);
+            btnSanVanDong.Location = new Point(0, 713);
             btnSanVanDong.Name = "btnSanVanDong";
             btnSanVanDong.Size = new Size(274, 64);
             btnSanVanDong.TabIndex = 9;
@@ -114,7 +114,7 @@ namespace StadiumTicketBooking.Forms
             // btnKhuVuc
             // 
             btnKhuVuc.Dock = DockStyle.Top;
-            btnKhuVuc.Location = new Point(0, 639);
+            btnKhuVuc.Location = new Point(0, 649);
             btnKhuVuc.Name = "btnKhuVuc";
             btnKhuVuc.Size = new Size(274, 64);
             btnKhuVuc.TabIndex = 8;
@@ -125,7 +125,7 @@ namespace StadiumTicketBooking.Forms
             // btnGhe
             // 
             btnGhe.Dock = DockStyle.Top;
-            btnGhe.Location = new Point(0, 575);
+            btnGhe.Location = new Point(0, 585);
             btnGhe.Name = "btnGhe";
             btnGhe.Size = new Size(274, 64);
             btnGhe.TabIndex = 7;
@@ -136,7 +136,7 @@ namespace StadiumTicketBooking.Forms
             // btnSuKien
             // 
             btnSuKien.Dock = DockStyle.Top;
-            btnSuKien.Location = new Point(0, 511);
+            btnSuKien.Location = new Point(0, 521);
             btnSuKien.Name = "btnSuKien";
             btnSuKien.Size = new Size(274, 64);
             btnSuKien.TabIndex = 6;
@@ -147,7 +147,7 @@ namespace StadiumTicketBooking.Forms
             // btnVe
             // 
             btnVe.Dock = DockStyle.Top;
-            btnVe.Location = new Point(0, 447);
+            btnVe.Location = new Point(0, 457);
             btnVe.Name = "btnVe";
             btnVe.Size = new Size(274, 64);
             btnVe.TabIndex = 5;
@@ -158,7 +158,7 @@ namespace StadiumTicketBooking.Forms
             // btnKhachHang
             // 
             btnKhachHang.Dock = DockStyle.Top;
-            btnKhachHang.Location = new Point(0, 383);
+            btnKhachHang.Location = new Point(0, 393);
             btnKhachHang.Name = "btnKhachHang";
             btnKhachHang.Size = new Size(274, 64);
             btnKhachHang.TabIndex = 4;
@@ -169,7 +169,7 @@ namespace StadiumTicketBooking.Forms
             // btnChiTietHoaDon
             // 
             btnChiTietHoaDon.Dock = DockStyle.Top;
-            btnChiTietHoaDon.Location = new Point(0, 319);
+            btnChiTietHoaDon.Location = new Point(0, 329);
             btnChiTietHoaDon.Name = "btnChiTietHoaDon";
             btnChiTietHoaDon.Size = new Size(274, 64);
             btnChiTietHoaDon.TabIndex = 3;
@@ -180,7 +180,7 @@ namespace StadiumTicketBooking.Forms
             // btnHoaDon
             // 
             btnHoaDon.Dock = DockStyle.Top;
-            btnHoaDon.Location = new Point(0, 255);
+            btnHoaDon.Location = new Point(0, 265);
             btnHoaDon.Name = "btnHoaDon";
             btnHoaDon.Size = new Size(274, 64);
             btnHoaDon.TabIndex = 2;
@@ -193,7 +193,7 @@ namespace StadiumTicketBooking.Forms
             btnDatVe.Dock = DockStyle.Top;
             btnDatVe.Location = new Point(0, 191);
             btnDatVe.Name = "btnDatVe";
-            btnDatVe.Size = new Size(274, 64);
+            btnDatVe.Size = new Size(274, 74);
             btnDatVe.TabIndex = 1;
             btnDatVe.Text = "Đặt vé";
             btnDatVe.UseVisualStyleBackColor = true;
@@ -251,7 +251,7 @@ namespace StadiumTicketBooking.Forms
             lblVaiTro.Font = new Font("Segoe UI", 10F);
             lblVaiTro.Location = new Point(848, 56);
             lblVaiTro.Name = "lblVaiTro";
-            lblVaiTro.Size = new Size(103, 23);
+            lblVaiTro.Size = new Size(113, 23);
             lblVaiTro.TabIndex = 2;
             lblVaiTro.Text = "Vai trò: Trống";
             // 
@@ -262,7 +262,7 @@ namespace StadiumTicketBooking.Forms
             lblNguoiDung.Font = new Font("Segoe UI", 10F);
             lblNguoiDung.Location = new Point(816, 19);
             lblNguoiDung.Name = "lblNguoiDung";
-            lblNguoiDung.Size = new Size(209, 23);
+            lblNguoiDung.Size = new Size(239, 23);
             lblNguoiDung.TabIndex = 1;
             lblNguoiDung.Text = "Người dùng: Chưa đăng nhập";
             // 
@@ -273,7 +273,7 @@ namespace StadiumTicketBooking.Forms
             lblTenHeThong.ForeColor = Color.FromArgb(30, 41, 59);
             lblTenHeThong.Location = new Point(23, 27);
             lblTenHeThong.Name = "lblTenHeThong";
-            lblTenHeThong.Size = new Size(443, 37);
+            lblTenHeThong.Size = new Size(448, 37);
             lblTenHeThong.TabIndex = 0;
             lblTenHeThong.Text = "QUẢN LÝ ĐẶT VÉ SÂN VẬN ĐỘNG";
             // 
