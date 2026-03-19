@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StadiumTicketBooking.Data.Entity;
+using Sunny.UI;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -181,14 +182,19 @@ namespace StadiumTicketBooking.Forms
 
         private void btnInHoaDon_Click(object sender, EventArgs e)
         {
-            if (!LayHoaDonDangChon())
+            if (dgvHoaDon.CurrentRow == null)
+            {
+                MessageBox.Show("Vui lòng chọn hóa đơn cần in.",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
+            }
 
-            if (!KiemTraHoaDonThuocNhanVienDangNhap())
-                return;
+            int id = Convert.ToInt32(dgvHoaDon.CurrentRow.Cells["ID"].Value);
 
-            MessageBox.Show("Bạn gắn chức năng in hóa đơn sau nhé.",
-                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            using (StadiumTicketBooking.Reports.frmInHoaDon f = new StadiumTicketBooking.Reports.frmInHoaDon(id))
+            {
+                f.ShowDialog();
+            }
         }
 
         private void btnTimKiem_Click(object sender, EventArgs e)

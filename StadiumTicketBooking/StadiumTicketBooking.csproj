@@ -19,6 +19,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="ReportViewerCore.WinForms" Version="15.1.33" />
     <PackageReference Include="SunnyUI" Version="3.9.3" />
   </ItemGroup>
 
@@ -34,6 +35,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Reports\StadiumTicketBooking.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StadiumTicketBooking.xsd</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -56,6 +62,10 @@
     </None>
     <None Update="Images\AnhTheNhanVien\anh1.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Reports\StadiumTicketBooking.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>StadiumTicketBooking.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
 
