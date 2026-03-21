@@ -53,10 +53,10 @@ namespace StadiumTicketBooking.Reports
                 var danhSachChiTiet = context.HoaDon_ChiTiet
                     .Include(x => x.Ve)
                         .ThenInclude(v => v.SuKien)
-                            .ThenInclude(sk => sk.SanVanDong)
                     .Include(x => x.Ve)
                         .ThenInclude(v => v.Ghe)
                             .ThenInclude(g => g.KhuVuc)
+                                .ThenInclude(kv => kv.SanVanDong)
                     .Where(x => x.HoaDonID == id)
                     .Select(x => new DanhSachHoaDon_ChiTiet
                     {
@@ -64,7 +64,7 @@ namespace StadiumTicketBooking.Reports
                         HoaDonID = x.HoaDonID,
                         VeID = x.VeID,
                         TenSuKien = x.Ve.SuKien.TenSuKien,
-                        TenSan = x.Ve.SuKien.SanVanDong.TenSan,
+                        TenSan = x.Ve.Ghe.KhuVuc.SanVanDong.TenSan,
                         ViTriGhe = x.Ve.Ghe.KhuVuc.TenKhuVuc + " - Ghế " + x.Ve.Ghe.SoGhe,
                         SoLuongBan = 1,
                         DonGiaBan = x.DonGiaBan,
@@ -79,6 +79,14 @@ namespace StadiumTicketBooking.Reports
                     return;
                 }
 
+                string tenNhanVien = "Khách hàng tự đặt";
+                if (hoaDon.NhanVien != null)
+                    tenNhanVien = hoaDon.NhanVien.HoVaTen;
+
+                string tenKhachHang = hoaDon.KhachHang != null
+                    ? hoaDon.KhachHang.HoVaTen
+                    : "Khách lẻ";
+
                 reportViewer1.LocalReport.DataSources.Clear();
                 reportViewer1.LocalReport.ReportPath = reportPath;
 
@@ -88,9 +96,9 @@ namespace StadiumTicketBooking.Reports
                 var param = new List<ReportParameter>
                 {
                     new ReportParameter("HoaDonID", hoaDon.ID.ToString()),
-                    new ReportParameter("NgayLap", hoaDon.NgayLap.ToString("dd/MM/yyyy")),
-                    new ReportParameter("NhanVien_Ten", hoaDon.NhanVien.HoVaTen),
-                    new ReportParameter("KhachHang_Ten", hoaDon.KhachHang.HoVaTen),
+                    new ReportParameter("NgayLap", hoaDon.NgayLap.ToString("dd/MM/yyyy HH:mm")),
+                    new ReportParameter("NhanVien_Ten", tenNhanVien),
+                    new ReportParameter("KhachHang_Ten", tenKhachHang),
                     new ReportParameter("GhiChu", hoaDon.GhiChu ?? "")
                 };
 
@@ -107,6 +115,12 @@ namespace StadiumTicketBooking.Reports
                     MessageBoxIcon.Error
                 );
             }
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            context.Dispose();
+            base.OnFormClosed(e);
         }
     }
 }

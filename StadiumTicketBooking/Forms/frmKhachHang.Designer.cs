@@ -23,6 +23,14 @@ namespace StadiumTicketBooking.Forms
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             grpTTKhachHang = new GroupBox();
+            chkTrangThai = new CheckBox();
+            txtMatKhau = new TextBox();
+            txtTenDangNhap = new TextBox();
+            txtEmail = new TextBox();
+            lblTrangThai = new Label();
+            lblMatKhau = new Label();
+            lblTenDangNhap = new Label();
+            lblEmail = new Label();
             btnXuat = new Button();
             btnNhap = new Button();
             btnTimKiem = new Button();
@@ -46,6 +54,9 @@ namespace StadiumTicketBooking.Forms
             colHoVaTen = new DataGridViewTextBoxColumn();
             colDienThoai = new DataGridViewTextBoxColumn();
             colDiaChi = new DataGridViewTextBoxColumn();
+            colEmail = new DataGridViewTextBoxColumn();
+            colTenDangNhap = new DataGridViewTextBoxColumn();
+            colTrangThai = new DataGridViewCheckBoxColumn();
             grpTTKhachHang.SuspendLayout();
             grpKhachHang.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvKhachHang).BeginInit();
@@ -54,6 +65,14 @@ namespace StadiumTicketBooking.Forms
             // grpTTKhachHang
             // 
             grpTTKhachHang.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            grpTTKhachHang.Controls.Add(chkTrangThai);
+            grpTTKhachHang.Controls.Add(txtMatKhau);
+            grpTTKhachHang.Controls.Add(txtTenDangNhap);
+            grpTTKhachHang.Controls.Add(txtEmail);
+            grpTTKhachHang.Controls.Add(lblTrangThai);
+            grpTTKhachHang.Controls.Add(lblMatKhau);
+            grpTTKhachHang.Controls.Add(lblTenDangNhap);
+            grpTTKhachHang.Controls.Add(lblEmail);
             grpTTKhachHang.Controls.Add(btnXuat);
             grpTTKhachHang.Controls.Add(btnNhap);
             grpTTKhachHang.Controls.Add(btnTimKiem);
@@ -73,14 +92,84 @@ namespace StadiumTicketBooking.Forms
             grpTTKhachHang.Controls.Add(lblID);
             grpTTKhachHang.Location = new Point(20, 15);
             grpTTKhachHang.Name = "grpTTKhachHang";
-            grpTTKhachHang.Size = new Size(1240, 235);
+            grpTTKhachHang.Size = new Size(1240, 310);
             grpTTKhachHang.TabIndex = 0;
             grpTTKhachHang.TabStop = false;
             grpTTKhachHang.Text = "Thông tin khách hàng";
             // 
+            // chkTrangThai
+            // 
+            chkTrangThai.AutoSize = true;
+            chkTrangThai.Checked = true;
+            chkTrangThai.CheckState = CheckState.Checked;
+            chkTrangThai.Location = new Point(820, 189);
+            chkTrangThai.Name = "chkTrangThai";
+            chkTrangThai.Size = new Size(103, 24);
+            chkTrangThai.TabIndex = 24;
+            chkTrangThai.Text = "Hoạt động";
+            chkTrangThai.UseVisualStyleBackColor = true;
+            // 
+            // txtMatKhau
+            // 
+            txtMatKhau.Location = new Point(640, 132);
+            txtMatKhau.Name = "txtMatKhau";
+            txtMatKhau.Size = new Size(260, 27);
+            txtMatKhau.TabIndex = 23;
+            txtMatKhau.UseSystemPasswordChar = true;
+            // 
+            // txtTenDangNhap
+            // 
+            txtTenDangNhap.Location = new Point(640, 82);
+            txtTenDangNhap.Name = "txtTenDangNhap";
+            txtTenDangNhap.Size = new Size(260, 27);
+            txtTenDangNhap.TabIndex = 22;
+            // 
+            // txtEmail
+            // 
+            txtEmail.Location = new Point(640, 32);
+            txtEmail.Name = "txtEmail";
+            txtEmail.Size = new Size(260, 27);
+            txtEmail.TabIndex = 21;
+            // 
+            // lblTrangThai
+            // 
+            lblTrangThai.AutoSize = true;
+            lblTrangThai.Location = new Point(520, 190);
+            lblTrangThai.Name = "lblTrangThai";
+            lblTrangThai.Size = new Size(78, 20);
+            lblTrangThai.TabIndex = 20;
+            lblTrangThai.Text = "Trạng thái:";
+            // 
+            // lblMatKhau
+            // 
+            lblMatKhau.AutoSize = true;
+            lblMatKhau.Location = new Point(520, 135);
+            lblMatKhau.Name = "lblMatKhau";
+            lblMatKhau.Size = new Size(73, 20);
+            lblMatKhau.TabIndex = 19;
+            lblMatKhau.Text = "Mật khẩu:";
+            // 
+            // lblTenDangNhap
+            // 
+            lblTenDangNhap.AutoSize = true;
+            lblTenDangNhap.Location = new Point(520, 85);
+            lblTenDangNhap.Name = "lblTenDangNhap";
+            lblTenDangNhap.Size = new Size(110, 20);
+            lblTenDangNhap.TabIndex = 18;
+            lblTenDangNhap.Text = "Tên đăng nhập:";
+            // 
+            // lblEmail
+            // 
+            lblEmail.AutoSize = true;
+            lblEmail.Location = new Point(520, 35);
+            lblEmail.Name = "lblEmail";
+            lblEmail.Size = new Size(49, 20);
+            lblEmail.TabIndex = 17;
+            lblEmail.Text = "Email:";
+            // 
             // btnXuat
             // 
-            btnXuat.Location = new Point(800, 118);
+            btnXuat.Location = new Point(1020, 118);
             btnXuat.Name = "btnXuat";
             btnXuat.Size = new Size(150, 40);
             btnXuat.TabIndex = 16;
@@ -89,7 +178,7 @@ namespace StadiumTicketBooking.Forms
             // 
             // btnNhap
             // 
-            btnNhap.Location = new Point(800, 72);
+            btnNhap.Location = new Point(1020, 72);
             btnNhap.Name = "btnNhap";
             btnNhap.Size = new Size(150, 40);
             btnNhap.TabIndex = 15;
@@ -98,7 +187,7 @@ namespace StadiumTicketBooking.Forms
             // 
             // btnTimKiem
             // 
-            btnTimKiem.Location = new Point(800, 26);
+            btnTimKiem.Location = new Point(1020, 26);
             btnTimKiem.Name = "btnTimKiem";
             btnTimKiem.Size = new Size(150, 40);
             btnTimKiem.TabIndex = 14;
@@ -108,7 +197,7 @@ namespace StadiumTicketBooking.Forms
             // 
             // btnThoat
             // 
-            btnThoat.Location = new Point(620, 118);
+            btnThoat.Location = new Point(1004, 250);
             btnThoat.Name = "btnThoat";
             btnThoat.Size = new Size(150, 40);
             btnThoat.TabIndex = 13;
@@ -118,7 +207,7 @@ namespace StadiumTicketBooking.Forms
             // 
             // btnHuy
             // 
-            btnHuy.Location = new Point(620, 72);
+            btnHuy.Location = new Point(785, 250);
             btnHuy.Name = "btnHuy";
             btnHuy.Size = new Size(150, 40);
             btnHuy.TabIndex = 12;
@@ -128,7 +217,7 @@ namespace StadiumTicketBooking.Forms
             // 
             // btnLuu
             // 
-            btnLuu.Location = new Point(620, 26);
+            btnLuu.Location = new Point(572, 250);
             btnLuu.Name = "btnLuu";
             btnLuu.Size = new Size(150, 40);
             btnLuu.TabIndex = 11;
@@ -138,7 +227,7 @@ namespace StadiumTicketBooking.Forms
             // 
             // btnSua
             // 
-            btnSua.Location = new Point(440, 118);
+            btnSua.Location = new Point(367, 250);
             btnSua.Name = "btnSua";
             btnSua.Size = new Size(150, 40);
             btnSua.TabIndex = 10;
@@ -148,7 +237,7 @@ namespace StadiumTicketBooking.Forms
             // 
             // btnXoa
             // 
-            btnXoa.Location = new Point(440, 72);
+            btnXoa.Location = new Point(186, 250);
             btnXoa.Name = "btnXoa";
             btnXoa.Size = new Size(150, 40);
             btnXoa.TabIndex = 9;
@@ -158,7 +247,7 @@ namespace StadiumTicketBooking.Forms
             // 
             // btnThem
             // 
-            btnThem.Location = new Point(440, 26);
+            btnThem.Location = new Point(10, 250);
             btnThem.Name = "btnThem";
             btnThem.Size = new Size(150, 40);
             btnThem.TabIndex = 8;
@@ -200,7 +289,7 @@ namespace StadiumTicketBooking.Forms
             lblDiaChi.AutoSize = true;
             lblDiaChi.Location = new Point(30, 185);
             lblDiaChi.Name = "lblDiaChi";
-            lblDiaChi.Size = new Size(55, 20);
+            lblDiaChi.Size = new Size(58, 20);
             lblDiaChi.TabIndex = 3;
             lblDiaChi.Text = "Địa chỉ:";
             // 
@@ -209,7 +298,7 @@ namespace StadiumTicketBooking.Forms
             lblDienThoai.AutoSize = true;
             lblDienThoai.Location = new Point(30, 135);
             lblDienThoai.Name = "lblDienThoai";
-            lblDienThoai.Size = new Size(79, 20);
+            lblDienThoai.Size = new Size(81, 20);
             lblDienThoai.TabIndex = 2;
             lblDienThoai.Text = "Điện thoại:";
             // 
@@ -218,7 +307,7 @@ namespace StadiumTicketBooking.Forms
             lblHoVaTen.AutoSize = true;
             lblHoVaTen.Location = new Point(30, 85);
             lblHoVaTen.Name = "lblHoVaTen";
-            lblHoVaTen.Size = new Size(75, 20);
+            lblHoVaTen.Size = new Size(76, 20);
             lblHoVaTen.TabIndex = 1;
             lblHoVaTen.Text = "Họ và tên:";
             // 
@@ -235,9 +324,9 @@ namespace StadiumTicketBooking.Forms
             // 
             grpKhachHang.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grpKhachHang.Controls.Add(dgvKhachHang);
-            grpKhachHang.Location = new Point(20, 265);
+            grpKhachHang.Location = new Point(20, 340);
             grpKhachHang.Name = "grpKhachHang";
-            grpKhachHang.Size = new Size(1240, 425);
+            grpKhachHang.Size = new Size(1240, 350);
             grpKhachHang.TabIndex = 1;
             grpKhachHang.TabStop = false;
             grpKhachHang.Text = "Danh sách khách hàng";
@@ -252,7 +341,7 @@ namespace StadiumTicketBooking.Forms
             dgvKhachHang.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvKhachHang.ColumnHeadersHeight = 40;
             dgvKhachHang.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvKhachHang.Columns.AddRange(new DataGridViewColumn[] { colID, colHoVaTen, colDienThoai, colDiaChi });
+            dgvKhachHang.Columns.AddRange(new DataGridViewColumn[] { colID, colHoVaTen, colDienThoai, colDiaChi, colEmail, colTenDangNhap, colTrangThai });
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
@@ -268,13 +357,13 @@ namespace StadiumTicketBooking.Forms
             dgvKhachHang.RowHeadersWidth = 51;
             dgvKhachHang.RowTemplate.Height = 35;
             dgvKhachHang.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvKhachHang.Size = new Size(1220, 385);
+            dgvKhachHang.Size = new Size(1220, 310);
             dgvKhachHang.TabIndex = 0;
             // 
             // colID
             // 
             colID.DataPropertyName = "ID";
-            colID.FillWeight = 10F;
+            colID.FillWeight = 8F;
             colID.HeaderText = "ID";
             colID.MinimumWidth = 6;
             colID.Name = "colID";
@@ -282,7 +371,7 @@ namespace StadiumTicketBooking.Forms
             // colHoVaTen
             // 
             colHoVaTen.DataPropertyName = "HoVaTen";
-            colHoVaTen.FillWeight = 30F;
+            colHoVaTen.FillWeight = 18F;
             colHoVaTen.HeaderText = "Họ Và Tên";
             colHoVaTen.MinimumWidth = 6;
             colHoVaTen.Name = "colHoVaTen";
@@ -290,7 +379,7 @@ namespace StadiumTicketBooking.Forms
             // colDienThoai
             // 
             colDienThoai.DataPropertyName = "DienThoai";
-            colDienThoai.FillWeight = 20F;
+            colDienThoai.FillWeight = 14F;
             colDienThoai.HeaderText = "Điện Thoại";
             colDienThoai.MinimumWidth = 6;
             colDienThoai.Name = "colDienThoai";
@@ -298,10 +387,34 @@ namespace StadiumTicketBooking.Forms
             // colDiaChi
             // 
             colDiaChi.DataPropertyName = "DiaChi";
-            colDiaChi.FillWeight = 40F;
+            colDiaChi.FillWeight = 18F;
             colDiaChi.HeaderText = "Địa Chỉ";
             colDiaChi.MinimumWidth = 6;
             colDiaChi.Name = "colDiaChi";
+            // 
+            // colEmail
+            // 
+            colEmail.DataPropertyName = "Email";
+            colEmail.FillWeight = 18F;
+            colEmail.HeaderText = "Email";
+            colEmail.MinimumWidth = 6;
+            colEmail.Name = "colEmail";
+            // 
+            // colTenDangNhap
+            // 
+            colTenDangNhap.DataPropertyName = "TenDangNhap";
+            colTenDangNhap.FillWeight = 14F;
+            colTenDangNhap.HeaderText = "Tên Đăng Nhập";
+            colTenDangNhap.MinimumWidth = 6;
+            colTenDangNhap.Name = "colTenDangNhap";
+            // 
+            // colTrangThai
+            // 
+            colTrangThai.DataPropertyName = "TrangThai";
+            colTrangThai.FillWeight = 10F;
+            colTrangThai.HeaderText = "Hoạt Động";
+            colTrangThai.MinimumWidth = 6;
+            colTrangThai.Name = "colTrangThai";
             // 
             // frmKhachHang
             // 
@@ -325,6 +438,14 @@ namespace StadiumTicketBooking.Forms
         #endregion
 
         private GroupBox grpTTKhachHang;
+        private CheckBox chkTrangThai;
+        private TextBox txtMatKhau;
+        private TextBox txtTenDangNhap;
+        private TextBox txtEmail;
+        private Label lblTrangThai;
+        private Label lblMatKhau;
+        private Label lblTenDangNhap;
+        private Label lblEmail;
         private Button btnXuat;
         private Button btnNhap;
         private Button btnTimKiem;
@@ -348,5 +469,8 @@ namespace StadiumTicketBooking.Forms
         private DataGridViewTextBoxColumn colHoVaTen;
         private DataGridViewTextBoxColumn colDienThoai;
         private DataGridViewTextBoxColumn colDiaChi;
+        private DataGridViewTextBoxColumn colEmail;
+        private DataGridViewTextBoxColumn colTenDangNhap;
+        private DataGridViewCheckBoxColumn colTrangThai;
     }
 }

@@ -32,6 +32,12 @@ namespace StadiumTicketBooking.Forms
             return vaiTro.Trim().ToLower() == "admin";
         }
 
+        private bool LaNhanVien()
+        {
+            string role = vaiTro.Trim().ToLower();
+            return role == "nhanvien" || role == "nhân viên";
+        }
+
         private void ApDungPhanQuyen()
         {
             if (LaAdmin())
@@ -100,26 +106,42 @@ namespace StadiumTicketBooking.Forms
             }
         }
 
+        private IQueryable<HoaDon> TaoQueryHoaDonTheoQuyen()
+        {
+            var query = context.HoaDon
+                .AsNoTracking()
+                .Include(x => x.NhanVien)
+                .Include(x => x.KhachHang)
+                .Include(x => x.HoaDon_ChiTiet)
+                .AsQueryable();
+
+            if (LaAdmin())
+            {
+                return query;
+            }
+
+            if (LaNhanVien())
+            {
+                query = query.Where(x =>
+                    !x.NhanVienID.HasValue || x.NhanVienID.Value == nhanVienIDDangNhap);
+            }
+
+            return query;
+        }
+
         private void TaiDanhSachHoaDon()
         {
             try
             {
-                var query = context.HoaDon.AsNoTracking();
-
-                if (!LaAdmin())
-                {
-                    query = query.Where(r => r.NhanVienID == nhanVienIDDangNhap);
-                }
-
-                var ds = query
+                var ds = TaoQueryHoaDonTheoQuyen()
                     .Select(r => new DanhSachHoaDon
                     {
                         ID = r.ID,
-                        HoVaTenNhanVien = r.NhanVien.HoVaTen,
-                        HoVaTenKhachHang = r.KhachHang.HoVaTen,
+                        HoVaTenNhanVien = r.NhanVien != null ? r.NhanVien.HoVaTen : "Khách tự đặt",
+                        HoVaTenKhachHang = r.KhachHang != null ? r.KhachHang.HoVaTen : "",
                         NgayLap = r.NgayLap,
                         GhiChu = r.GhiChu,
-                        TongTienHoaDon = r.HoaDon_ChiTiet.Sum(ct => (double)ct.DonGiaBan),
+                        TongTienHoaDon = r.HoaDon_ChiTiet.Sum(ct => (double?)ct.DonGiaBan) ?? 0,
                         XemChiTiet = "Xem chi tiết"
                     })
                     .OrderByDescending(r => r.ID)
@@ -168,11 +190,11 @@ namespace StadiumTicketBooking.Forms
 
             bool hopLe = context.HoaDon
                 .AsNoTracking()
-                .Any(x => x.ID == id && x.NhanVienID == nhanVienIDDangNhap);
+                .Any(x => x.ID == id && x.NhanVienID.HasValue && x.NhanVienID.Value == nhanVienIDDangNhap);
 
             if (!hopLe)
             {
-                MessageBox.Show("Bạn không có quyền thao tác hóa đơn này.",
+                MessageBox.Show("Bạn chỉ được xóa hóa đơn do chính mình lập.",
                     "Phân quyền", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
@@ -215,22 +237,15 @@ namespace StadiumTicketBooking.Forms
             {
                 string lower = searchTerm.Trim().ToLower();
 
-                var query = context.HoaDon.AsNoTracking();
-
-                if (!LaAdmin())
-                {
-                    query = query.Where(r => r.NhanVienID == nhanVienIDDangNhap);
-                }
-
-                var ketQua = query
+                var ketQua = TaoQueryHoaDonTheoQuyen()
                     .Select(r => new DanhSachHoaDon
                     {
                         ID = r.ID,
-                        HoVaTenNhanVien = r.NhanVien.HoVaTen,
-                        HoVaTenKhachHang = r.KhachHang.HoVaTen,
+                        HoVaTenNhanVien = r.NhanVien != null ? r.NhanVien.HoVaTen : "Khách tự đặt",
+                        HoVaTenKhachHang = r.KhachHang != null ? r.KhachHang.HoVaTen : "",
                         NgayLap = r.NgayLap,
                         GhiChu = r.GhiChu,
-                        TongTienHoaDon = r.HoaDon_ChiTiet.Sum(ct => (double)ct.DonGiaBan),
+                        TongTienHoaDon = r.HoaDon_ChiTiet.Sum(ct => (double?)ct.DonGiaBan) ?? 0,
                         XemChiTiet = "Xem chi tiết"
                     })
                     .ToList()
@@ -337,20 +352,6 @@ namespace StadiumTicketBooking.Forms
             if (dgvHoaDon.Columns[e.ColumnIndex].Name == "XemChiTiet")
             {
                 int hoaDonId = Convert.ToInt32(dgvHoaDon.Rows[e.RowIndex].Cells["ID"].Value);
-
-                if (!LaAdmin())
-                {
-                    bool hopLe = context.HoaDon
-                        .AsNoTracking()
-                        .Any(x => x.ID == hoaDonId && x.NhanVienID == nhanVienIDDangNhap);
-
-                    if (!hopLe)
-                    {
-                        MessageBox.Show("Bạn không có quyền xem chi tiết hóa đơn này.",
-                            "Phân quyền", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-                }
 
                 using (frmHoaDon_ChiTiet chiTiet = new frmHoaDon_ChiTiet(hoaDonId, nhanVienIDDangNhap, vaiTro))
                 {

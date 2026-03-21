@@ -12,8 +12,8 @@ using StadiumTicketBooking.Data.Entity;
 namespace StadiumTicketBooking.Migrations
 {
     [DbContext(typeof(StadiumDbContext))]
-    [Migration("20260319102322_KhoiTaoCSDL")]
-    partial class KhoiTaoCSDL
+    [Migration("20260321042315_InitialNew")]
+    partial class InitialNew
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,7 +64,7 @@ namespace StadiumTicketBooking.Migrations
                     b.Property<DateTime>("NgayLap")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("NhanVienID")
+                    b.Property<int?>("NhanVienID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -116,11 +116,31 @@ namespace StadiumTicketBooking.Migrations
                     b.Property<string>("DienThoai")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("HoVaTen")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("MatKhau")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("NgayTao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TenDangNhap")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("TrangThai")
+                        .HasColumnType("bit");
+
                     b.HasKey("ID");
+
+                    b.HasIndex("TenDangNhap")
+                        .IsUnique();
 
                     b.ToTable("KhachHang");
                 });
@@ -282,7 +302,8 @@ namespace StadiumTicketBooking.Migrations
 
                     b.HasIndex("GheID");
 
-                    b.HasIndex("SuKienID");
+                    b.HasIndex("SuKienID", "GheID")
+                        .IsUnique();
 
                     b.ToTable("Ve");
                 });
@@ -303,14 +324,13 @@ namespace StadiumTicketBooking.Migrations
                     b.HasOne("StadiumTicketBooking.Data.Entity.KhachHang", "KhachHang")
                         .WithMany("HoaDon")
                         .HasForeignKey("KhachHangID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("StadiumTicketBooking.Data.Entity.NhanVien", "NhanVien")
                         .WithMany("HoaDon")
                         .HasForeignKey("NhanVienID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("KhachHang");
 

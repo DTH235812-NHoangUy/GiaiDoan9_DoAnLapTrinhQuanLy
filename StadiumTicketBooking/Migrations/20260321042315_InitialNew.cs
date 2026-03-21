@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace StadiumTicketBooking.Migrations
 {
     /// <inheritdoc />
-    public partial class KhoiTaoCSDL : Migration
+    public partial class InitialNew : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,12 @@ namespace StadiumTicketBooking.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     HoVaTen = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DienThoai = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TenDangNhap = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MatKhau = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NgayTao = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TrangThai = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -147,7 +152,7 @@ namespace StadiumTicketBooking.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NhanVienID = table.Column<int>(type: "int", nullable: false),
+                    NhanVienID = table.Column<int>(type: "int", nullable: true),
                     KhachHangID = table.Column<int>(type: "int", nullable: false),
                     NgayLap = table.Column<DateTime>(type: "datetime2", nullable: false),
                     GhiChu = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -160,13 +165,13 @@ namespace StadiumTicketBooking.Migrations
                         column: x => x.KhachHangID,
                         principalTable: "KhachHang",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_HoaDon_NhanVien_NhanVienID",
                         column: x => x.NhanVienID,
                         principalTable: "NhanVien",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -251,6 +256,12 @@ namespace StadiumTicketBooking.Migrations
                 column: "VeID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_KhachHang_TenDangNhap",
+                table: "KhachHang",
+                column: "TenDangNhap",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_KhuVuc_SanVanDongID",
                 table: "KhuVuc",
                 column: "SanVanDongID");
@@ -271,9 +282,10 @@ namespace StadiumTicketBooking.Migrations
                 column: "GheID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ve_SuKienID",
+                name: "IX_Ve_SuKienID_GheID",
                 table: "Ve",
-                column: "SuKienID");
+                columns: new[] { "SuKienID", "GheID" },
+                unique: true);
         }
 
         /// <inheritdoc />

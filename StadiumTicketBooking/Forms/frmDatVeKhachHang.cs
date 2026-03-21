@@ -8,11 +8,11 @@ using System.Windows.Forms;
 
 namespace StadiumTicketBooking.Forms
 {
-    public partial class frmDatVe : Form
+    public partial class frmDatVeKhachHang : Form
     {
         private readonly StadiumDbContext context = new StadiumDbContext();
-        private readonly int nhanVienIDDangNhap = 0;
-        private readonly string vaiTro = "";
+        private readonly int khachHangIDDangNhap = 0;
+        private readonly string hoVaTenKhachHang = "";
 
         private class VeChonTam
         {
@@ -26,16 +26,16 @@ namespace StadiumTicketBooking.Forms
 
         private readonly List<VeChonTam> gioVe = new List<VeChonTam>();
 
-        public frmDatVe()
+        public frmDatVeKhachHang()
         {
             InitializeComponent();
         }
 
-        public frmDatVe(int nhanVienID, string vaiTro)
+        public frmDatVeKhachHang(int khachHangID, string hoVaTen)
         {
             InitializeComponent();
-            nhanVienIDDangNhap = nhanVienID;
-            this.vaiTro = vaiTro ?? "";
+            khachHangIDDangNhap = khachHangID;
+            hoVaTenKhachHang = hoVaTen ?? "";
         }
 
         private void CaiDatNut(Button btn, Image icon, string text)
@@ -54,33 +54,14 @@ namespace StadiumTicketBooking.Forms
             CaiDatNut(btnThoat, Properties.Resources.exit_24, "Thoát");
             CaiDatNut(btnChonVe, Properties.Resources.add_24, "Chọn vé");
             CaiDatNut(btnBoVe, Properties.Resources.delete_24, "Bỏ vé");
+            CaiDatNut(btnHoaDonCuaToi, Properties.Resources.search_24, "Hóa đơn của tôi");
         }
 
-        private bool LaAdmin()
+        private void frmDatVeKhachHang_Load(object sender, EventArgs e)
         {
-            string role = vaiTro.Trim().ToLower();
-            return role == "admin";
-        }
-
-        private bool LaNhanVien()
-        {
-            string role = vaiTro.Trim().ToLower();
-            return role == "nhanvien" || role == "nhân viên";
-        }
-
-        private void frmDatVe_Load(object sender, EventArgs e)
-        {
-            if (LaAdmin())
+            if (khachHangIDDangNhap <= 0)
             {
-                MessageBox.Show("Admin không được phép đặt vé.", "Phân quyền",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                Close();
-                return;
-            }
-
-            if (LaNhanVien() && nhanVienIDDangNhap <= 0)
-            {
-                MessageBox.Show("Không xác định được nhân viên đang đăng nhập.", "Lỗi",
+                MessageBox.Show("Không xác định được khách hàng đang đăng nhập.", "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Close();
                 return;
@@ -88,8 +69,7 @@ namespace StadiumTicketBooking.Forms
 
             CaiDatIconNut();
             DinhDangGrid();
-            TaiNhanVien();
-            TaiKhachHang();
+            txtKhachHang.Text = hoVaTenKhachHang;
             TaiSuKien();
             LamMoiDonDatVe();
         }
@@ -124,52 +104,6 @@ namespace StadiumTicketBooking.Forms
                 dgvVeDaChon.Columns["colGiaVeDaChon"].DefaultCellStyle.Format = "N0";
                 dgvVeDaChon.Columns["colGiaVeDaChon"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             }
-        }
-
-        private void TaiNhanVien()
-        {
-            var dsNhanVien = context.NhanVien
-                .AsNoTracking()
-                .Where(x => x.ID == nhanVienIDDangNhap)
-                .Select(x => new
-                {
-                    x.ID,
-                    x.HoVaTen
-                })
-                .ToList();
-
-            cboNhanVien.DataSource = dsNhanVien;
-            cboNhanVien.DisplayMember = "HoVaTen";
-            cboNhanVien.ValueMember = "ID";
-
-            if (dsNhanVien.Count > 0)
-                cboNhanVien.SelectedValue = nhanVienIDDangNhap;
-            else
-                cboNhanVien.SelectedIndex = -1;
-
-            cboNhanVien.Enabled = false;
-        }
-
-        private void TaiKhachHang()
-        {
-            var dsKhachHang = context.KhachHang
-                .AsNoTracking()
-                .Select(x => new
-                {
-                    x.ID,
-                    x.HoVaTen
-                })
-                .OrderBy(x => x.HoVaTen)
-                .ToList();
-
-            cboKhachHang.DataSource = dsKhachHang;
-            cboKhachHang.DisplayMember = "HoVaTen";
-            cboKhachHang.ValueMember = "ID";
-
-            if (dsKhachHang.Count > 0)
-                cboKhachHang.SelectedIndex = 0;
-            else
-                cboKhachHang.SelectedIndex = -1;
         }
 
         private void TaiSuKien()
@@ -211,8 +145,6 @@ namespace StadiumTicketBooking.Forms
             gioVe.Clear();
             dtpNgayLap.Value = DateTime.Now;
             txtGhiChu.Text = string.Empty;
-
-            TaiNhanVien();
             TaiVeTrong();
             TaiGioVe();
             CapNhatTongTien();
@@ -322,7 +254,6 @@ namespace StadiumTicketBooking.Forms
             };
 
             gioVe.Add(ve);
-
             TaiVeTrong();
             TaiGioVe();
             CapNhatTongTien();
@@ -370,127 +301,99 @@ namespace StadiumTicketBooking.Forms
             }
         }
 
-        private void DongBoGioVeTuHoaDonChiTiet(frmHoaDon_ChiTiet frm)
-        {
-            gioVe.Clear();
-
-            foreach (var item in frm.DanhSachChiTietSauKhiSua)
-            {
-                string viTriGhe = item.ViTriGhe ?? "";
-                string tenKhuVuc = "";
-                string soGhe = "";
-
-                string[] parts = viTriGhe.Split(new string[] { " - Ghế " }, StringSplitOptions.None);
-                if (parts.Length == 2)
-                {
-                    tenKhuVuc = parts[0].Trim();
-                    soGhe = parts[1].Trim();
-                }
-                else
-                {
-                    tenKhuVuc = viTriGhe;
-                }
-
-                gioVe.Add(new VeChonTam
-                {
-                    VeID = item.VeID,
-                    TenSuKien = item.TenSuKien ?? "",
-                    TenSan = item.TenSan ?? "",
-                    TenKhuVuc = tenKhuVuc,
-                    SoGhe = soGhe,
-                    GiaVe = item.DonGiaBan
-                });
-            }
-
-            if (frm.KhachHangIDSauKhiSua > 0)
-                cboKhachHang.SelectedValue = frm.KhachHangIDSauKhiSua;
-
-            txtGhiChu.Text = frm.GhiChuSauKhiSua ?? "";
-
-            TaiVeTrong();
-            TaiGioVe();
-            CapNhatTongTien();
-        }
-
         private void btnThanhToan_Click(object sender, EventArgs e)
         {
-            if (LaAdmin())
+            if (gioVe.Count == 0)
             {
-                MessageBox.Show("Admin không được phép thanh toán.", "Phân quyền",
+                MessageBox.Show("Vui lòng chọn ít nhất một vé để thanh toán.", "Thông báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (nhanVienIDDangNhap <= 0)
-            {
-                MessageBox.Show("Không xác định được nhân viên đang đăng nhập.", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            var dsVeId = gioVe.Select(x => x.VeID).ToList();
 
-            if (cboKhachHang.SelectedValue == null)
-            {
-                MessageBox.Show("Vui lòng chọn khách hàng!", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                cboKhachHang.Focus();
-                return;
-            }
-
-            if (gioVe.Count == 0)
-            {
-                MessageBox.Show("Vui lòng chọn ít nhất một vé!", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            var dsVeCanMua = gioVe.Select(x => x.VeID).ToList();
-
-            bool coVeDaBan = context.HoaDon_ChiTiet
+            var veDaBan = context.HoaDon_ChiTiet
                 .AsNoTracking()
-                .Any(x => dsVeCanMua.Contains(x.VeID));
+                .Where(x => dsVeId.Contains(x.VeID))
+                .Select(x => x.VeID)
+                .ToList();
 
-            if (coVeDaBan)
+            if (veDaBan.Count > 0)
             {
-                MessageBox.Show("Có vé vừa được bán bởi hóa đơn khác. Vui lòng tải lại.", "Thông báo",
+                MessageBox.Show("Một hoặc nhiều vé đã được người khác mua trước. Vui lòng tải lại danh sách vé.", "Thông báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 TaiVeTrong();
                 return;
             }
 
-            var dsChiTietTam = gioVe
-                .Select(x => new DanhSachHoaDon_ChiTiet
-                {
-                    ID = 0,
-                    HoaDonID = 0,
-                    VeID = x.VeID,
-                    TenSuKien = x.TenSuKien,
-                    TenSan = x.TenSan,
-                    ViTriGhe = x.TenKhuVuc + " - Ghế " + x.SoGhe,
-                    SoLuongBan = 1,
-                    DonGiaBan = x.GiaVe,
-                    ThanhTien = x.GiaVe
-                })
-                .ToList();
-
-            using (frmHoaDon_ChiTiet frm = new frmHoaDon_ChiTiet(
-                nhanVienIDDangNhap,
-                vaiTro,
-                Convert.ToInt32(cboKhachHang.SelectedValue),
-                txtGhiChu.Text.Trim(),
-                dsChiTietTam))
+            if (MessageBox.Show("Xác nhận thanh toán các vé đã chọn?", "Xác nhận",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
             {
-                DialogResult ketQua = frm.ShowDialog();
+                return;
+            }
 
-                if (frm.DaLuuThanhCong)
+            using var trans = context.Database.BeginTransaction();
+            try
+            {
+                HoaDon hd = new HoaDon
                 {
-                    MessageBox.Show("Thanh toán thành công!",
-                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LamMoiDonDatVe();
-                }
-                else if (ketQua == DialogResult.OK)
+                    NhanVienID = null,
+                    KhachHangID = khachHangIDDangNhap,
+                    NgayLap = dtpNgayLap.Value,
+                    GhiChu = string.IsNullOrWhiteSpace(txtGhiChu.Text) ? null : txtGhiChu.Text.Trim()
+                };
+
+                context.HoaDon.Add(hd);
+                context.SaveChanges();
+
+                foreach (var item in gioVe)
                 {
-                    DongBoGioVeTuHoaDonChiTiet(frm);
+                    HoaDon_ChiTiet ct = new HoaDon_ChiTiet
+                    {
+                        HoaDonID = hd.ID,
+                        VeID = item.VeID,
+                        DonGiaBan = item.GiaVe
+                    };
+                    context.HoaDon_ChiTiet.Add(ct);
+
+                    var ve = context.Ve.Find(item.VeID);
+                    if (ve != null)
+                    {
+                        ve.TrangThai = "Đã bán";
+                        context.Ve.Update(ve);
+                    }
                 }
+
+                context.SaveChanges();
+                trans.Commit();
+
+                DialogResult rs = MessageBox.Show(
+                    $"Thanh toán thành công.\nMã hóa đơn: {hd.ID}\nTổng tiền: {txtTongTien.Text} VNĐ\n\nBạn có muốn xem chi tiết hóa đơn không?",
+                    "Thành công",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Information);
+
+                if (rs == DialogResult.Yes)
+                {
+                    frmHoaDon_ChiTiet f = new frmHoaDon_ChiTiet(hd.ID, 0, khachHangIDDangNhap, "KhachHang");
+                    f.ShowDialog();
+                }
+
+                LamMoiDonDatVe();
+            }
+            catch (Exception ex)
+            {
+                trans.Rollback();
+                MessageBox.Show("Lỗi thanh toán: " + ex.Message, "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnHoaDonCuaToi_Click(object sender, EventArgs e)
+        {
+            using (frmHoaDonKhachHang f = new frmHoaDonKhachHang(khachHangIDDangNhap, hoVaTenKhachHang))
+            {
+                f.ShowDialog();
             }
         }
 

@@ -6,7 +6,7 @@ namespace StadiumTicketBooking.Data.Entity
     public class StadiumDbContext : DbContext
     {
         public DbSet<VaiTro> VaiTro { get; set; }
-        public DbSet<SanVanDong> SanVanDong { get; set;  }
+        public DbSet<SanVanDong> SanVanDong { get; set; }
         public DbSet<KhuVuc> KhuVuc { get; set; }
         public DbSet<Ghe> Ghe { get; set; }
         public DbSet<SuKien> SuKien { get; set; }
@@ -24,7 +24,8 @@ namespace StadiumTicketBooking.Data.Entity
 
                 if (string.IsNullOrEmpty(connString))
                 {
-                    optionsBuilder.UseSqlServer(@"Server=NGUYEN-HOANG-UY\SQLEXPRESS;Database=StadiumTicketBooking;Integrated Security=True;TrustServerCertificate=True");
+                    optionsBuilder.UseSqlServer(
+                        @"Server=NGUYEN-HOANG-UY\SQLEXPRESS;Database=StadiumTicketBooking;Integrated Security=True;TrustServerCertificate=True");
                 }
                 else
                 {
@@ -35,12 +36,12 @@ namespace StadiumTicketBooking.Data.Entity
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // 1. Cấu hình bảng Ve: Chặn xóa dây chuyền gây lỗi vòng lặp
+            // ===== VE =====
             modelBuilder.Entity<Ve>()
                 .HasOne(v => v.SuKien)
                 .WithMany(sk => sk.Ve)
                 .HasForeignKey(v => v.SuKienID)
-                .OnDelete(DeleteBehavior.Restrict); // Đổi Cascade thành Restrict
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Ve>()
                 .HasOne(v => v.Ghe)
@@ -48,7 +49,32 @@ namespace StadiumTicketBooking.Data.Entity
                 .HasForeignKey(v => v.GheID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // 2. Cấu hình bảng HoaDon_ChiTiet: Chặn xóa khi đã có dữ liệu giao dịch
+            // Mỗi ghế trong một sự kiện chỉ có một vé
+            modelBuilder.Entity<Ve>()
+                .HasIndex(v => new { v.SuKienID, v.GheID })
+                .IsUnique();
+
+            // ===== KHÁCH HÀNG =====
+            modelBuilder.Entity<KhachHang>()
+                .HasIndex(kh => kh.TenDangNhap)
+                .IsUnique();
+
+            // ===== HÓA ĐƠN =====
+            modelBuilder.Entity<HoaDon>()
+                .HasOne(hd => hd.KhachHang)
+                .WithMany(kh => kh.HoaDon)
+                .HasForeignKey(hd => hd.KhachHangID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // NhanVienID cho phép null để hỗ trợ khách hàng tự đặt vé
+            modelBuilder.Entity<HoaDon>()
+                .HasOne(hd => hd.NhanVien)
+                .WithMany(nv => nv.HoaDon)
+                .HasForeignKey(hd => hd.NhanVienID)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ===== HÓA ĐƠN CHI TIẾT =====
             modelBuilder.Entity<HoaDon_ChiTiet>()
                 .HasOne(ct => ct.Ve)
                 .WithMany()
@@ -59,7 +85,7 @@ namespace StadiumTicketBooking.Data.Entity
                 .HasOne(ct => ct.HoaDon)
                 .WithMany(hd => hd.HoaDon_ChiTiet)
                 .HasForeignKey(ct => ct.HoaDonID)
-                .OnDelete(DeleteBehavior.Cascade); // Xóa hóa đơn thì xóa chi tiết hóa đơn là hợp lý
+                .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
         }

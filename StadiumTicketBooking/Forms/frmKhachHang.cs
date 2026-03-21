@@ -10,7 +10,6 @@ namespace StadiumTicketBooking.Forms
     {
         private readonly StadiumDbContext context = new StadiumDbContext();
         private bool xuLyThem = false;
-        private int currentId = 0;
         private string vaiTro = "";
 
         public frmKhachHang()
@@ -59,6 +58,10 @@ namespace StadiumTicketBooking.Forms
             txtHoVaTen.Enabled = giaTri;
             txtDienThoai.Enabled = giaTri;
             txtDiaChi.Enabled = giaTri;
+            txtEmail.Enabled = giaTri;
+            txtTenDangNhap.Enabled = giaTri;
+            txtMatKhau.Enabled = giaTri;
+            chkTrangThai.Enabled = giaTri;
 
             btnThem.Enabled = !giaTri;
             btnSua.Enabled = !giaTri;
@@ -85,6 +88,10 @@ namespace StadiumTicketBooking.Forms
                 txtHoVaTen.Enabled = false;
                 txtDienThoai.Enabled = false;
                 txtDiaChi.Enabled = false;
+                txtEmail.Enabled = false;
+                txtTenDangNhap.Enabled = false;
+                txtMatKhau.Enabled = false;
+                chkTrangThai.Enabled = false;
             }
         }
 
@@ -94,19 +101,14 @@ namespace StadiumTicketBooking.Forms
             txtHoVaTen.Text = string.Empty;
             txtDienThoai.Text = string.Empty;
             txtDiaChi.Text = string.Empty;
+            txtEmail.Text = string.Empty;
+            txtTenDangNhap.Text = string.Empty;
+            txtMatKhau.Text = string.Empty;
+            chkTrangThai.Checked = true;
         }
 
-        private void TaiDuLieu()
+        private void GanBinding(BindingSource bindingSource)
         {
-            dgvKhachHang.AutoGenerateColumns = false;
-
-            var listKhachHang = context.KhachHang.ToList();
-
-            BindingSource bindingSource = new BindingSource
-            {
-                DataSource = listKhachHang
-            };
-
             txtID.DataBindings.Clear();
             txtID.DataBindings.Add("Text", bindingSource, "ID", false, DataSourceUpdateMode.Never);
 
@@ -118,6 +120,34 @@ namespace StadiumTicketBooking.Forms
 
             txtDiaChi.DataBindings.Clear();
             txtDiaChi.DataBindings.Add("Text", bindingSource, "DiaChi", false, DataSourceUpdateMode.Never);
+
+            txtEmail.DataBindings.Clear();
+            txtEmail.DataBindings.Add("Text", bindingSource, "Email", false, DataSourceUpdateMode.Never);
+
+            txtTenDangNhap.DataBindings.Clear();
+            txtTenDangNhap.DataBindings.Add("Text", bindingSource, "TenDangNhap", false, DataSourceUpdateMode.Never);
+
+            txtMatKhau.DataBindings.Clear();
+            txtMatKhau.DataBindings.Add("Text", bindingSource, "MatKhau", false, DataSourceUpdateMode.Never);
+
+            chkTrangThai.DataBindings.Clear();
+            chkTrangThai.DataBindings.Add("Checked", bindingSource, "TrangThai", false, DataSourceUpdateMode.Never);
+        }
+
+        private void TaiDuLieu()
+        {
+            dgvKhachHang.AutoGenerateColumns = false;
+
+            var listKhachHang = context.KhachHang
+                .OrderBy(x => x.ID)
+                .ToList();
+
+            BindingSource bindingSource = new BindingSource
+            {
+                DataSource = listKhachHang
+            };
+
+            GanBinding(bindingSource);
 
             dgvKhachHang.DataSource = null;
             dgvKhachHang.DataSource = bindingSource;
@@ -132,17 +162,7 @@ namespace StadiumTicketBooking.Forms
                 DataSource = dataSource
             };
 
-            txtID.DataBindings.Clear();
-            txtID.DataBindings.Add("Text", bindingSource, "ID", false, DataSourceUpdateMode.Never);
-
-            txtHoVaTen.DataBindings.Clear();
-            txtHoVaTen.DataBindings.Add("Text", bindingSource, "HoVaTen", false, DataSourceUpdateMode.Never);
-
-            txtDienThoai.DataBindings.Clear();
-            txtDienThoai.DataBindings.Add("Text", bindingSource, "DienThoai", false, DataSourceUpdateMode.Never);
-
-            txtDiaChi.DataBindings.Clear();
-            txtDiaChi.DataBindings.Add("Text", bindingSource, "DiaChi", false, DataSourceUpdateMode.Never);
+            GanBinding(bindingSource);
 
             dgvKhachHang.DataSource = null;
             dgvKhachHang.DataSource = bindingSource;
@@ -166,7 +186,6 @@ namespace StadiumTicketBooking.Forms
             }
 
             xuLyThem = true;
-            currentId = 0;
             BatTatChucNang(true);
             XoaDuLieuNhap();
             txtHoVaTen.Focus();
@@ -188,17 +207,9 @@ namespace StadiumTicketBooking.Forms
                 return;
             }
 
-            if (int.TryParse(dgvKhachHang.CurrentRow.Cells["colID"].Value?.ToString(), out currentId))
-            {
-                xuLyThem = false;
-                BatTatChucNang(true);
-                txtHoVaTen.Focus();
-            }
-            else
-            {
-                MessageBox.Show("Không xác định được khách hàng cần sửa!", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            xuLyThem = false;
+            BatTatChucNang(true);
+            txtHoVaTen.Focus();
         }
 
         private void btnXoa_Click(object sender, EventArgs e)
@@ -270,6 +281,10 @@ namespace StadiumTicketBooking.Forms
             string hoVaTen = txtHoVaTen.Text.Trim();
             string dienThoai = txtDienThoai.Text.Trim();
             string diaChi = txtDiaChi.Text.Trim();
+            string email = txtEmail.Text.Trim();
+            string tenDangNhap = txtTenDangNhap.Text.Trim();
+            string matKhau = txtMatKhau.Text.Trim();
+            bool trangThai = chkTrangThai.Checked;
 
             if (string.IsNullOrWhiteSpace(hoVaTen))
             {
@@ -279,10 +294,35 @@ namespace StadiumTicketBooking.Forms
                 return;
             }
 
+            if (string.IsNullOrWhiteSpace(tenDangNhap))
+            {
+                MessageBox.Show("Vui lòng nhập tên đăng nhập!", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtTenDangNhap.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(matKhau))
+            {
+                MessageBox.Show("Vui lòng nhập mật khẩu!", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtMatKhau.Focus();
+                return;
+            }
+
             try
             {
                 if (xuLyThem)
                 {
+                    bool trungTenDangNhap = context.KhachHang.Any(x => x.TenDangNhap == tenDangNhap);
+                    if (trungTenDangNhap)
+                    {
+                        MessageBox.Show("Tên đăng nhập đã tồn tại!", "Thông báo",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        txtTenDangNhap.Focus();
+                        return;
+                    }
+
                     bool daTonTai = context.KhachHang.Any(x =>
                         x.HoVaTen == hoVaTen &&
                         x.DienThoai == dienThoai);
@@ -299,7 +339,12 @@ namespace StadiumTicketBooking.Forms
                     {
                         HoVaTen = hoVaTen,
                         DienThoai = string.IsNullOrWhiteSpace(dienThoai) ? null : dienThoai,
-                        DiaChi = string.IsNullOrWhiteSpace(diaChi) ? null : diaChi
+                        DiaChi = string.IsNullOrWhiteSpace(diaChi) ? null : diaChi,
+                        Email = string.IsNullOrWhiteSpace(email) ? null : email,
+                        TenDangNhap = tenDangNhap,
+                        MatKhau = matKhau,
+                        NgayTao = DateTime.Now,
+                        TrangThai = trangThai
                     };
 
                     context.KhachHang.Add(kh);
@@ -310,6 +355,18 @@ namespace StadiumTicketBooking.Forms
                     {
                         MessageBox.Show("Không xác định được khách hàng cần sửa!", "Lỗi",
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    bool trungTenDangNhap = context.KhachHang.Any(x =>
+                        x.TenDangNhap == tenDangNhap &&
+                        x.ID != idSua);
+
+                    if (trungTenDangNhap)
+                    {
+                        MessageBox.Show("Tên đăng nhập đã tồn tại!", "Thông báo",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        txtTenDangNhap.Focus();
                         return;
                     }
 
@@ -332,12 +389,17 @@ namespace StadiumTicketBooking.Forms
                         kh.HoVaTen = hoVaTen;
                         kh.DienThoai = string.IsNullOrWhiteSpace(dienThoai) ? null : dienThoai;
                         kh.DiaChi = string.IsNullOrWhiteSpace(diaChi) ? null : diaChi;
+                        kh.Email = string.IsNullOrWhiteSpace(email) ? null : email;
+                        kh.TenDangNhap = tenDangNhap;
+                        kh.MatKhau = matKhau;
+                        kh.TrangThai = trangThai;
 
                         context.KhachHang.Update(kh);
                     }
                 }
 
                 context.SaveChanges();
+
                 MessageBox.Show("Lưu thành công!", "Thông báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -373,7 +435,7 @@ namespace StadiumTicketBooking.Forms
         private void btnTimKiem_Click(object sender, EventArgs e)
         {
             string searchTerm = Microsoft.VisualBasic.Interaction.InputBox(
-                "Nhập từ khóa tìm kiếm (họ tên, điện thoại, địa chỉ):",
+                "Nhập từ khóa tìm kiếm (họ tên, điện thoại, địa chỉ, email, tên đăng nhập):",
                 "Tìm kiếm khách hàng",
                 "");
 
@@ -391,7 +453,10 @@ namespace StadiumTicketBooking.Forms
                 .Where(x =>
                     (x.HoVaTen ?? "").ToLower().Contains(lower) ||
                     (x.DienThoai ?? "").ToLower().Contains(lower) ||
-                    (x.DiaChi ?? "").ToLower().Contains(lower))
+                    (x.DiaChi ?? "").ToLower().Contains(lower) ||
+                    (x.Email ?? "").ToLower().Contains(lower) ||
+                    (x.TenDangNhap ?? "").ToLower().Contains(lower))
+                .OrderBy(x => x.ID)
                 .ToList();
 
             if (ketQua.Count == 0)

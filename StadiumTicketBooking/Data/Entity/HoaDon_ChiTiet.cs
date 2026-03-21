@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StadiumTicketBooking.Data.Entity
 {
-        public class HoaDon_ChiTiet
-        {
-            public int ID { get; set; }
-            public int HoaDonID { get; set;}
-            public int VeID { get; set; }
-            public int DonGiaBan { get; set; }
-            public virtual HoaDon HoaDon { get; set; } = null!;
-            public virtual Ve Ve { get; set; } = null!;
-        }
+    public class HoaDon_ChiTiet
+    {
+        public int ID { get; set; }
+        public int HoaDonID { get; set; }
+        public int VeID { get; set; }
+        public int DonGiaBan { get; set; }
 
-        [NotMapped] // Dùng để hiển thị lên GridView
+        public virtual HoaDon HoaDon { get; set; } = null!;
+        public virtual Ve Ve { get; set; } = null!;
+    }
+
+    [NotMapped]
     public class DanhSachHoaDon_ChiTiet
     {
         public int ID { get; set; }
@@ -31,4 +29,3 @@ namespace StadiumTicketBooking.Data.Entity
         public int ThanhTien { get; set; }
     }
 }
-   
