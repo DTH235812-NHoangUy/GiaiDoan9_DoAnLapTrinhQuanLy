@@ -9,6 +9,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Reports\rptDanhSachVe.rdlc" />
+    <None Remove="Reports\rptThongKeDoanhThu.rdlc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Reports\rptDanhSachVe.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\rptThongKeDoanhThu.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
     <PackageReference Include="Guna.UI2.WinForms" Version="2.0.4.7" />
     <PackageReference Include="Krypton.Toolkit" Version="100.26.1.19" />

@@ -37,7 +37,6 @@ namespace StadiumTicketBooking.Forms
             }
 
             lblKhachHang.Text = "Khách hàng: " + hoVaTenKhachHang;
-
             CauHinhDataGridView();
             TaiDanhSachHoaDon();
         }
@@ -95,6 +94,8 @@ namespace StadiumTicketBooking.Forms
 
                 dgvHoaDon.DataSource = null;
                 dgvHoaDon.DataSource = ds;
+
+                btnXoa.Enabled = ds.Count > 0;
             }
             catch (Exception ex)
             {
@@ -103,12 +104,93 @@ namespace StadiumTicketBooking.Forms
             }
         }
 
-        private int LayHoaDonDangChon()
+        private bool LayHoaDonDangChon(out int hoaDonID)
         {
-            if (dgvHoaDon.CurrentRow == null || dgvHoaDon.CurrentRow.Cells["colID"].Value == null)
-                return 0;
+            hoaDonID = 0;
 
-            return Convert.ToInt32(dgvHoaDon.CurrentRow.Cells["colID"].Value);
+            if (dgvHoaDon.CurrentRow == null)
+            {
+                MessageBox.Show("Vui lòng chọn hóa đơn cần xóa.", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (dgvHoaDon.CurrentRow.Cells["colID"].Value == null)
+            {
+                MessageBox.Show("Không lấy được mã hóa đơn.", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            hoaDonID = Convert.ToInt32(dgvHoaDon.CurrentRow.Cells["colID"].Value);
+            return true;
+        }
+
+        private void CapNhatTrangThaiVeKhiXoaHoaDon(int hoaDonID)
+        {
+            var dsChiTiet = context.HoaDon_ChiTiet
+                .Where(x => x.HoaDonID == hoaDonID)
+                .ToList();
+
+            foreach (var ct in dsChiTiet)
+            {
+                var ve = context.Ve.SingleOrDefault(v => v.ID == ct.VeID);
+                if (ve != null)
+                {
+                    ve.TrangThai = "Trống";
+                }
+            }
+
+            context.HoaDon_ChiTiet.RemoveRange(dsChiTiet);
+        }
+
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+            if (!LayHoaDonDangChon(out int hoaDonID))
+                return;
+
+            var hoaDon = context.HoaDon
+                .AsNoTracking()
+                .FirstOrDefault(x => x.ID == hoaDonID && x.KhachHangID == khachHangIDDangNhap);
+
+            if (hoaDon == null)
+            {
+                MessageBox.Show("Bạn không có quyền xóa hóa đơn này.", "Phân quyền",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DialogResult result = MessageBox.Show(
+                "Bạn có chắc muốn xóa hóa đơn này không?\nCác vé trong hóa đơn sẽ được cập nhật lại thành trạng thái Trống.",
+                "Xác nhận xóa",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+                return;
+
+            try
+            {
+                CapNhatTrangThaiVeKhiXoaHoaDon(hoaDonID);
+
+                var hd = context.HoaDon.SingleOrDefault(x => x.ID == hoaDonID);
+                if (hd != null)
+                {
+                    context.HoaDon.Remove(hd);
+                }
+
+                context.SaveChanges();
+
+                MessageBox.Show("Đã xóa hóa đơn và cập nhật trạng thái vé thành công.",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                TaiDanhSachHoaDon();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Xóa hóa đơn thất bại.\n\n" + ex.Message,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnLamMoi_Click(object sender, EventArgs e)

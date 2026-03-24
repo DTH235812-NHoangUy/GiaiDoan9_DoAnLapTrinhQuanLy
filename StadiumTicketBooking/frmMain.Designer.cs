@@ -26,6 +26,8 @@ namespace StadiumTicketBooking.Forms
             btnKhuVuc = new Button();
             btnGhe = new Button();
             btnSuKien = new Button();
+            btnThongKeDoanhThu = new Button();
+            btnDanhSachVe = new Button();
             btnVe = new Button();
             btnKhachHang = new Button();
             btnChiTietHoaDon = new Button();
@@ -54,6 +56,8 @@ namespace StadiumTicketBooking.Forms
             panelMenu.Controls.Add(btnKhuVuc);
             panelMenu.Controls.Add(btnGhe);
             panelMenu.Controls.Add(btnSuKien);
+            panelMenu.Controls.Add(btnThongKeDoanhThu);
+            panelMenu.Controls.Add(btnDanhSachVe);
             panelMenu.Controls.Add(btnVe);
             panelMenu.Controls.Add(btnKhachHang);
             panelMenu.Controls.Add(btnChiTietHoaDon);
@@ -73,7 +77,7 @@ namespace StadiumTicketBooking.Forms
             btnDangXuat.Location = new Point(0, 896);
             btnDangXuat.Name = "btnDangXuat";
             btnDangXuat.Size = new Size(274, 64);
-            btnDangXuat.TabIndex = 12;
+            btnDangXuat.TabIndex = 14;
             btnDangXuat.Text = "Đăng xuất";
             btnDangXuat.UseVisualStyleBackColor = true;
             btnDangXuat.Click += btnDangXuat_Click;
@@ -81,10 +85,10 @@ namespace StadiumTicketBooking.Forms
             // btnVaiTro
             // 
             btnVaiTro.Dock = DockStyle.Top;
-            btnVaiTro.Location = new Point(0, 841);
+            btnVaiTro.Location = new Point(0, 969);
             btnVaiTro.Name = "btnVaiTro";
             btnVaiTro.Size = new Size(274, 64);
-            btnVaiTro.TabIndex = 11;
+            btnVaiTro.TabIndex = 13;
             btnVaiTro.Text = "Vai trò";
             btnVaiTro.UseVisualStyleBackColor = true;
             btnVaiTro.Click += btnVaiTro_Click;
@@ -92,10 +96,10 @@ namespace StadiumTicketBooking.Forms
             // btnNhanVien
             // 
             btnNhanVien.Dock = DockStyle.Top;
-            btnNhanVien.Location = new Point(0, 777);
+            btnNhanVien.Location = new Point(0, 905);
             btnNhanVien.Name = "btnNhanVien";
             btnNhanVien.Size = new Size(274, 64);
-            btnNhanVien.TabIndex = 10;
+            btnNhanVien.TabIndex = 12;
             btnNhanVien.Text = "Nhân viên";
             btnNhanVien.UseVisualStyleBackColor = true;
             btnNhanVien.Click += btnNhanVien_Click;
@@ -103,10 +107,10 @@ namespace StadiumTicketBooking.Forms
             // btnSanVanDong
             // 
             btnSanVanDong.Dock = DockStyle.Top;
-            btnSanVanDong.Location = new Point(0, 713);
+            btnSanVanDong.Location = new Point(0, 841);
             btnSanVanDong.Name = "btnSanVanDong";
             btnSanVanDong.Size = new Size(274, 64);
-            btnSanVanDong.TabIndex = 9;
+            btnSanVanDong.TabIndex = 11;
             btnSanVanDong.Text = "Sân vận động";
             btnSanVanDong.UseVisualStyleBackColor = true;
             btnSanVanDong.Click += btnSanVanDong_Click;
@@ -114,10 +118,10 @@ namespace StadiumTicketBooking.Forms
             // btnKhuVuc
             // 
             btnKhuVuc.Dock = DockStyle.Top;
-            btnKhuVuc.Location = new Point(0, 649);
+            btnKhuVuc.Location = new Point(0, 777);
             btnKhuVuc.Name = "btnKhuVuc";
             btnKhuVuc.Size = new Size(274, 64);
-            btnKhuVuc.TabIndex = 8;
+            btnKhuVuc.TabIndex = 10;
             btnKhuVuc.Text = "Khu vực";
             btnKhuVuc.UseVisualStyleBackColor = true;
             btnKhuVuc.Click += btnKhuVuc_Click;
@@ -125,10 +129,10 @@ namespace StadiumTicketBooking.Forms
             // btnGhe
             // 
             btnGhe.Dock = DockStyle.Top;
-            btnGhe.Location = new Point(0, 585);
+            btnGhe.Location = new Point(0, 713);
             btnGhe.Name = "btnGhe";
             btnGhe.Size = new Size(274, 64);
-            btnGhe.TabIndex = 7;
+            btnGhe.TabIndex = 9;
             btnGhe.Text = "Ghế";
             btnGhe.UseVisualStyleBackColor = true;
             btnGhe.Click += btnGhe_Click;
@@ -136,13 +140,35 @@ namespace StadiumTicketBooking.Forms
             // btnSuKien
             // 
             btnSuKien.Dock = DockStyle.Top;
-            btnSuKien.Location = new Point(0, 521);
+            btnSuKien.Location = new Point(0, 649);
             btnSuKien.Name = "btnSuKien";
             btnSuKien.Size = new Size(274, 64);
-            btnSuKien.TabIndex = 6;
+            btnSuKien.TabIndex = 8;
             btnSuKien.Text = "Sự kiện";
             btnSuKien.UseVisualStyleBackColor = true;
             btnSuKien.Click += btnSuKien_Click;
+            // 
+            // btnThongKeDoanhThu
+            // 
+            btnThongKeDoanhThu.Dock = DockStyle.Top;
+            btnThongKeDoanhThu.Location = new Point(0, 585);
+            btnThongKeDoanhThu.Name = "btnThongKeDoanhThu";
+            btnThongKeDoanhThu.Size = new Size(274, 64);
+            btnThongKeDoanhThu.TabIndex = 7;
+            btnThongKeDoanhThu.Text = "Thống kê doanh thu";
+            btnThongKeDoanhThu.UseVisualStyleBackColor = true;
+            btnThongKeDoanhThu.Click += btnThongKeDoanhThu_Click;
+            // 
+            // btnDanhSachVe
+            // 
+            btnDanhSachVe.Dock = DockStyle.Top;
+            btnDanhSachVe.Location = new Point(0, 521);
+            btnDanhSachVe.Name = "btnDanhSachVe";
+            btnDanhSachVe.Size = new Size(274, 64);
+            btnDanhSachVe.TabIndex = 6;
+            btnDanhSachVe.Text = "Danh sách vé";
+            btnDanhSachVe.UseVisualStyleBackColor = true;
+            btnDanhSachVe.Click += btnDanhSachVe_Click;
             // 
             // btnVe
             // 
@@ -317,6 +343,8 @@ namespace StadiumTicketBooking.Forms
         private Button btnChiTietHoaDon;
         private Button btnKhachHang;
         private Button btnVe;
+        private Button btnDanhSachVe;
+        private Button btnThongKeDoanhThu;
         private Button btnSuKien;
         private Button btnGhe;
         private Button btnKhuVuc;

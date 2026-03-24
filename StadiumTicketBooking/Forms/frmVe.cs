@@ -44,6 +44,7 @@ namespace StadiumTicketBooking.Forms
             dangNapDuLieuNoiBo = true;
 
             CaiDatIconNut();
+            DinhDangDgvVe();
             TaiDanhSachSuKien();
             TaiDanhSachTrangThai();
             TaiDanhSachGheTheoSuKien();
@@ -51,6 +52,42 @@ namespace StadiumTicketBooking.Forms
             TaiDuLieu();
 
             dangNapDuLieuNoiBo = false;
+        }
+
+        private void DinhDangDgvVe()
+        {
+            dgvVe.BorderStyle = BorderStyle.None;
+            dgvVe.BackgroundColor = Color.White;
+            dgvVe.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+            dgvVe.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            dgvVe.GridColor = Color.Gray;
+
+            dgvVe.EnableHeadersVisualStyles = false;
+            dgvVe.RowHeadersVisible = false;
+            dgvVe.AllowUserToAddRows = false;
+            dgvVe.AllowUserToDeleteRows = false;
+            dgvVe.ReadOnly = true;
+            dgvVe.MultiSelect = false;
+            dgvVe.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvVe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvVe.ColumnHeadersDefaultCellStyle.BackColor = Color.White;
+            dgvVe.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
+            dgvVe.ColumnHeadersDefaultCellStyle.Font = new Font("Times New Roman", 12F, FontStyle.Bold);
+            dgvVe.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvVe.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.White;
+            dgvVe.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.Black;
+            dgvVe.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
+            dgvVe.DefaultCellStyle.Font = new Font("Times New Roman", 11F, FontStyle.Regular);
+            dgvVe.DefaultCellStyle.ForeColor = Color.Black;
+            dgvVe.DefaultCellStyle.SelectionBackColor = SystemColors.Highlight;
+            dgvVe.DefaultCellStyle.SelectionForeColor = Color.White;
+            dgvVe.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
+
+            dgvVe.ColumnHeadersHeight = 40;
+            dgvVe.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvVe.RowTemplate.Height = 42;
         }
 
         private string GetProjectRootFolder()
@@ -158,11 +195,12 @@ namespace StadiumTicketBooking.Forms
             CaiDatNut(btnSua, Properties.Resources.edit_24, "Sửa");
             CaiDatNut(btnXoa, Properties.Resources.delete_24, "Xóa");
             CaiDatNut(btnLuu, Properties.Resources.save_24, "Lưu");
-            CaiDatNut(btnHuy, Properties.Resources.cancel_24, "Hủy");
+            CaiDatNut(btnHuy, Properties.Resources.exit_24, "Hủy");
             CaiDatNut(btnThoat, Properties.Resources.exit_24, "Thoát");
             CaiDatNut(btnTimKiem, Properties.Resources.search_24, "Tìm kiếm");
             CaiDatNut(btnNhap, Properties.Resources.import_24, "Nhập");
             CaiDatNut(btnXuat, Properties.Resources.export_24, "Xuất");
+            CaiDatNut(btnDoiAnh, Properties.Resources.camera_24, "Đổi ảnh");
         }
 
         private void BatTatChucNang(bool dangXuLy)
@@ -477,53 +515,15 @@ namespace StadiumTicketBooking.Forms
             if (dangNapDuLieuNoiBo)
                 return;
 
-            if (!cboSuKien.Enabled)
-                return;
-
             int? gheDangChon = GetSelectedIntValue(cboGhe.SelectedValue);
             TaiDanhSachGheTheoSuKien(gheDangChon);
-        }
-
-        private void btnDoiAnh_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog ofd = new OpenFileDialog())
-            {
-                ofd.Filter = "Images|*.jpg;*.jpeg;*.png";
-
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    string sourcePath = ofd.FileName;
-                    string fileName = Path.GetFileName(sourcePath);
-                    string destPath = Path.Combine(ticketImagesFolder, fileName);
-
-                    try
-                    {
-                        ClearPictureBox();
-
-                        if (!string.Equals(
-                            Path.GetFullPath(sourcePath),
-                            Path.GetFullPath(destPath),
-                            StringComparison.OrdinalIgnoreCase))
-                        {
-                            File.Copy(sourcePath, destPath, true);
-                        }
-
-                        ShowImageToPictureBox(destPath);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Không thể đổi ảnh: " + ex.Message,
-                            "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-            }
         }
 
         private void btnThem_Click(object sender, EventArgs e)
         {
             xuLyThem = true;
-            BatTatChucNang(true);
             XoaDuLieuNhap();
+            BatTatChucNang(true);
             cboSuKien.Focus();
         }
 
@@ -807,8 +807,36 @@ namespace StadiumTicketBooking.Forms
             BatTatChucNang(false);
         }
 
+        private void btnDoiAnh_Click(object sender, EventArgs e)
+        {
+            using OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Chọn ảnh vé";
+            openFileDialog.Filter = "Tệp ảnh|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
+            openFileDialog.Multiselect = false;
+
+            if (openFileDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            try
+            {
+                string sourceFile = openFileDialog.FileName;
+                string extension = Path.GetExtension(sourceFile);
+                string newFileName = "ve_" + DateTime.Now.ToString("yyyyMMdd_HHmmssfff") + extension;
+                string destFile = Path.Combine(ticketImagesFolder, newFileName);
+
+                File.Copy(sourceFile, destFile, true);
+                ShowImageToPictureBox(destFile);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể đổi ảnh. " + ex.Message,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
+            ClearPictureBox();
             context.Dispose();
             base.OnFormClosed(e);
         }

@@ -116,9 +116,7 @@ namespace StadiumTicketBooking.Forms
                 .AsQueryable();
 
             if (LaAdmin())
-            {
                 return query;
-            }
 
             if (LaNhanVien())
             {
@@ -200,6 +198,24 @@ namespace StadiumTicketBooking.Forms
             }
 
             return true;
+        }
+
+        private void CapNhatTrangThaiVeKhiXoaHoaDon(int hoaDonID)
+        {
+            var dsChiTiet = context.HoaDon_ChiTiet
+                .Where(x => x.HoaDonID == hoaDonID)
+                .ToList();
+
+            foreach (var ct in dsChiTiet)
+            {
+                var ve = context.Ve.SingleOrDefault(v => v.ID == ct.VeID);
+                if (ve != null)
+                {
+                    ve.TrangThai = "Trống";
+                }
+            }
+
+            context.HoaDon_ChiTiet.RemoveRange(dsChiTiet);
         }
 
         private void btnInHoaDon_Click(object sender, EventArgs e)
@@ -296,7 +312,7 @@ namespace StadiumTicketBooking.Forms
                 return;
 
             if (MessageBox.Show(
-                "Bạn có chắc muốn xóa toàn bộ hóa đơn này không?\nToàn bộ vé trong hóa đơn cũng sẽ bị xóa khỏi chi tiết.",
+                "Bạn có chắc muốn xóa toàn bộ hóa đơn này không?\nCác vé trong hóa đơn sẽ được cập nhật lại thành trạng thái Trống.",
                 "Xác nhận xóa",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question) != DialogResult.Yes)
@@ -306,11 +322,7 @@ namespace StadiumTicketBooking.Forms
 
             try
             {
-                var dsChiTiet = context.HoaDon_ChiTiet
-                    .Where(x => x.HoaDonID == id)
-                    .ToList();
-
-                context.HoaDon_ChiTiet.RemoveRange(dsChiTiet);
+                CapNhatTrangThaiVeKhiXoaHoaDon(id);
 
                 var hoaDon = context.HoaDon.SingleOrDefault(x => x.ID == id);
                 if (hoaDon != null)
@@ -320,7 +332,7 @@ namespace StadiumTicketBooking.Forms
 
                 context.SaveChanges();
 
-                MessageBox.Show("Đã xóa toàn bộ hóa đơn thành công.",
+                MessageBox.Show("Đã xóa hóa đơn và cập nhật lại trạng thái vé thành công.",
                     "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 TaiDanhSachHoaDon();

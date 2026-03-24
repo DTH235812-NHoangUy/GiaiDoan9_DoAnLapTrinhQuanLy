@@ -108,6 +108,7 @@ namespace StadiumTicketBooking.Forms
             chkTrangThai.TabIndex = 24;
             chkTrangThai.Text = "Hoạt động";
             chkTrangThai.UseVisualStyleBackColor = true;
+            chkTrangThai.CheckedChanged += chkTrangThai_CheckedChanged;
             // 
             // txtMatKhau
             // 
@@ -359,6 +360,7 @@ namespace StadiumTicketBooking.Forms
             dgvKhachHang.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvKhachHang.Size = new Size(1220, 310);
             dgvKhachHang.TabIndex = 0;
+            dgvKhachHang.SelectionChanged += dgvKhachHang_SelectionChanged;
             // 
             // colID
             // 

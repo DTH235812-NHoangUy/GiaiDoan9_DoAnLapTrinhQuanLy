@@ -12,8 +12,8 @@ using StadiumTicketBooking.Data.Entity;
 namespace StadiumTicketBooking.Migrations
 {
     [DbContext(typeof(StadiumDbContext))]
-    [Migration("20260321042315_InitialNew")]
-    partial class InitialNew
+    [Migration("20260324000404_ThemCotNoiBatChoSuKien")]
+    partial class ThemCotNoiBatChoSuKien
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -239,6 +239,15 @@ namespace StadiumTicketBooking.Migrations
 
                     b.Property<int>("GiaCoBan")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("NgayBatDauNoiBat")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("NgayKetThucNoiBat")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("NoiBat")
+                        .HasColumnType("bit");
 
                     b.Property<int>("SanVanDongID")
                         .HasColumnType("int");

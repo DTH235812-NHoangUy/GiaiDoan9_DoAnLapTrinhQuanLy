@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace StadiumTicketBooking.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialNew : Migration
+    public partial class ThemCotNoiBatChoSuKien : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -89,7 +89,10 @@ namespace StadiumTicketBooking.Migrations
                     SanVanDongID = table.Column<int>(type: "int", nullable: false),
                     TenSuKien = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ThoiGian = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    GiaCoBan = table.Column<int>(type: "int", nullable: false)
+                    GiaCoBan = table.Column<int>(type: "int", nullable: false),
+                    NoiBat = table.Column<bool>(type: "bit", nullable: false),
+                    NgayBatDauNoiBat = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    NgayKetThucNoiBat = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -63,7 +63,7 @@ namespace StadiumTicketBooking.Forms
 
             if (dr == DialogResult.Yes)
             {
-                frmChonVaiTro f = new frmChonVaiTro();
+                frmTrangChu f = new frmTrangChu();
                 f.Show();
                 this.Close();
             }
@@ -74,7 +74,7 @@ namespace StadiumTicketBooking.Forms
             if (Application.OpenForms["frmChonVaiTro"] == null &&
                 e.CloseReason == CloseReason.UserClosing)
             {
-                frmChonVaiTro f = new frmChonVaiTro();
+                frmTrangChu f = new frmTrangChu();
                 f.Show();
             }
         }

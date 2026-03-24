@@ -11,6 +11,7 @@ namespace StadiumTicketBooking.Forms
         private readonly StadiumDbContext context = new StadiumDbContext();
         private bool xuLyThem = false;
         private string vaiTro = "";
+        private bool dangTaiDuLieu = false;
 
         public frmKhachHang()
         {
@@ -25,7 +26,13 @@ namespace StadiumTicketBooking.Forms
 
         private bool LaAdmin()
         {
-            return vaiTro.Trim().ToLower() == "admin";
+            return (vaiTro ?? "").Trim().ToLower() == "admin";
+        }
+
+        private bool LaNhanVien()
+        {
+            string vt = (vaiTro ?? "").Trim().ToLower();
+            return vt == "nhanvien" || vt == "nhân viên";
         }
 
         private void CaiDatNut(Button btn, Image icon, string text)
@@ -50,65 +57,118 @@ namespace StadiumTicketBooking.Forms
             CaiDatNut(btnXuat, Properties.Resources.export_24, "Xuất");
         }
 
-        private void BatTatChucNang(bool giaTri)
+        private void BatTatNhapLieu(bool giaTri)
         {
-            btnLuu.Enabled = giaTri;
-            btnHuy.Enabled = giaTri;
-
             txtHoVaTen.Enabled = giaTri;
             txtDienThoai.Enabled = giaTri;
             txtDiaChi.Enabled = giaTri;
             txtEmail.Enabled = giaTri;
             txtTenDangNhap.Enabled = giaTri;
             txtMatKhau.Enabled = giaTri;
-            chkTrangThai.Enabled = giaTri;
-
-            btnThem.Enabled = !giaTri;
-            btnSua.Enabled = !giaTri;
-            btnXoa.Enabled = !giaTri;
-            btnThoat.Enabled = !giaTri;
-            btnNhap.Enabled = !giaTri;
-            btnXuat.Enabled = !giaTri;
-            btnTimKiem.Enabled = !giaTri;
-            dgvKhachHang.Enabled = !giaTri;
-
             txtID.ReadOnly = true;
+        }
+
+        private void BatTatNutKhiNhapLieu(bool dangNhapLieu)
+        {
+            btnLuu.Enabled = dangNhapLieu;
+            btnHuy.Enabled = dangNhapLieu;
+
+            btnThem.Enabled = !dangNhapLieu;
+            btnSua.Enabled = !dangNhapLieu;
+            btnXoa.Enabled = !dangNhapLieu;
+            btnThoat.Enabled = !dangNhapLieu;
+            btnNhap.Enabled = !dangNhapLieu;
+            btnXuat.Enabled = !dangNhapLieu;
+            btnTimKiem.Enabled = !dangNhapLieu;
+            dgvKhachHang.Enabled = !dangNhapLieu;
         }
 
         private void ApDungPhanQuyen()
         {
             if (LaAdmin())
             {
+                // Admin chỉ được bật/tắt trạng thái
+                BatTatNhapLieu(false);
+
                 btnThem.Enabled = false;
                 btnSua.Enabled = false;
                 btnXoa.Enabled = false;
+
                 btnLuu.Enabled = false;
                 btnHuy.Enabled = false;
 
-                txtHoVaTen.Enabled = false;
-                txtDienThoai.Enabled = false;
-                txtDiaChi.Enabled = false;
-                txtEmail.Enabled = false;
-                txtTenDangNhap.Enabled = false;
-                txtMatKhau.Enabled = false;
-                chkTrangThai.Enabled = false;
+                chkTrangThai.Enabled = !string.IsNullOrWhiteSpace(txtID.Text);
+
+                btnThoat.Enabled = true;
+                btnNhap.Enabled = true;
+                btnXuat.Enabled = true;
+                btnTimKiem.Enabled = true;
+                dgvKhachHang.Enabled = true;
             }
+            else if (LaNhanVien())
+            {
+                // Nhân viên được thêm/sửa/xóa, không được đổi trạng thái
+                BatTatNhapLieu(false);
+
+                btnThem.Enabled = true;
+                btnSua.Enabled = true;
+                btnXoa.Enabled = true;
+
+                btnLuu.Enabled = false;
+                btnHuy.Enabled = false;
+
+                chkTrangThai.Enabled = false;
+
+                btnThoat.Enabled = true;
+                btnNhap.Enabled = true;
+                btnXuat.Enabled = true;
+                btnTimKiem.Enabled = true;
+                dgvKhachHang.Enabled = true;
+            }
+        }
+
+        private void HienThiCheDoAdmin()
+        {
+            if (!LaAdmin()) return;
+
+            BatTatNhapLieu(false);
+
+            btnThem.Enabled = false;
+            btnSua.Enabled = false;
+            btnXoa.Enabled = false;
+
+            chkTrangThai.Enabled = !string.IsNullOrWhiteSpace(txtID.Text);
+
+            btnLuu.Enabled = false;
+            btnHuy.Enabled = false;
+
+            btnThoat.Enabled = true;
+            btnNhap.Enabled = true;
+            btnXuat.Enabled = true;
+            btnTimKiem.Enabled = true;
+            dgvKhachHang.Enabled = true;
         }
 
         private void XoaDuLieuNhap()
         {
-            txtID.Text = string.Empty;
-            txtHoVaTen.Text = string.Empty;
-            txtDienThoai.Text = string.Empty;
-            txtDiaChi.Text = string.Empty;
-            txtEmail.Text = string.Empty;
-            txtTenDangNhap.Text = string.Empty;
-            txtMatKhau.Text = string.Empty;
+            dangTaiDuLieu = true;
+
+            txtID.Text = "";
+            txtHoVaTen.Text = "";
+            txtDienThoai.Text = "";
+            txtDiaChi.Text = "";
+            txtEmail.Text = "";
+            txtTenDangNhap.Text = "";
+            txtMatKhau.Text = "";
             chkTrangThai.Checked = true;
+
+            dangTaiDuLieu = false;
         }
 
         private void GanBinding(BindingSource bindingSource)
         {
+            dangTaiDuLieu = true;
+
             txtID.DataBindings.Clear();
             txtID.DataBindings.Add("Text", bindingSource, "ID", false, DataSourceUpdateMode.Never);
 
@@ -132,20 +192,20 @@ namespace StadiumTicketBooking.Forms
 
             chkTrangThai.DataBindings.Clear();
             chkTrangThai.DataBindings.Add("Checked", bindingSource, "TrangThai", false, DataSourceUpdateMode.Never);
+
+            dangTaiDuLieu = false;
         }
 
         private void TaiDuLieu()
         {
             dgvKhachHang.AutoGenerateColumns = false;
 
-            var listKhachHang = context.KhachHang
+            var ds = context.KhachHang
                 .OrderBy(x => x.ID)
                 .ToList();
 
-            BindingSource bindingSource = new BindingSource
-            {
-                DataSource = listKhachHang
-            };
+            BindingSource bindingSource = new BindingSource();
+            bindingSource.DataSource = ds;
 
             GanBinding(bindingSource);
 
@@ -157,10 +217,8 @@ namespace StadiumTicketBooking.Forms
         {
             dgvKhachHang.AutoGenerateColumns = false;
 
-            BindingSource bindingSource = new BindingSource
-            {
-                DataSource = dataSource
-            };
+            BindingSource bindingSource = new BindingSource();
+            bindingSource.DataSource = dataSource;
 
             GanBinding(bindingSource);
 
@@ -171,7 +229,6 @@ namespace StadiumTicketBooking.Forms
         private void frmKhachHang_Load(object sender, EventArgs e)
         {
             CaiDatIconNut();
-            BatTatChucNang(false);
             TaiDuLieu();
             ApDungPhanQuyen();
         }
@@ -180,14 +237,20 @@ namespace StadiumTicketBooking.Forms
         {
             if (LaAdmin())
             {
-                MessageBox.Show("Admin chỉ được xem khách hàng, không được thêm.",
+                MessageBox.Show("Admin không được thêm khách hàng.",
                     "Phân quyền", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
             xuLyThem = true;
-            BatTatChucNang(true);
+
+            BatTatNhapLieu(true);
+            BatTatNutKhiNhapLieu(true);
             XoaDuLieuNhap();
+
+            chkTrangThai.Enabled = false;
+            chkTrangThai.Checked = true;
+
             txtHoVaTen.Focus();
         }
 
@@ -195,20 +258,25 @@ namespace StadiumTicketBooking.Forms
         {
             if (LaAdmin())
             {
-                MessageBox.Show("Admin chỉ được xem khách hàng, không được sửa.",
+                MessageBox.Show("Admin không được sửa thông tin khách hàng.",
                     "Phân quyền", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
             if (dgvKhachHang.CurrentRow == null)
             {
-                MessageBox.Show("Vui lòng chọn khách hàng cần sửa!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn khách hàng cần sửa!",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             xuLyThem = false;
-            BatTatChucNang(true);
+
+            BatTatNhapLieu(true);
+            BatTatNutKhiNhapLieu(true);
+
+            chkTrangThai.Enabled = false;
+
             txtHoVaTen.Focus();
         }
 
@@ -216,35 +284,34 @@ namespace StadiumTicketBooking.Forms
         {
             if (LaAdmin())
             {
-                MessageBox.Show("Admin chỉ được xem khách hàng, không được xóa.",
+                MessageBox.Show("Admin không được xóa khách hàng.",
                     "Phân quyền", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
             if (dgvKhachHang.CurrentRow == null)
             {
-                MessageBox.Show("Vui lòng chọn khách hàng cần xóa!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn khách hàng cần xóa!",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (!int.TryParse(dgvKhachHang.CurrentRow.Cells["colID"].Value?.ToString(), out int idXoa))
             {
-                MessageBox.Show("Không xác định được khách hàng cần xóa!", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Không xác định được khách hàng cần xóa!",
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             string tenKhachHang = dgvKhachHang.CurrentRow.Cells["colHoVaTen"].Value?.ToString() ?? "";
 
-            DialogResult ketQua = MessageBox.Show(
+            DialogResult kq = MessageBox.Show(
                 $"Xác nhận xóa khách hàng: {tenKhachHang}?",
                 "Xác nhận",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
-            if (ketQua != DialogResult.Yes)
-                return;
+            if (kq != DialogResult.Yes) return;
 
             try
             {
@@ -254,71 +321,90 @@ namespace StadiumTicketBooking.Forms
                     context.KhachHang.Remove(kh);
                     context.SaveChanges();
 
-                    MessageBox.Show("Xóa thành công!", "Thông báo",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Xóa thành công!",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     TaiDuLieu();
-                    BatTatChucNang(false);
                     ApDungPhanQuyen();
                 }
             }
-            catch (Exception)
+            catch
             {
-                MessageBox.Show("Không thể xóa khách hàng này vì đang có hóa đơn liên quan!", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Không thể xóa khách hàng này vì đang có hóa đơn liên quan!",
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnLuu_Click(object sender, EventArgs e)
         {
-            if (LaAdmin())
-            {
-                MessageBox.Show("Admin chỉ được xem khách hàng, không được lưu.",
-                    "Phân quyền", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            string hoVaTen = txtHoVaTen.Text.Trim();
-            string dienThoai = txtDienThoai.Text.Trim();
-            string diaChi = txtDiaChi.Text.Trim();
-            string email = txtEmail.Text.Trim();
-            string tenDangNhap = txtTenDangNhap.Text.Trim();
-            string matKhau = txtMatKhau.Text.Trim();
-            bool trangThai = chkTrangThai.Checked;
-
-            if (string.IsNullOrWhiteSpace(hoVaTen))
-            {
-                MessageBox.Show("Vui lòng nhập họ và tên!", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtHoVaTen.Focus();
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(tenDangNhap))
-            {
-                MessageBox.Show("Vui lòng nhập tên đăng nhập!", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtTenDangNhap.Focus();
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(matKhau))
-            {
-                MessageBox.Show("Vui lòng nhập mật khẩu!", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtMatKhau.Focus();
-                return;
-            }
-
             try
             {
+                if (LaAdmin())
+                {
+                    if (!int.TryParse(txtID.Text, out int idAdmin))
+                    {
+                        MessageBox.Show("Vui lòng chọn khách hàng cần cập nhật trạng thái!",
+                            "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    var khAdmin = context.KhachHang.Find(idAdmin);
+                    if (khAdmin == null)
+                    {
+                        MessageBox.Show("Không tìm thấy khách hàng!",
+                            "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    khAdmin.TrangThai = chkTrangThai.Checked;
+                    context.SaveChanges();
+
+                    MessageBox.Show("Cập nhật trạng thái hoạt động thành công!",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    TaiDuLieu();
+                    HienThiCheDoAdmin();
+                    return;
+                }
+
+                string hoVaTen = txtHoVaTen.Text.Trim();
+                string dienThoai = txtDienThoai.Text.Trim();
+                string diaChi = txtDiaChi.Text.Trim();
+                string email = txtEmail.Text.Trim();
+                string tenDangNhap = txtTenDangNhap.Text.Trim();
+                string matKhau = txtMatKhau.Text.Trim();
+
+                if (string.IsNullOrWhiteSpace(hoVaTen))
+                {
+                    MessageBox.Show("Vui lòng nhập họ và tên!",
+                        "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    txtHoVaTen.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(tenDangNhap))
+                {
+                    MessageBox.Show("Vui lòng nhập tên đăng nhập!",
+                        "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    txtTenDangNhap.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(matKhau))
+                {
+                    MessageBox.Show("Vui lòng nhập mật khẩu!",
+                        "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    txtMatKhau.Focus();
+                    return;
+                }
+
                 if (xuLyThem)
                 {
                     bool trungTenDangNhap = context.KhachHang.Any(x => x.TenDangNhap == tenDangNhap);
                     if (trungTenDangNhap)
                     {
-                        MessageBox.Show("Tên đăng nhập đã tồn tại!", "Thông báo",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Tên đăng nhập đã tồn tại!",
+                            "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         txtTenDangNhap.Focus();
                         return;
                     }
@@ -329,8 +415,8 @@ namespace StadiumTicketBooking.Forms
 
                     if (daTonTai)
                     {
-                        MessageBox.Show("Khách hàng này đã tồn tại!", "Thông báo",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Khách hàng này đã tồn tại!",
+                            "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         txtHoVaTen.Focus();
                         return;
                     }
@@ -344,7 +430,7 @@ namespace StadiumTicketBooking.Forms
                         TenDangNhap = tenDangNhap,
                         MatKhau = matKhau,
                         NgayTao = DateTime.Now,
-                        TrangThai = trangThai
+                        TrangThai = true
                     };
 
                     context.KhachHang.Add(kh);
@@ -353,8 +439,8 @@ namespace StadiumTicketBooking.Forms
                 {
                     if (!int.TryParse(txtID.Text, out int idSua))
                     {
-                        MessageBox.Show("Không xác định được khách hàng cần sửa!", "Lỗi",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Không xác định được khách hàng cần sửa!",
+                            "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
@@ -364,8 +450,8 @@ namespace StadiumTicketBooking.Forms
 
                     if (trungTenDangNhap)
                     {
-                        MessageBox.Show("Tên đăng nhập đã tồn tại!", "Thông báo",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Tên đăng nhập đã tồn tại!",
+                            "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         txtTenDangNhap.Focus();
                         return;
                     }
@@ -377,8 +463,8 @@ namespace StadiumTicketBooking.Forms
 
                     if (trungDuLieu)
                     {
-                        MessageBox.Show("Khách hàng này đã tồn tại!", "Thông báo",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Khách hàng này đã tồn tại!",
+                            "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         txtHoVaTen.Focus();
                         return;
                     }
@@ -392,7 +478,6 @@ namespace StadiumTicketBooking.Forms
                         kh.Email = string.IsNullOrWhiteSpace(email) ? null : email;
                         kh.TenDangNhap = tenDangNhap;
                         kh.MatKhau = matKhau;
-                        kh.TrangThai = trangThai;
 
                         context.KhachHang.Update(kh);
                     }
@@ -400,25 +485,27 @@ namespace StadiumTicketBooking.Forms
 
                 context.SaveChanges();
 
-                MessageBox.Show("Lưu thành công!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Lưu thành công!",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 TaiDuLieu();
-                BatTatChucNang(false);
                 ApDungPhanQuyen();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi: " + ex.Message, "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Lỗi: " + ex.Message,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnHuy_Click(object sender, EventArgs e)
         {
-            BatTatChucNang(false);
             TaiDuLieu();
-            ApDungPhanQuyen();
+
+            if (LaAdmin())
+                HienThiCheDoAdmin();
+            else
+                ApDungPhanQuyen();
         }
 
         private void btnThoat_Click(object sender, EventArgs e)
@@ -442,7 +529,6 @@ namespace StadiumTicketBooking.Forms
             if (string.IsNullOrWhiteSpace(searchTerm))
             {
                 TaiDuLieu();
-                BatTatChucNang(false);
                 ApDungPhanQuyen();
                 return;
             }
@@ -461,8 +547,8 @@ namespace StadiumTicketBooking.Forms
 
             if (ketQua.Count == 0)
             {
-                MessageBox.Show("Không tìm thấy kết quả phù hợp.", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Không tìm thấy kết quả phù hợp.",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 TaiDuLieu();
             }
             else
@@ -470,8 +556,28 @@ namespace StadiumTicketBooking.Forms
                 TaiDuLieu(ketQua);
             }
 
-            BatTatChucNang(false);
             ApDungPhanQuyen();
+        }
+
+        private void chkTrangThai_CheckedChanged(object sender, EventArgs e)
+        {
+            if (dangTaiDuLieu) return;
+
+            if (LaAdmin() && !string.IsNullOrWhiteSpace(txtID.Text))
+            {
+                btnLuu.Enabled = true;
+                btnHuy.Enabled = true;
+            }
+        }
+
+        private void dgvKhachHang_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dangTaiDuLieu) return;
+
+            if (LaAdmin())
+            {
+                HienThiCheDoAdmin();
+            }
         }
     }
 }

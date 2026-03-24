@@ -27,6 +27,7 @@
             this.colInHoaDon = new System.Windows.Forms.DataGridViewLinkColumn();
             this.pnlBottom = new System.Windows.Forms.Panel();
             this.btnDong = new System.Windows.Forms.Button();
+            this.btnXoa = new System.Windows.Forms.Button();
             this.btnLamMoi = new System.Windows.Forms.Button();
             this.pnlTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHoaDon)).BeginInit();
@@ -138,6 +139,7 @@
             // pnlBottom
             // 
             this.pnlBottom.Controls.Add(this.btnDong);
+            this.pnlBottom.Controls.Add(this.btnXoa);
             this.pnlBottom.Controls.Add(this.btnLamMoi);
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlBottom.Location = new System.Drawing.Point(0, 590);
@@ -147,13 +149,23 @@
             // 
             // btnDong
             // 
-            this.btnDong.Location = new System.Drawing.Point(170, 16);
+            this.btnDong.Location = new System.Drawing.Point(315, 16);
             this.btnDong.Name = "btnDong";
             this.btnDong.Size = new System.Drawing.Size(120, 40);
-            this.btnDong.TabIndex = 1;
+            this.btnDong.TabIndex = 2;
             this.btnDong.Text = "Đóng";
             this.btnDong.UseVisualStyleBackColor = true;
             this.btnDong.Click += new System.EventHandler(this.btnDong_Click);
+            // 
+            // btnXoa
+            // 
+            this.btnXoa.Location = new System.Drawing.Point(170, 16);
+            this.btnXoa.Name = "btnXoa";
+            this.btnXoa.Size = new System.Drawing.Size(120, 40);
+            this.btnXoa.TabIndex = 1;
+            this.btnXoa.Text = "Xóa hóa đơn";
+            this.btnXoa.UseVisualStyleBackColor = true;
+            this.btnXoa.Click += new System.EventHandler(this.btnXoa_Click);
             // 
             // btnLamMoi
             // 
@@ -190,6 +202,7 @@
         private System.Windows.Forms.DataGridView dgvHoaDon;
         private System.Windows.Forms.Panel pnlBottom;
         private System.Windows.Forms.Button btnDong;
+        private System.Windows.Forms.Button btnXoa;
         private System.Windows.Forms.Button btnLamMoi;
         private System.Windows.Forms.DataGridViewTextBoxColumn colID;
         private System.Windows.Forms.DataGridViewTextBoxColumn colNgayLap;

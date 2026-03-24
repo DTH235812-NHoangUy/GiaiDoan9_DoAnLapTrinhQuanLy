@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using StadiumTicketBooking.Reports;
 
 namespace StadiumTicketBooking.Forms
 {
@@ -10,6 +11,7 @@ namespace StadiumTicketBooking.Forms
         private string tenDangNhap = "";
         private string vaiTro = "";
         private Form formHienTai = null;
+        private Button btnDangChon = null;
 
         public int NhanVienIDHienTai => nhanVienID;
         public string TenDangNhapHienTai => tenDangNhap;
@@ -35,6 +37,7 @@ namespace StadiumTicketBooking.Forms
             HienThiThongTinDangNhap();
             PhanQuyenTheoVaiTro();
             HienThiTrangChu();
+            KichHoatButtonMenu(btnTrangChu);
         }
 
         private void CaiDatMenu()
@@ -45,6 +48,8 @@ namespace StadiumTicketBooking.Forms
             CaiDatButtonMenu(btnChiTietHoaDon);
             CaiDatButtonMenu(btnKhachHang);
             CaiDatButtonMenu(btnVe);
+            CaiDatButtonMenu(btnDanhSachVe);
+            CaiDatButtonMenu(btnThongKeDoanhThu);
             CaiDatButtonMenu(btnSuKien);
             CaiDatButtonMenu(btnGhe);
             CaiDatButtonMenu(btnKhuVuc);
@@ -71,30 +76,85 @@ namespace StadiumTicketBooking.Forms
             btn.MouseLeave += BtnMenu_MouseLeave;
         }
 
+        private void DatLaiButtonMenu()
+        {
+            DatStyleMacDinh(btnTrangChu);
+            DatStyleMacDinh(btnDatVe);
+            DatStyleMacDinh(btnHoaDon);
+            DatStyleMacDinh(btnChiTietHoaDon);
+            DatStyleMacDinh(btnKhachHang);
+            DatStyleMacDinh(btnVe);
+            DatStyleMacDinh(btnDanhSachVe);
+            DatStyleMacDinh(btnThongKeDoanhThu);
+            DatStyleMacDinh(btnSuKien);
+            DatStyleMacDinh(btnGhe);
+            DatStyleMacDinh(btnKhuVuc);
+            DatStyleMacDinh(btnSanVanDong);
+            DatStyleMacDinh(btnNhanVien);
+            DatStyleMacDinh(btnVaiTro);
+            DatStyleMacDinh(btnDangXuat);
+        }
+
+        private void DatStyleMacDinh(Button btn)
+        {
+            if (btn == null) return;
+
+            btn.BackColor = Color.FromArgb(30, 41, 59);
+            btn.ForeColor = Color.White;
+            btn.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point);
+        }
+
+        private void KichHoatButtonMenu(Button btn)
+        {
+            if (btn == null) return;
+
+            DatLaiButtonMenu();
+
+            btnDangChon = btn;
+            btn.BackColor = Color.FromArgb(51, 65, 85);
+            btn.ForeColor = Color.White;
+            btn.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold, GraphicsUnit.Point);
+        }
+
         private void BtnMenu_MouseEnter(object sender, EventArgs e)
         {
             Button btn = sender as Button;
-            if (btn != null)
+            if (btn != null && btn != btnDangChon)
                 btn.BackColor = Color.FromArgb(51, 65, 85);
         }
 
         private void BtnMenu_MouseLeave(object sender, EventArgs e)
         {
             Button btn = sender as Button;
-            if (btn != null)
+            if (btn != null && btn != btnDangChon)
                 btn.BackColor = Color.FromArgb(30, 41, 59);
         }
 
         private void HienThiThongTinDangNhap()
         {
             if (string.IsNullOrWhiteSpace(tenDangNhap))
-                tenDangNhap = "admin";
+                tenDangNhap = "Nguyễn Hoàng Uy";
 
             if (string.IsNullOrWhiteSpace(vaiTro))
                 vaiTro = "Admin";
 
-            lblNguoiDung.Text = "Người dùng: " + tenDangNhap;
-            lblVaiTro.Text = "Vai trò: " + vaiTro;
+            string role = vaiTro.Trim().ToLower();
+
+            if (role == "admin")
+            {
+                lblNguoiDung.Text = "Admin: " + tenDangNhap;
+                lblVaiTro.Text = "";
+            }
+            else if (role == "nhanvien" || role == "nhân viên")
+            {
+                lblNguoiDung.Text = "Nhân viên: " + tenDangNhap;
+                lblVaiTro.Text = "";
+            }
+            else
+            {
+                lblNguoiDung.Text = "Người dùng: " + tenDangNhap;
+                lblVaiTro.Text = "Vai trò: " + vaiTro;
+            }
         }
 
         private void PhanQuyenTheoVaiTro()
@@ -109,6 +169,8 @@ namespace StadiumTicketBooking.Forms
                 btnChiTietHoaDon.Visible = false;
                 btnKhachHang.Visible = true;
                 btnVe.Visible = true;
+                btnDanhSachVe.Visible = true;
+                btnThongKeDoanhThu.Visible = true;
                 btnSuKien.Visible = true;
                 btnGhe.Visible = true;
                 btnKhuVuc.Visible = true;
@@ -125,6 +187,8 @@ namespace StadiumTicketBooking.Forms
                 btnChiTietHoaDon.Visible = false;
                 btnKhachHang.Visible = true;
                 btnVe.Visible = false;
+                btnDanhSachVe.Visible = false;
+                btnThongKeDoanhThu.Visible = false;
                 btnSuKien.Visible = false;
                 btnGhe.Visible = false;
                 btnKhuVuc.Visible = false;
@@ -141,6 +205,8 @@ namespace StadiumTicketBooking.Forms
                 btnChiTietHoaDon.Visible = false;
                 btnKhachHang.Visible = false;
                 btnVe.Visible = false;
+                btnDanhSachVe.Visible = false;
+                btnThongKeDoanhThu.Visible = false;
                 btnSuKien.Visible = false;
                 btnGhe.Visible = false;
                 btnKhuVuc.Visible = false;
@@ -191,66 +257,92 @@ namespace StadiumTicketBooking.Forms
 
         private void btnTrangChu_Click(object sender, EventArgs e)
         {
+            KichHoatButtonMenu(btnTrangChu);
             HienThiTrangChu();
         }
 
         private void btnDatVe_Click(object sender, EventArgs e)
         {
+            KichHoatButtonMenu(btnDatVe);
             MoFormCon(new frmDatVe(nhanVienID, vaiTro));
         }
 
         private void btnHoaDon_Click(object sender, EventArgs e)
         {
+            KichHoatButtonMenu(btnHoaDon);
             MoFormCon(new frmHoaDon(nhanVienID, vaiTro));
         }
 
         private void btnChiTietHoaDon_Click(object sender, EventArgs e)
         {
+            KichHoatButtonMenu(btnChiTietHoaDon);
             MoFormCon(new frmHoaDon_ChiTiet(0, nhanVienID, vaiTro));
         }
 
         private void btnKhachHang_Click(object sender, EventArgs e)
         {
+            KichHoatButtonMenu(btnKhachHang);
             MoFormCon(new frmKhachHang(vaiTro));
         }
 
         private void btnVe_Click(object sender, EventArgs e)
         {
+            KichHoatButtonMenu(btnVe);
             MoFormCon(new frmVe());
+        }
+
+        private void btnDanhSachVe_Click(object sender, EventArgs e)
+        {
+            KichHoatButtonMenu(btnDanhSachVe);
+            MoFormCon(new frmDanhSachVe());
+        }
+
+        private void btnThongKeDoanhThu_Click(object sender, EventArgs e)
+        {
+            KichHoatButtonMenu(btnThongKeDoanhThu);
+            MoFormCon(new frmThongKeDoanhThu());
         }
 
         private void btnSuKien_Click(object sender, EventArgs e)
         {
+            KichHoatButtonMenu(btnSuKien);
             MoFormCon(new frmSuKien());
         }
 
         private void btnGhe_Click(object sender, EventArgs e)
         {
+            KichHoatButtonMenu(btnGhe);
             MoFormCon(new frmGhe());
         }
 
         private void btnKhuVuc_Click(object sender, EventArgs e)
         {
+            KichHoatButtonMenu(btnKhuVuc);
             MoFormCon(new frmKhuVuc());
         }
 
         private void btnSanVanDong_Click(object sender, EventArgs e)
         {
+            KichHoatButtonMenu(btnSanVanDong);
             MoFormCon(new frmSanVanDong());
         }
 
         private void btnNhanVien_Click(object sender, EventArgs e)
         {
+            KichHoatButtonMenu(btnNhanVien);
             MoFormCon(new frmNhanVien());
         }
 
         private void btnVaiTro_Click(object sender, EventArgs e)
         {
+            KichHoatButtonMenu(btnVaiTro);
             MoFormCon(new frmVaiTro());
         }
 
         private void btnDangXuat_Click(object sender, EventArgs e)
         {
+            KichHoatButtonMenu(btnDangXuat);
+
             DialogResult result = MessageBox.Show(
                 "Bạn có muốn đăng xuất không?",
                 "Xác nhận",
@@ -263,6 +355,11 @@ namespace StadiumTicketBooking.Forms
                 frmDangNhap frm = new frmDangNhap();
                 frm.ShowDialog();
                 Close();
+            }
+            else
+            {
+                if (formHienTai == null)
+                    KichHoatButtonMenu(btnTrangChu);
             }
         }
     }

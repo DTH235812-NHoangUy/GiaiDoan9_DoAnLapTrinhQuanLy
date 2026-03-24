@@ -237,6 +237,15 @@ namespace StadiumTicketBooking.Migrations
                     b.Property<int>("GiaCoBan")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("NgayBatDauNoiBat")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("NgayKetThucNoiBat")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("NoiBat")
+                        .HasColumnType("bit");
+
                     b.Property<int>("SanVanDongID")
                         .HasColumnType("int");
 

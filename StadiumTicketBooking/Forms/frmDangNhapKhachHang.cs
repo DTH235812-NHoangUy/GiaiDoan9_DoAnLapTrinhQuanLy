@@ -8,10 +8,17 @@ namespace StadiumTicketBooking.Forms
     public partial class frmDangNhapKhachHang : Form
     {
         private readonly StadiumDbContext context = new StadiumDbContext();
+        private readonly int? suKienIDDuocChon = null;
 
         public frmDangNhapKhachHang()
         {
             InitializeComponent();
+        }
+
+        public frmDangNhapKhachHang(int suKienID)
+        {
+            InitializeComponent();
+            suKienIDDuocChon = suKienID;
         }
 
         private void frmDangNhapKhachHang_Load(object sender, EventArgs e)
@@ -51,31 +58,63 @@ namespace StadiumTicketBooking.Forms
 
             if (string.IsNullOrWhiteSpace(tenDangNhap))
             {
-                MessageBox.Show("Vui lòng nhập tên đăng nhập.", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Vui lòng nhập tên đăng nhập.",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 txtTenDangNhap.Focus();
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(matKhau))
             {
-                MessageBox.Show("Vui lòng nhập mật khẩu.", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Vui lòng nhập mật khẩu.",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 txtMatKhau.Focus();
                 return;
             }
 
+            // 1. Tìm theo tên đăng nhập trước
             var kh = context.KhachHang
-                .FirstOrDefault(x => x.TenDangNhap == tenDangNhap
-                                  && x.MatKhau == matKhau
-                                  && x.TrangThai == true);
+                .FirstOrDefault(x => x.TenDangNhap == tenDangNhap);
 
             if (kh == null)
             {
-                MessageBox.Show("Sai tên đăng nhập hoặc mật khẩu.", "Đăng nhập thất bại",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtMatKhau.SelectAll();
+                MessageBox.Show(
+                    "Tên đăng nhập không tồn tại.",
+                    "Đăng nhập thất bại",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                txtTenDangNhap.Focus();
+                txtTenDangNhap.SelectAll();
+                return;
+            }
+
+            // 2. Kiểm tra trạng thái hoạt động
+            if (!kh.TrangThai)
+            {
+                MessageBox.Show(
+                    "Tài khoản của bạn đã bị khóa.",
+                    "Đăng nhập thất bại",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 3. Kiểm tra mật khẩu
+            if (kh.MatKhau != matKhau)
+            {
+                MessageBox.Show(
+                    "Sai mật khẩu.",
+                    "Đăng nhập thất bại",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
                 txtMatKhau.Focus();
+                txtMatKhau.SelectAll();
                 return;
             }
 
@@ -84,13 +123,30 @@ namespace StadiumTicketBooking.Forms
             UserSession.TenDangNhap = kh.TenDangNhap;
             UserSession.DaDangNhap = true;
 
-            MessageBox.Show("Đăng nhập thành công.", "Thông báo",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(
+                "Đăng nhập thành công.",
+                "Thông báo",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
 
-            frmMainKhachHang f = new frmMainKhachHang(kh);
-            this.Hide();
-            f.ShowDialog();
-            this.Show();
+            if (suKienIDDuocChon.HasValue)
+            {
+                using (frmDatVeKhachHang f = new frmDatVeKhachHang(kh.ID, kh.HoVaTen, suKienIDDuocChon.Value))
+                {
+                    Hide();
+                    f.ShowDialog();
+                    Show();
+                }
+            }
+            else
+            {
+                using (frmMainKhachHang f = new frmMainKhachHang(kh))
+                {
+                    Hide();
+                    f.ShowDialog();
+                    Show();
+                }
+            }
         }
 
         private void btnMoDangKy_Click(object sender, EventArgs e)
@@ -98,6 +154,18 @@ namespace StadiumTicketBooking.Forms
             using (frmDangKyKhachHang f = new frmDangKyKhachHang())
             {
                 f.ShowDialog();
+            }
+
+            txtMatKhau.Clear();
+            txtTenDangNhap.Focus();
+
+            if (suKienIDDuocChon.HasValue)
+            {
+                MessageBox.Show(
+                    "Đăng ký xong. Vui lòng đăng nhập để tiếp tục đặt vé cho sự kiện đã chọn.",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
             }
         }
 

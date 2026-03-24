@@ -13,6 +13,7 @@ namespace StadiumTicketBooking.Forms
         private readonly StadiumDbContext context = new StadiumDbContext();
         private readonly int khachHangIDDangNhap = 0;
         private readonly string hoVaTenKhachHang = "";
+        private readonly int? suKienIDMacDinh = null;
 
         private class VeChonTam
         {
@@ -36,6 +37,14 @@ namespace StadiumTicketBooking.Forms
             InitializeComponent();
             khachHangIDDangNhap = khachHangID;
             hoVaTenKhachHang = hoVaTen ?? "";
+        }
+
+        public frmDatVeKhachHang(int khachHangID, string hoVaTen, int suKienID)
+        {
+            InitializeComponent();
+            khachHangIDDangNhap = khachHangID;
+            hoVaTenKhachHang = hoVaTen ?? "";
+            suKienIDMacDinh = suKienID;
         }
 
         private void CaiDatNut(Button btn, Image icon, string text)
@@ -110,6 +119,7 @@ namespace StadiumTicketBooking.Forms
         {
             var dsSuKien = context.SuKien
                 .AsNoTracking()
+                .Where(x => x.ThoiGian >= DateTime.Now)
                 .Select(x => new
                 {
                     x.ID,
@@ -123,9 +133,20 @@ namespace StadiumTicketBooking.Forms
             cboSuKien.ValueMember = "ID";
 
             if (dsSuKien.Count > 0)
-                cboSuKien.SelectedIndex = 0;
+            {
+                if (suKienIDMacDinh.HasValue && dsSuKien.Any(x => x.ID == suKienIDMacDinh.Value))
+                {
+                    cboSuKien.SelectedValue = suKienIDMacDinh.Value;
+                }
+                else
+                {
+                    cboSuKien.SelectedIndex = 0;
+                }
+            }
             else
+            {
                 cboSuKien.SelectedIndex = -1;
+            }
         }
 
         private int LaySuKienIdDangChon()
